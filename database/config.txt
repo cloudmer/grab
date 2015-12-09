@@ -1,0 +1,7 @@
+workerman SocketIO
+
+windows 打开 socket服务
+(components/windows-workerman-chat-master/start_for_win.bat)
+
+linux 打开 socket 服务
+(php start.php start -d);

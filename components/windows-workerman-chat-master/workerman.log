@@ -1,0 +1,23 @@
+2015-11-12 21:24:28 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:28 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:28 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:28 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:31 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:31 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:32 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-12 21:24:32 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready
+2015-11-20 13:58:41 client_id:7f00000108fc00000004	client_ip:2130706433
+exception 'Exception' with message '$message_data['room_id'] not set. client_ip:127.0.0.1 $message:' in D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Start\Event.php:174
+Stack trace:
+#0 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Start\Event.php(51): Event::login(Array)
+#1 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\GatewayWorker\BusinessWorker.php(216): Event::onMessage('7f00000108fc000...', '{"type":"login"...')
+#2 [internal function]: GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Workerman\Connection\TcpConnection.php(471): call_user_func(Array, Object(Workerman\Connection\AsyncTcpConnection), Array)
+#4 [internal function]: Workerman\Connection\TcpConnection->baseRead(Resource id #23)
+#5 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Workerman\Events\Select.php(253): call_user_func_array(Array, Array)
+#6 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Workerman\Worker.php(734): Workerman\Events\Select->loop()
+#7 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\GatewayWorker\BusinessWorker.php(96): Workerman\Worker->run()
+#8 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Workerman\Worker.php(422): GatewayWorker\BusinessWorker->run()
+#9 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Workerman\Worker.php(339): Workerman\Worker::runAllWorkers()
+#10 D:\phpfind\WWW\aiyeyun\components\windows-workerman-chat-master\Start\start_businessworker.php(36): Workerman\Worker::runAll()
+#11 {main}
