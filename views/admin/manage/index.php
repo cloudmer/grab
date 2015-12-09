@@ -25,11 +25,11 @@ $this->registerJs($script);
 
                     欢迎使用
                     <strong class="green">
-                        Night cloud 后台管理系统
+                        小蛮牛 后台管理系统
                     </strong>
                     ,千里之行,始于足下.
                     (*^__^*) 欢迎回来
-                    &nbsp;<strong class="green"><?= Yii::$app->user->identity->nick_name?></strong>&nbsp;
+                    &nbsp;<strong class="green"><?= Yii::$app->user->identity->nick_name ? Yii::$app->user->identity->nick_name : Yii::$app->user->identity->username ?></strong>&nbsp;
                     上次登陆时间：&nbsp;<strong class="green"><?= date('Y-m-d H:i:s',Yii::$app->user->identity->login_time) ?></strong>&nbsp;
                     上次登陆IP：&nbsp;<strong class="green"><?= Yii::$app->user->identity->login_ip ?></strong>
                 </div>
@@ -216,7 +216,7 @@ $this->registerJs($script);
                         <tbody>
                             <tr>
                                 <td>版权所有：</td>
-                                <td class="text-right"><a>夜云个人所有</a></td>
+                                <td class="text-right"><a>小蛮牛个人所有</a></td>
                             </tr>
                             <tr>
                                 <td>开发人员：</td>
@@ -228,14 +228,8 @@ $this->registerJs($script);
                             </tr>
                             <tr>
                                 <td>联系QQ：</td>
-                                <td class="text-right">644362887</td>
-                            </tr>
-                            <tr>
-                                <td>使用者Ip：</td>
                                 <td class="text-right">
-                                    <a target="_blank" href="http://sighttp.qq.com/authd?IDKEY=b67645ec1680a4795639b85fff0775855c1d74c9f03186e2">
-                                        <img border="0" src="http://wpa.qq.com/imgd?IDKEY=b67645ec1680a4795639b85fff0775855c1d74c9f03186e2&amp;pic=51" alt="点击这里给我发消息" title="点击这里给我发消息">
-                                    </a>
+                                    359709440
                                 </td>
                             </tr>
                         </tbody>

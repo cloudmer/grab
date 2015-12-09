@@ -42,7 +42,7 @@ AUTO_INCREMENT=5
 -- Records of menus
 -- ----------------------------
 BEGIN;
-INSERT INTO `menus` VALUES ('1', null, null, '控制台', 'fa fa-dashboard', '/admin/manage', 'index', '1', null, '1448427092'), ('2', null, null, '聊天室', 'fa fa-user', '/admin/chat-room', 'index', '1', null, '1448427137'), ('3', null, null, '设置', 'fa fa-cog', '', '', '1', null, '1448427157'), ('4', '3', null, '菜单栏', null, '/admin/settings', 'menus', '1', null, '1448427187');
+INSERT INTO `menus` VALUES ('1', null, null, '控制台', 'fa fa-dashboard', '/admin/manage', 'index', '1', null, '1448427092'),('2', null, null, '设置', 'fa fa-cog', '', '', '1', null, '1448427157'), ('3', '2', null, '菜单栏', null, '/admin/settings', 'menus', '1', null, '1448427187');
 COMMIT;
 
 -- ----------------------------
@@ -79,7 +79,7 @@ AUTO_INCREMENT=3
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', null, null, '夜云', '/upload/20151117/1447729585221.jpg', '644362887@qq.com', '15228883771', '1', '23', '1', null, '1448426069', '127.0.0.1'), ('2', 'yeyun', '21232f297a57a5a743894a0e4a801fc3', null, null, '夜风', '/upload/20151117/1447729557216.jpg', '644362887@qq.com', '15228883771', '1', '23', '1', null, '1447912739', '127.0.0.1');
+INSERT INTO `user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', null, null, '小蛮牛', '/upload/20151117/1447729585221.jpg', '644362887@qq.com', '15228883771', '1', '23', '1', null, '1448426069', '127.0.0.1'), ('2', 'xiaomanniu', '21232f297a57a5a743894a0e4a801fc3', null, null, '小蛮牛2', '/upload/20151117/1447729557216.jpg', '644362887@qq.com', '15228883771', '1', '23', '1', null, '1447912739', '127.0.0.1');
 COMMIT;
 
 -- ----------------------------

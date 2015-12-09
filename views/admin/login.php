@@ -18,7 +18,7 @@
         <div class="login_header">
             <div class="row">
                 <div class="col-xs-6">
-                    <span>Night cloud</span>
+                    <span>小蛮牛</span>
                 </div>
                 <div class="col-xs-6 text-right">
                     <a href="#">产品官网</a>
@@ -31,7 +31,7 @@
                     'options'=>['class'=>'form-center'],
                     'action'=>'/admin/login/login',
                     'method'=>'post'])?>
-                <h1><img src="/images/viewfile.png"></h1>
+                <h1>小蛮牛后台管理</h1>
                 <?= $form->field($model, 'username')->error(false)->label(false)->textInput(['placeholder'=>'账号'])?>
                 <?= $form->field($model, 'password')->error(false)->label(false)->passwordInput(['placeholder'=>'密码'])?>
                 <div id="msg" class="help-inline">
@@ -50,7 +50,7 @@
                     <a href="#">联系我们</a>
                 </div>
                 <div class="col-sm-6 text-right">
-                    ©Copyright 2015 夜云 All Rights Reserved.
+                    ©Copyright 2015 小蛮牛 All Rights Reserved.
                 </div>
             </div>
         </footer>

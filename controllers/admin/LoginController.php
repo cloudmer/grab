@@ -2,7 +2,6 @@
 
 namespace app\controllers\admin;
 
-use app\components\Mem;
 use app\models\LoginForm;
 use app\models\User;
 use yii\filters\AccessControl;
@@ -65,8 +64,6 @@ class LoginController extends BaseController
 
     public function actionLogout()
     {
-        $mem = new Mem();
-        $mem->delUserInfo();
         \Yii::$app->user->logout();
         return $this->redirect('/admin/login');
     }

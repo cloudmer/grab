@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use app\components\Mem;
 use Yii;
 
 /**
@@ -140,8 +139,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * 更新用户登陆时间 更新用户登陆Ip
      * */
     public static function updateLoginInfo($id){
-        $memCache = new Mem();
-        $memCache->setUserInfo();
         self::updateAll(['login_time'=>time(),'login_ip'=>$id],'id='.Yii::$app->user->identity->getId());
     }
 

@@ -41,7 +41,7 @@ AppAsset::register($this);
 <header class="header header--fixed hide-from-print animated slideDown">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Night cloud',
+        'brandLabel' => '小蛮牛',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['id'=>'nav'],
     ]);
@@ -49,19 +49,13 @@ AppAsset::register($this);
         'encodeLabels' => false,
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => '首页', 'url' => ['/home']],
-            ['label' => '活动', 'url' => ['/activity']],
-            ['label' => '排行榜', 'url' => ['#']],
-            ['label' => '工会', 'url' => ['#']],
-            ['label' => '帮派', 'url' => ['#']],
-            ['label' => '商城', 'url' => ['#']],
-            ['label' => '关于我们', 'url' => ['/home/about']],
             Yii::$app->user->isGuest ?
-                ['label' => '<span class="glyphicon glyphicon-user"></span>登陆', 'url' => ['#']] :
-                ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
+                ['label' => '退出登陆 (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']],
-            ['label' => '申请入驻', 'linkOptions'=>['class'=>'settled'], 'url' => ['#']],
+                    'linkOptions' => ['data-method' => 'post']
+                ],
+                ['label' => '进入后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/manage']],
         ],
     ]);
     NavBar::end();

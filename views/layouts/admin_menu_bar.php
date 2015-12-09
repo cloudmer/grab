@@ -14,7 +14,7 @@
     <section id="col-left" class="col-left-nano">
         <div id="col-left-inner" class="col-left-nano-content">
             <div id="user-left-box" class="clearfix hidden-sm hidden-xs">
-                <img alt="" src="<?= Yii::$app->user->identity->head_portrait ?>"/>
+                <img alt="" src="/images/xmn.jpg"/>
                 <div class="user-box">
                     <span class="name">
                         Welcome<br/>
@@ -26,9 +26,7 @@
                 </div>
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
-
                 <ul class="nav nav-pills nav-stacked">
-
                     <?php foreach(Menus::menuSub(1) as $menu):?>
                         <?php if($menu->state): ?>
                         <?php $menu2 = Menus::menuSub(2,$menu->id) ?>
