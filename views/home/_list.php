@@ -11,6 +11,7 @@
             奇偶比例:&nbsp;&nbsp;<?= $m->jiou ?>
             <br/>
             更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
+            <br/>
             <?php foreach($m->analysis as $ana): ?>
                 <?php if($ana->state == 1): ?>
                     <span class="label label-info">中奖号码:</span>&nbsp;&nbsp;
