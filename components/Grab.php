@@ -148,51 +148,53 @@ class Grab{
         //数据分析
         $config = Configure::find()->all(); //系统报警配置
         $config = $config[0];
-        if($config->state == 1){
-            //系统开启邮件 通知
-            $model = Comparison::find()->all();
-            $model = $model[0];
-            $data = $model->txt;
-            $dataArr = explode(',',$data);
-            $dataArr = array_filter($dataArr);
 
-            //当前开奖号码 对比 数据库
-            $lucky = array(); //中奖号
-            $regret = $dataArr; //未中奖号
-            foreach($codeArr as $key=>$val){
-                foreach($dataArr as $k=>$v){
-                    if($val == $v){
-                        //中奖号码
-                        array_push($lucky,$val);
-                        //从数组中删除中奖号码
-                        unset($regret[$key]);
-                    }
+        $model = Comparison::find()->all();
+        $model = $model[0];
+        $data = $model->txt;
+        $dataArr = explode(',',$data);
+        $dataArr = array_filter($dataArr);
+
+        //当前开奖号码 对比 数据库
+        $lucky = array(); //中奖号
+        $regret = $dataArr; //未中奖号
+        foreach($codeArr as $key=>$val){
+            foreach($dataArr as $k=>$v){
+                if($val == $v){
+                    //中奖号码
+                    array_push($lucky,$val);
+                    //从数组中删除中奖号码
+                    unset($regret[$key]);
                 }
             }
+        }
 
-            $luckyStr = implode(",",$lucky);
-            $regretStr = implode(",",$regret);
-            //记录当前这期开奖号码 数据库中哪些中奖
-            if($luckyStr){
-                $analysisLucky = new Analysis();
-                $analysisLucky->codi_id = $code_id;
-                $analysisLucky->code = $luckyStr;
-                $analysisLucky->data_txt = $data;
-                $analysisLucky->state = 1; //中奖
-                $analysisLucky->time = time();
-                $analysisLucky->save();
-            }
-            //记录当前这期开奖号码 数据库中哪些未中奖
-            if($regretStr){
-                $analysisRegret = new Analysis();
-                $analysisRegret->codi_id = $code_id;
-                $analysisRegret->code = $regretStr;
-                $analysisRegret->data_txt = $data;
-                $analysisRegret->state = 0; //未中奖
-                $analysisRegret->time = time();
-                $analysisRegret->save();
-            }
+        $luckyStr = implode(",",$lucky);
+        $regretStr = implode(",",$regret);
+        //记录当前这期开奖号码 数据库中哪些中奖
+        if($luckyStr){
+            $analysisLucky = new Analysis();
+            $analysisLucky->codi_id = $code_id;
+            $analysisLucky->code = $luckyStr;
+            $analysisLucky->data_txt = $data;
+            $analysisLucky->state = 1; //中奖
+            $analysisLucky->time = time();
+            $analysisLucky->save();
+        }
+        //记录当前这期开奖号码 数据库中哪些未中奖
+        if($regretStr){
+            $analysisRegret = new Analysis();
+            $analysisRegret->codi_id = $code_id;
+            $analysisRegret->code = $regretStr;
+            $analysisRegret->data_txt = $data;
+            $analysisRegret->state = 0; //未中奖
+            $analysisRegret->time = time();
+            $analysisRegret->save();
+        }
 
+        if($config->state == 1){
+            //系统开启邮件 通知
+            
             if($config->forever == 1){
                 //每一期 邮件通知打开
                 $this->send(1,$qihao,$codeArr,$urlName,$luckyStr,$regretStr);

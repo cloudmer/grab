@@ -6363,3 +6363,108 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1449997722.6815
     'REQUEST_TIME' => 1449997722
 ]
+2015-12-13 18:07:35 [127.0.0.1][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "admin/favicon.png".' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php(83): yii\base\Module->runAction('admin/favicon.p...', Array)
+#1 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'é¡µé¢æœªæ‰¾åˆ°ã€‚' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php:95
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2015-12-13 18:07:35 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    'Hm_lvt_b88cfc1ccab788f0903cac38c894caa3' => '1449664300'
+    'CNZZDATA1585378' => 'cnzz_eid=1358476423-1449662802-&ntime=1449662802'
+    'CNZZDATA4180674' => 'cnzz_eid=829963000-1449663234-&ntime=1449663234'
+    'Hm_lvt_cad2e9c6544a1e8f06862d019ce44f71' => '1449651984,1449664040'
+    '__guid' => '139365550.2826938054047524400.1449711580696.177'
+    '_csrf' => '4ecbbd279771a9d40b500c7c2f9f2089463f55e0400bd5b23e412ca07336ec77a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"5BuXWdWb4WS7zntGkj5IlK0DBKckg2yx\";}'
+    'PHPSESSID' => '5tces4tq746h9js0ivg6ftvd95'
+    '_identity' => 'dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa:2:{i:0;s:9:\"_identity\";i:1;s:16:\"[1,null,2592000]\";}'
+    '__utmt' => '1'
+    '__utma' => '139365550.1311263489.1449646148.1449997719.1450001236.17'
+    '__utmb' => '139365550.1.10.1450001236'
+    '__utmc' => '139365550'
+    '__utmz' => '139365550.1449646148.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Roaming'
+    'asl_log' => 'Destination=file'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'ASUS-Ò¹ÔÆ'
+    'ComSpec' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'FPS_BROWSER_APP_PROFILE_STRING' => 'Internet Explorer'
+    'FPS_BROWSER_USER_PROFILE_STRING' => 'Default'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\ASUS-PC'
+    'LOCALAPPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Local'
+    'LOGONSERVER' => '\\\\MicrosoftAccount'
+    'NUMBER_OF_PROCESSORS' => '8'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter;;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\syswow64;D:\\phpfind\\phpb;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;D:\\Program Files\\TortoiseSVN\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 60 Stepping 3, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '3c03'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PSModulePath' => 'C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'TEMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'TMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'USERDOMAIN' => 'ASUS-Ò¹ÔÆ'
+    'USERDOMAIN_ROAMINGPROFILE' => 'ASUS-Ò¹ÔÆ'
+    'USERNAME' => 'ASUS-PC'
+    'USERPROFILE' => 'C:\\Users\\ASUS-PC'
+    'windir' => 'C:\\WINDOWS'
+    'HTTP_COOKIE' => 'Hm_lvt_b88cfc1ccab788f0903cac38c894caa3=1449664300; CNZZDATA1585378=cnzz_eid%3D1358476423-1449662802-%26ntime%3D1449662802; CNZZDATA4180674=cnzz_eid%3D829963000-1449663234-%26ntime%3D1449663234; Hm_lvt_cad2e9c6544a1e8f06862d019ce44f71=1449651984,1449664040; __guid=139365550.2826938054047524400.1449711580696.177; _csrf=4ecbbd279771a9d40b500c7c2f9f2089463f55e0400bd5b23e412ca07336ec77a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%225BuXWdWb4WS7zntGkj5IlK0DBKckg2yx%22%3B%7D; PHPSESSID=5tces4tq746h9js0ivg6ftvd95; _identity=dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A16%3A%22%5B1%2Cnull%2C2592000%5D%22%3B%7D; __utmt=1; __utma=139365550.1311263489.1449646148.1449997719.1450001236.17; __utmb=139365550.1.10.1450001236; __utmc=139365550; __utmz=139365550.1449646148.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en;q=0.6,en-US;q=0.4'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_REFERER' => 'http://local.grab.com/admin/manage'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_HOST' => 'local.grab.com'
+    'REDIRECT_STATUS' => '200'
+    'SERVER_NAME' => 'local.grab.com'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'REMOTE_PORT' => '56111'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_SOFTWARE' => 'nginx/1.5.8'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'DOCUMENT_ROOT' => 'D:/phpfind/WWW/grab/web'
+    'DOCUMENT_URI' => '/index.php'
+    'REQUEST_URI' => '/admin/favicon.png'
+    'SCRIPT_NAME' => '/index.php'
+    'CONTENT_LENGTH' => ''
+    'CONTENT_TYPE' => ''
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'SCRIPT_FILENAME' => 'D:/phpfind/WWW/grab/web/index.php'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1450001255.6617
+    'REQUEST_TIME' => 1450001255
+]
