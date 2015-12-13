@@ -240,9 +240,3 @@ $this->registerJs($script);
     </div>
 </div>
 
-<h1>manage/index</h1>
-<?= $this->render('/base/cropper') ?><br/>
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>

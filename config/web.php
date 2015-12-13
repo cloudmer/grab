@@ -1,6 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+$mailer = require(__DIR__ . '/mailer.php');
 
 $config = [
     'id' => 'basic',
@@ -49,12 +50,30 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        /*
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
+        ],
+        */
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' =>false,//这句一定有，false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.163.com',
+                'username' => $mailer['sendEmailUser'],
+                'password' => $mailer['sendEmailPassword'],
+                'port' => '25',
+                'encryption' => 'tls',
+            ],
+            'messageConfig'=>[
+                'charset'=>'UTF-8',
+                'from'=>[$mailer['messageConfigFrom']=>'小蛮牛提醒']
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

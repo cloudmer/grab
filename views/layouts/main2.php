@@ -49,12 +49,17 @@ AppAsset::register($this);
         'encodeLabels' => false,
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+            ['label' => '江西页面', 'url' => ['/home?type=1']],
+            ['label' => '广东页面', 'url' => ['/home?type=2']],
+            ['label' => '山东页面', 'url' => ['/home?type=3']],
             Yii::$app->user->isGuest ?
                 ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
                 ['label' => '退出登陆 (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']
                 ],
+            Yii::$app->user->isGuest ?
+                ['label' => '登陆后台', 'linkOptions'=>['class'=>'hidden'], 'url' => ['/admin/login']] :
                 ['label' => '进入后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/manage']],
         ],
     ]);
@@ -70,11 +75,11 @@ AppAsset::register($this);
     <?= $content ?>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-    </div>
-</footer>
+<!--<footer class="footer">-->
+<!--    <div class="container">-->
+<!--        <p class="pull-left">&copy; My Company --><?//= date('Y') ?><!--</p>-->
+<!--    </div>-->
+<!--</footer>-->
 <?php $this->endBody() ?>
 </body>
 </html>

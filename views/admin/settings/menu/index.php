@@ -74,7 +74,7 @@ $this->registerJs($script);
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="<?= Url::to('/admin/manage')?>">控制台</a></li>
+                    <li><a href="<?= Url::to('/admin/manage')?>">设置</a></li>
                     <li class="active"><span>菜单栏</span></li>
                 </ol>
             </div>
