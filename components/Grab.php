@@ -31,6 +31,17 @@ class Grab{
     );
 
     public function __construct($url){
+        $mail= Yii::$app->mailer->compose();
+        $mail->setTo('644362887@qq.com');
+        $mail->setSubject("小蛮牛提醒");
+        //$mail->setTextBody('zheshisha');   //发布纯文字文本
+        $mail->setHtmlBody('当前时间'.date('Y-m-d H:i:s',time()));    //发布可以带html标签的文本
+        if($mail->send())
+            echo 'success';
+        else
+            echo "failse";
+        exit;
+
         $h = date('H',time());
         $i = date('i',time());
         if($h<9 || ($h==23 && $i>5) ){
