@@ -149,6 +149,7 @@ class Grab{
         $config = Configure::find()->all(); //系统报警配置
         $config = $config[0];
 
+        //记录中奖与未中奖号码
         $model = Comparison::find()->all();
         $model = $model[0];
         $data = $model->txt;
@@ -194,7 +195,7 @@ class Grab{
 
         if($config->state == 1){
             //系统开启邮件 通知
-            
+
             if($config->forever == 1){
                 //每一期 邮件通知打开
                 $this->send(1,$qihao,$codeArr,$urlName,$luckyStr,$regretStr);
