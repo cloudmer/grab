@@ -37,7 +37,8 @@ class DataController extends BaseController
     private function readTxt($txtUrl){
         if(file_exists($txtUrl)){
             $content = file_get_contents($txtUrl);
-            $contentArr = explode(',',$content);
+            $content = str_replace(PHP_EOL, ' ', $content); //把换行符 替换成空格
+            $contentArr = explode(' ',$content);
             $contentArr = array_filter($contentArr);
             $txt = true;
             foreach($contentArr as $key=>$val){
@@ -52,6 +53,7 @@ class DataController extends BaseController
             Comparison::deleteAll();
             $model = new Comparison();
             $model->txt = $content;
+            $model->type = Yii::$app->request->post('type');
             $model->time = time();
             $model->save();
             return true;

@@ -9,9 +9,9 @@ use Yii;
  *
  * @property integer $id
  * @property integer $codi_id
- * @property string $code
+ * @property string $lucky_txt
+ * @property string $regret_txt
  * @property string $data_txt
- * @property integer $state
  * @property integer $time
  *
  * @property Code $codi
@@ -32,9 +32,9 @@ class Analysis extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codi_id', 'code', 'data_txt', 'state', 'time'], 'required'],
-            [['codi_id', 'state', 'time'], 'integer'],
-            [['code', 'data_txt'], 'string']
+            [['codi_id', 'data_txt', 'time'], 'required'],
+            [['codi_id', 'time'], 'integer'],
+            [['lucky_txt', 'regret_txt', 'data_txt'], 'string']
         ];
     }
 
@@ -46,9 +46,9 @@ class Analysis extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'codi_id' => 'Codi ID',
-            'code' => 'Code',
+            'lucky_txt' => 'Lucky Txt',
+            'regret_txt' => 'Regret Txt',
             'data_txt' => 'Data Txt',
-            'state' => 'State',
             'time' => 'Time',
         ];
     }

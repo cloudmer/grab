@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $txt
+ * @property integer $type
  * @property integer $time
  */
 class Comparison extends \yii\db\ActiveRecord
@@ -27,9 +28,9 @@ class Comparison extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['txt', 'time'], 'required'],
+            [['txt', 'type', 'time'], 'required'],
             [['txt'], 'string'],
-            [['time'], 'integer']
+            [['type', 'time'], 'integer']
         ];
     }
 
@@ -41,6 +42,7 @@ class Comparison extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'txt' => 'Txt',
+            'type' => 'Type',
             'time' => 'Time',
         ];
     }

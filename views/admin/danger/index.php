@@ -19,7 +19,7 @@ use yii\helpers\Html;
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2>报警时间段 [例: 09 : 19  24小时制度]</h2>
+                <h2>报警时间段 [例: 09时 19时  24小时制度]</h2>
             </header>
             <div class="main-box-body clearfix">
 

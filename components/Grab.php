@@ -65,13 +65,9 @@ class Grab{
             $logModel->content = $urlName[0].'.开奖信息抓取失败';
             $logModel->time = time();
             $logModel->save();
-            echo $urlName[0].'.开奖信息抓取失败,请尽快通知网站管理员';
+            echo $urlName[0].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员<br/>';
             return;
         }
-    }
-
-    function grab($url){
-        echo $url;
     }
 
     function html_str($url){
@@ -109,7 +105,8 @@ class Grab{
 
             $result = Code::findOne(['qishu'=>$qihao2,'type'=>$this->codeType[$url]]);
             if($result){
-                echo '最新数据已经采集过了';
+                $urlName = array_keys($this->urlArr,$url);
+                echo $urlName[0].' - [新时时彩] 最新数据已经采集过了<br/>';
                 return;
             }
 
@@ -132,19 +129,21 @@ class Grab{
                 $logModel->content = $urlName[0].'.开奖信息抓取成功';
                 $logModel->time = time();
                 $logModel->save();
-                echo $urlName[0].'.开奖信息抓取成功';
+                echo $urlName[0].'.开奖信息抓取成功-[新时时彩]<br/>';
                 $this->find($qihao2,$urlName[0],$codeArr,$model->id);
                 return;
             }
 
 
         }else{
-            echo '等待开奖...';
+            $urlName = array_keys($this->urlArr,$url);
+            echo $urlName[0].' -[新时时彩] 等待开奖...<br/>';
             return;
         }
     }
 
     function find($qihao,$urlName,$codeArr,$code_id){
+        sort($codeArr); //数组从小到大排序 用户需求
         //数据分析
         $config = Configure::find()->all(); //系统报警配置
         $config = $config[0];
@@ -153,83 +152,121 @@ class Grab{
         $model = Comparison::find()->all();
         $model = $model[0];
         $data = $model->txt;
-        $dataArr = explode(',',$data);
+
+        $dataArr = explode(' ',$data);
         $dataArr = array_filter($dataArr);
+        $dataArr = array_chunk($dataArr,5);
 
         //当前开奖号码 对比 数据库
         $lucky = array(); //中奖号
         $regret = $dataArr; //未中奖号
-        foreach($codeArr as $key=>$val){
-            foreach($dataArr as $k=>$v){
-                if($val == $v){
-                    //中奖号码
-                    array_push($lucky,$val);
-                    //从数组中删除中奖号码
-                    unset($regret[$key]);
-                }
+        foreach($dataArr as $key=>$val){
+            sort($val); // 从小到大排序
+            if($codeArr == $val){
+                //中奖号组
+                array_push($lucky,$val);
+                unset($regret[$key]);
             }
         }
 
-        $luckyStr = implode(",",$lucky);
-        $regretStr = implode(",",$regret);
-        //记录当前这期开奖号码 数据库中哪些中奖
-        if($luckyStr){
-            $analysisLucky = new Analysis();
-            $analysisLucky->codi_id = $code_id;
-            $analysisLucky->code = $luckyStr;
-            $analysisLucky->data_txt = $data;
-            $analysisLucky->state = 1; //中奖
-            $analysisLucky->time = time();
-            $analysisLucky->save();
+        //将中奖与未中奖的数组 转换为用户上传数据本的 格式 存入数据库
+        $luckyStr = null;
+        $regretStr = null;
+        if(count($lucky) != 0){
+            //有中奖号码 记录数据库
+            foreach($lucky as $luc){
+                foreach($luc as $l){
+                    $luckyStr .= $l.' ';
+                }
+                $luckyStr .= PHP_EOL;
+            }
         }
-        //记录当前这期开奖号码 数据库中哪些未中奖
-        if($regretStr){
-            $analysisRegret = new Analysis();
-            $analysisRegret->codi_id = $code_id;
-            $analysisRegret->code = $regretStr;
-            $analysisRegret->data_txt = $data;
-            $analysisRegret->state = 0; //未中奖
-            $analysisRegret->time = time();
-            $analysisRegret->save();
+        if(count($regret) != 0){
+            //有未中奖号码 记录数据库
+            foreach($regret as $reg){
+                foreach($reg as $r){
+                    $regretStr .= $r.' ';
+                }
+                $regretStr .= PHP_EOL;
+            }
         }
+        //分析数据本与当前这期开奖号码 记录数据本里面 中奖号码与未中奖的号码 到数据库中
+        $analysis = new Analysis();
+        $analysis->codi_id = $code_id;
+        $analysis->lucky_txt = $luckyStr;
+        $analysis->regret_txt = $regretStr;
+        $analysis->data_txt = $data;
+        $analysis->time = time();
+        $analysis->save();
 
         if($config->state == 1){
             //系统开启邮件 通知
-
-            if($config->forever == 1){
-                //每一期 邮件通知打开
-                $this->send(1,$qihao,$codeArr,$urlName,$luckyStr,$regretStr);
-            }
-            // 用户设置 几期都未中奖 报警通知
-            $NewestCodes = Code::find()->orderBy('time DESC')->limit($config->regret_number)->all();
-            if(count($NewestCodes) == $config->regret_number){
-                $NewestCodesArr = array();
-                foreach($NewestCodes as $obj){
-                    array_push($NewestCodesArr,$obj->one);
-                    array_push($NewestCodesArr,$obj->two);
-                    array_push($NewestCodesArr,$obj->three);
-                    array_push($NewestCodesArr,$obj->four);
-                    array_push($NewestCodesArr,$obj->five);
+//            if(date('H',time()) > intval($config->start_time) && date('H',time()) < intval($config->end_time) ){
+            if(true ){
+                //报警时间段内
+                if($config->forever == 1){
+                    //每一期 邮件通知打开
+//                    $this->send(1,$qihao,$codeArr,$urlName,$luckyStr,$regretStr);
+                    $cfg = array(
+                        'type'=>1,
+                        'qihao'=>$qihao,
+                        'codeArr'=>$codeArr,
+                        'urlName'=>$urlName,
+                        'luckyStr'=>$luckyStr,
+                        'regretStr'=>$regretStr
+                    );
+                    $this->send($cfg);
                 }
-                // 查询用户设置的报警 期数内 是否都未中奖
-                $lucky = true;
-                foreach($NewestCodesArr as $key=>$val){
-                    foreach($dataArr as $k=>$v){
-                        if($v == $val){
-                            $lucky = false;
+
+                // 用户设置 几期都未中奖 报警通知
+                $NewestCodes = Code::find()->orderBy('time DESC')->limit($config->regret_number)->all();
+                if(count($NewestCodes) >= $config->regret_number){
+                    //所有的最新的数据 必须 大于等于 用户设置的报警期数
+                    $NewestCodesArr = array();
+                    foreach($NewestCodes as $obj){
+                        $objArr = array(
+                            sprintf("%02d",$obj->one), //不足2位数字 左侧自动补全0
+                            sprintf("%02d",$obj->two),
+                            sprintf("%02d",$obj->three),
+                            sprintf("%02d",$obj->four),
+                            sprintf("%02d",$obj->five),
+                        );
+                        sort($objArr);//将数组排序按从大到小排序
+                        array_push(
+                            $NewestCodesArr,
+                            $objArr
+                        );
+                    }
+
+                    // 查询用户设置的报警 期数内 是否都未中奖
+                    $lucky = false;
+                    foreach($NewestCodesArr as $newest){
+                        foreach($dataArr as $dataTxt){
+                            if($dataTxt == $newest){
+                                $lucky = true; //用户设置的当前 期数内有中奖
+                                break;
+                            }
                         }
                     }
-                }
-                if($lucky == true){
-                    //发送报警通知 当前 $config->regret_number 内 都未中奖
-                    $this->send(2,false,$codeArr,$urlName,false,false,$config->regret_number);
+
+                    if($lucky == false){
+                        //发送报警通知 当前 $config->regret_number 内 都未中奖
+//                        $this->send(2,false,$codeArr,$urlName,false,false,$config->regret_number);
+                        $cfg = array(
+                            'type'=>2,
+                            'codeArr'=>$codeArr,
+                            'regretCodeIds'=>$NewestCodes,
+                            'regret_number'=>$config->regret_number
+                        );
+                        $this->send($cfg);
+                    }
                 }
             }
+
         }
     }
 
-    public function send($type,$qihao = false,$codeArr,$urlName,$luckyStr = false,$regretStr = false,$regret_number = false){
-
+    public function send($arr){
         $recipientsMailboxs = Mailbox::find()->where(['type'=>1])->all();
         $addresserMailbox = Mailbox::find()->where(['type'=>0])->all();
         $email = $addresserMailbox[array_rand($addresserMailbox,1)];
@@ -245,11 +282,35 @@ class Grab{
         }
         fclose($fh);
 
-        if($type == 1){
-            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'.'<a href="'.$this->shishicaiUrl[$urlName].'">传送门--->'.$urlName.'</a><br/>'.'当前期号:'.$qihao.'<br/>'.'开奖号码:'.implode(",",$codeArr).'<br/>'.'中奖号码为:'.$luckyStr.'<br/>未中奖号码为:'.$regretStr;
+        if($arr['type'] == 1){
+            $arr['luckyStr'] ? $luckyStr = '<br/>'.str_replace(PHP_EOL, '<br/>', $arr['luckyStr']) : $luckyStr = '没有中奖 T.T';
+            $regretStr = str_replace(PHP_EOL, '<br/>', $arr['regretStr']);
+            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+                .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
+                .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'
+                .'当前期号:'.$arr['qihao'] .'<br/>'
+                .'开奖号码:'.implode(",",$arr['codeArr']).'<br/>'
+                .'中奖号码为:'.$luckyStr .'<br/>'
+                .'未中奖号码为:<br/>'.$regretStr;
         }
-        if($type == 2){
-            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'.'警告:'.'当前'.$regret_number.'期内未中奖！！！';
+        if($arr['type'] == 2){
+            $html = '报警提醒:<br/>当前'.$arr['regret_number']
+                    .'期内 没有一组中奖号码！！！！！！<br/>'
+                    .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+                    .'以下是彩种信息:<br/><br/>';
+            foreach($arr['regretCodeIds'] as $regret){
+                $url = array_keys($this->codeType, $regret->type);
+                $url = $url[0];
+                $urlName = array_keys($this->urlArr, $url);
+                $urlName = $urlName[0];
+                $shishicaiUrl = $this->shishicaiUrl[$urlName];
+
+                $html .= '<a href="'.$shishicaiUrl.'">传送门--->'.$urlName.'</a><br/>'
+                    .'当前彩种:'.$urlName.' - [新时时彩]<br/>'
+                    .'当前期号:'.$regret->qishu .'<br/>'
+                    .'开奖号码:'. $regret->one.','.$regret->two.','.$regret->three.','.$regret->four.','.$regret->five .'<br/>'
+                    .'未中奖!!!!!!!<br/><br/>';
+            }
         }
 
         foreach($recipientsMailboxs as $obj){
@@ -258,10 +319,18 @@ class Grab{
             $mail->setSubject("小蛮牛提醒");
             //$mail->setTextBody('zheshisha');   //发布纯文字文本
             $mail->setHtmlBody($html);    //发布可以带html标签的文本
-            if($mail->send())
-                echo '<br/>'.$urlName.'<br/>'."邮件通知发送成功.success<br/>";
-            else
-                echo "failse";
+
+            if($mail->send()){
+                if($arr['type']==1 ){
+                    $emailType = '每一期中奖邮寄通知  ';
+                }else{
+                    $emailType = 'N期未中奖邮件通知  ';
+                }
+                echo $emailType."邮件通知发送成功.success<br/>";
+            }else{
+                echo "邮件通知发送失败.failse";
+            }
+
         }
 
     }
