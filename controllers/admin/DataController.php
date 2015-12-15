@@ -37,7 +37,7 @@ class DataController extends BaseController
     private function readTxt($txtUrl){
         if(file_exists($txtUrl)){
             $content = file_get_contents($txtUrl);
-            $content = str_replace(PHP_EOL, ' ', $content); //把换行符 替换成空格
+            $content = str_replace("\r\n", ' ', $content); //把换行符 替换成空格
             $contentArr = explode(' ',$content);
             $contentArr = array_filter($contentArr);
             $txt = true;

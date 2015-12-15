@@ -153,7 +153,7 @@ class Grab{
         $model = $model[0];
         $data = $model->txt;
 
-        $dataTxts = str_replace(PHP_EOL, ' ', $data); //将回车转换为空格
+        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
         $dataArr = explode(' ',$dataTxts);
         $dataArr = array_filter($dataArr);
         $dataArr = array_chunk($dataArr,5);
@@ -179,7 +179,7 @@ class Grab{
                 foreach($luc as $l){
                     $luckyStr .= $l.' ';
                 }
-                $luckyStr .= PHP_EOL;
+                $luckyStr .= "\r\n";
             }
         }
         if(count($regret) != 0){
@@ -188,7 +188,7 @@ class Grab{
                 foreach($reg as $r){
                     $regretStr .= $r.' ';
                 }
-                $regretStr .= PHP_EOL;
+                $regretStr .= "\r\n";
             }
         }
 
@@ -283,8 +283,8 @@ class Grab{
         fclose($fh);
 
         if($arr['type'] == 1){
-            $arr['luckyStr'] ? $luckyStr = '<br/>'.str_replace(PHP_EOL, '<br/>', $arr['luckyStr']) : $luckyStr = '没有中奖 T.T';
-            $regretStr = str_replace(PHP_EOL, '<br/>', $arr['regretStr']);
+            $arr['luckyStr'] ? $luckyStr = '<br/>'.str_replace("\r\n", '<br/>', $arr['luckyStr']) : $luckyStr = '没有中奖 T.T';
+            $regretStr = str_replace("\r\n", '<br/>', $arr['regretStr']);
             $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
                 .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
                 .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'

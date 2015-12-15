@@ -1,7 +1,7 @@
 <?php $index = 0; ?>
 <?php foreach($data as $obj) :?>
     <?php
-        $content = str_replace(PHP_EOL, ' ', $obj->txt); //把换行符 替换成空格
+        $content = str_replace("\r\n", ' ', $obj->txt); //把换行符 替换成空格
         $contentArr = explode(' ',$content);
         $contentArr = array_filter($contentArr);
         $contentArr = array_chunk($contentArr,5);
