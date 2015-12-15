@@ -153,7 +153,8 @@ class Grab{
         $model = $model[0];
         $data = $model->txt;
 
-        $dataArr = explode(' ',$data);
+        $dataTxts = str_replace(PHP_EOL, ' ', $data); //将回车转换为空格
+        $dataArr = explode(' ',$dataTxts);
         $dataArr = array_filter($dataArr);
         $dataArr = array_chunk($dataArr,5);
 
@@ -190,6 +191,7 @@ class Grab{
                 $regretStr .= PHP_EOL;
             }
         }
+
         //分析数据本与当前这期开奖号码 记录数据本里面 中奖号码与未中奖的号码 到数据库中
         $analysis = new Analysis();
         $analysis->codi_id = $code_id;
@@ -206,7 +208,6 @@ class Grab{
                 //报警时间段内
                 if($config->forever == 1){
                     //每一期 邮件通知打开
-//                    $this->send(1,$qihao,$codeArr,$urlName,$luckyStr,$regretStr);
                     $cfg = array(
                         'type'=>1,
                         'qihao'=>$qihao,
@@ -251,7 +252,6 @@ class Grab{
 
                     if($lucky == false){
                         //发送报警通知 当前 $config->regret_number 内 都未中奖
-//                        $this->send(2,false,$codeArr,$urlName,false,false,$config->regret_number);
                         $cfg = array(
                             'type'=>2,
                             'codeArr'=>$codeArr,
@@ -273,7 +273,7 @@ class Grab{
 
         $path = Yii::getAlias('@webroot').'/../config/mailer.php';
         $fh = fopen($path, "r+");
-        $new_content = '<?php return [\'sendEmailUser\' => \''.$email->email_address.'\',\'sendEmailPassword\' => \''.$email->password.'\',\'messageConfigFrom\' => \''.$email->email_address.'\',];';
+        $new_content = '<?php return [\'sendEmailUser\' => \''.$email->email_address.'\',\'sendEmailPassword\' => \''.$email->password.'\',\'messageConfigFrom\' => \''.$email->email_address.'\'];';
         if( flock($fh, LOCK_EX) ){//加写锁
             ftruncate($fh,0); // 将文件截断到给定的长度
             rewind($fh); // 倒回文件指针的位置

@@ -52,7 +52,7 @@ class DataController extends BaseController
             }
             Comparison::deleteAll();
             $model = new Comparison();
-            $model->txt = $content;
+            $model->txt = file_get_contents($txtUrl);
             $model->type = Yii::$app->request->post('type');
             $model->time = time();
             $model->save();

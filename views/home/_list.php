@@ -1,3 +1,23 @@
+<?php
+$this->registerJsFile('/js/fileUpload/ajaxfileupload.js');
+$script = <<< JS
+$(document).ready(function(){
+    $(".label-info").click(function(){
+        var txt = $(this).text();
+        var txtArr = txt.split(' - ');
+        if(txtArr[0] == '点击查看'){
+            var str = '点击关闭';
+        }else{
+            var str = '点击查看';
+        }
+        var newStr = str+' - '+txtArr[1];
+        $(this).text(newStr);
+    })
+})
+JS;
+$this->registerJs($script);
+?>
+
 <?php foreach($model as $m): ?>
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -12,26 +32,43 @@
             <br/>
             更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
             <br/>
-            <?php foreach($m->analysis as $ana): ?>
-                <?php if($ana->state == 1): ?>
-                    <span class="label label-info">中奖号码:</span>&nbsp;&nbsp;
-                    <span style="word-wrap: break-word;">
-                        <?= $ana->code ?>
-                    </span>
-                    <br/>
-                    当前导入数据:&nbsp;&nbsp;<?= $ana->data_txt?>
-                <?php elseif($ana->state == 0): ?>
-                    <span class="label label-warning">未中奖号码:</span>&nbsp;&nbsp;
-                    <span style="word-wrap: break-word;">
-                        <?= $ana->code ?>
-                    </span>
-                    <br/>
-                    当前导入数据:&nbsp;&nbsp;
-                    <span style="word-wrap: break-word;">
-                        <?= $ana->data_txt?>
-                    </span>
-                <?php endif ?>
-            <?php endforeach ?>
+
+            <?php if(!Yii::$app->user->isGuest) : ?>
+
+                <div style="margin-top: 10px">
+                    <a class="btn-block text-center" style='text-decoration:none;' role="button" data-toggle="collapse" href="#collapseExample-lucky-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
+                        <span class="label label-info">点击查看 - 中奖号码</span>
+                    </a>
+                    <div class="collapse" id="collapseExample-lucky-<?= $m->id ?>" style="margin-top: 10px">
+                        <div class="well text-center">
+                            <?= $m->analysis->lucky_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->lucky_txt) : '没有中奖！！！' ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px">
+                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-regret-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
+                        <span class="label label-info">点击查看 - 未中奖号码</span>
+                    </a>
+                    <div class="collapse" id="collapseExample-regret-<?= $m->id ?>" style="margin-top: 10px">
+                        <div class="well text-center">
+                            <?= $m->analysis->regret_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->regret_txt) : '恭喜,全中奖了！！！' ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px">
+                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-data-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
+                        <span class="label label-info">点击查看 - 当前导入数据</span>
+                    </a>
+                    <div class="collapse" id="collapseExample-data-<?= $m->id ?>" style="margin-top: 10px">
+                        <div class="well text-center">
+                            <?= $m->analysis->data_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->data_txt) : '当前暂无数据导入' ?>
+                        </div>
+                    </div>
+                </div>
+
+            <?php endif ?>
         </div>
     </div>
 <?php endforeach ?>
