@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "codeOld".
+ * This is the model class for table "codeold".
  *
  * @property integer $id
  * @property integer $qishu
@@ -18,15 +18,17 @@ use Yii;
  * @property string $after_two_the_unit
  * @property integer $type
  * @property integer $time
+ *
+ * @property Analysisold[] $analysisolds
  */
-class CodeOld extends \yii\db\ActiveRecord
+class Codeold extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'codeOld';
+        return 'codeold';
     }
 
     /**
@@ -59,5 +61,13 @@ class CodeOld extends \yii\db\ActiveRecord
             'type' => 'Type',
             'time' => 'Time',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysisolds()
+    {
+        return $this->hasOne(Analysisold::className(), ['code_id' => 'id']);
     }
 }

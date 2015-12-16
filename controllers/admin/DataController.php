@@ -13,7 +13,7 @@ class DataController extends BaseController
 
     public function actionIndex()
     {
-        $model = Comparison::find()->all();
+        $model = Comparison::findOne(['type'=>1]);
         return $this->render('index',['data'=>$model]);
     }
 
@@ -21,8 +21,9 @@ class DataController extends BaseController
         $this->checkFolder();
         $file = UploadedFile::getInstanceByName('file');
         if($file && $this->validFile($file)){
+            $type = Yii::$app->request->post('type');
             $uploadFolder = $this->checkFolder();
-            $fileName = 'data.' . $file->extension;
+            $fileName = 'data'.$type. '.' . $file->extension;
             if(file_exists($uploadFolder.$fileName)){
                 unlink($uploadFolder.$fileName);
             }
@@ -50,7 +51,7 @@ class DataController extends BaseController
             if(!$txt){
                 return false;
             }
-            Comparison::deleteAll();
+            Comparison::deleteAll(['type'=>Yii::$app->request->post('type')]);
             $model = new Comparison();
             $model->txt = file_get_contents($txtUrl);
             $model->type = Yii::$app->request->post('type');

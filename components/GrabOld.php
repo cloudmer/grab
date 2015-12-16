@@ -1,8 +1,9 @@
 <?php
 namespace app\components;
 use app\models\Analysis;
+use app\models\Analysisold;
 use app\models\Code;
-use app\models\CodeOld;
+use app\models\Codeold;
 use app\models\Comparison;
 use app\models\Configure;
 use app\models\Log;
@@ -26,15 +27,6 @@ class GrabOld{
     );
 
     public function __construct($url){
-        $h = date('H',time());
-        $i = date('i',time());
-        if($h<9 || ($h==23 && $i>5) ){
-            //早上没到9点就不工作
-            //晚上 23点15以后就不工作了
-//            echo '休息了,亲';
-//            exit;
-        }
-
         ini_set('memory_limit','888M');
         include_once('simplehtmldom_1_5/simple_html_dom.php');
         $this->grab = new \simple_html_dom();
@@ -81,6 +73,7 @@ class GrabOld{
                 $h2_10wei = $this->grab->find('div[class=aside]',0)->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',3)->find('span',1)->plaintext;
                 $h2_gewei = $this->grab->find('div[class=aside]',0)->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',3)->find('span',2)->plaintext;
 
+                /*
                 echo '开奖期号:'.$qihao;
                 echo '<br/>';
                 echo '开奖号码:'.$code;
@@ -100,15 +93,16 @@ class GrabOld{
                 echo '后2大小比:'.$h2_10wei;
                 echo '<br/>';
                 echo '后2奇偶比:'.$h2_gewei;
+                */
 
-                $result = CodeOld::findOne(['qishu'=>$qihao,'type'=>$this->codeType[$url]]);
+                $result = Codeold::findOne(['qishu'=>$qihao,'type'=>$this->codeType[$url]]);
                 if($result){
                     $urlName = array_keys($this->urlArr,$url);
-                    echo $urlName[0].' - [新时时彩] 最新数据已经采集过了<br/>';
+                    echo $urlName[0].' 最新数据已经采集过了<br/>';
                     return;
                 }
 
-                $model = new CodeOld();
+                $model = new Codeold();
                 $model->qishu = $qihao;
                 $model->code = $code;
                 $model->after_three_shape = $h3_shape;
@@ -119,7 +113,17 @@ class GrabOld{
                 $model->after_two_the_unit = $h2_gewei;
                 $model->type = $this->codeType[$url];
                 $model->time = time();
-                $model->save();
+                if($model->validate() && $model->save()){
+                    $urlName = array_keys($this->urlArr,$url);
+                    $logModel = new Log();
+                    $logModel->type = 1;
+                    $logModel->content = $urlName[0].'.开奖信息抓取成功';
+                    $logModel->time = time();
+                    $logModel->save();
+                    echo $urlName[0].'.开奖信息抓取成功<br/>';
+                    $this->find($qihao,$urlName[0],$code,$model->id);
+                    return;
+                }
 
             }else{
                 $urlName = array_keys($this->urlArr,$url);
@@ -129,6 +133,194 @@ class GrabOld{
             $urlName = array_keys($this->urlArr,$url);
             echo $urlName[0].'等待开奖...<br/>';
         }
+    }
+
+    private function find($qihao,$urlName,$code,$code_id){
+        //数据分析
+        $config = Configure::findOne(['type'=>2]); //旧时时彩 系统报警配置
+        $model = Comparison::findOne(['type'=>2]); //旧时时彩 数据本
+        $data = $model->txt;
+        //记录中奖与未中奖号码
+        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
+        $dataArr = explode(' ',$dataTxts);
+        $dataArr = array_filter($dataArr);
+
+        //将中奖号码前三 后三
+        $codeTxts = str_replace(" ", '', $code);
+        $qian3 = $codeTxts[0].$codeTxts[1].$codeTxts[2];
+        $hou3 = $codeTxts[2].$codeTxts[3].$codeTxts[4];
+        $qian3 = intval($qian3);
+        $hou3 = intval($hou3);
+
+        //当前开奖号码 对比 数据库
+        $qian3_lucky = array();
+        $qian3_regret = $dataArr;
+        $hou3_lucky = array();
+        $hou3_regret = $dataArr;
+        foreach($dataArr as $key=>$val){
+            //前三对比
+            if(intval($val) == $qian3){
+                array_push($qian3_lucky,$val); // 添加到前三中奖数据里
+                unset($qian3_regret[$key]);
+            }
+            //后三对比
+            if(intval($val) == $hou3){
+                array_push($hou3_lucky,$val); // 添加到后三中奖数据里
+                unset($hou3_regret[$key]);
+            }
+        }
+
+        //分析的数据转换成 上传数据本的格式
+        $qian3_lucky_txt = null;
+        foreach($qian3_lucky as $key=>$val){
+            $qian3_lucky_txt .= $val."\r\n";
+        }
+        $qian3_regret_txt = null;
+        foreach($qian3_regret as $key=>$val){
+            $qian3_regret_txt .= $val."\r\n";
+        }
+        $hou3_lucky_txt = null;
+        foreach($hou3_lucky as $key=>$val){
+            $hou3_lucky_txt .= $val."\r\n";
+        }
+        $hou3_regret_txt = null;
+        foreach($hou3_regret as $key=>$val){
+            $hou3_regret_txt .= $val."\r\n";
+        }
+
+        //分析后的数据 存入数据库
+        $analysisold = new Analysisold();
+        $analysisold->code_id = $code_id;
+        $analysisold->front_three_lucky_txt = $qian3_lucky_txt;
+        $analysisold->front_three_regret_txt = $qian3_regret_txt;
+        $analysisold->after_three_lucky_txt = $hou3_lucky_txt;
+        $analysisold->after_three_regret_txt = $hou3_regret_txt;
+        $analysisold->data_txt = $data;
+        $analysisold->time = time();
+        $analysisold->save();
+
+        $config = Configure::findOne(['type'=>2]); //旧时时彩 系统报警配置
+        if($config->state == 1){
+            //系统开启邮件 通知
+            if(date('H',time()) > intval($config->start_time) && date('H',time()) < intval($config->end_time) ) {
+//            if(true ) {
+                //报警时间段内
+                if($config->forever == 1){
+                    //每一期 邮件通知打开
+                    $cfg = array(
+                        'type'=>1,
+                        'qihao'=>$qihao,
+                        'code'=>$code,
+                        'urlName'=>$urlName,
+                        'qian3_lucky_txt'=>$qian3_lucky_txt,
+                        'qian3_regret_txt'=>$qian3_regret_txt,
+                        'hou3_lucky_txt'=>$hou3_lucky_txt,
+                        'hou3_regret_txt'=>$hou3_regret_txt
+                    );
+                    $this->send($cfg);
+                }
+                // 用户设置 几期都未中奖 报警通知
+                $NewestCodes = Codeold::find()->orderBy('time DESC')->limit($config->regret_number)->all();
+                if(count($NewestCodes) == $config->regret_number){
+                    $codeQian3Lucky = true;
+                    $codeHou3Lucky = true;
+                    foreach($NewestCodes as $codeold){
+                        if(!empty($codeold->analysisolds->front_three_lucky_txt)){
+                            //前三有中奖
+                            $codeQian3Lucky = false;
+                        }
+                        if(!empty($codeold->analysisolds->after_three_lucky_txt)){
+                            //后三有中奖
+                            $codeHou3Lucky = false;
+                        }
+                    }
+
+                    if($codeQian3Lucky || $codeHou3Lucky){
+                        //发送报警通知 当前 $config->regret_number 内 都未中奖
+                        $cfg = array(
+                            'type'=>2,
+                            'regret_number'=>$config->regret_number,
+                            'NewestCodes'=>$NewestCodes //最新三期 未中奖 数据
+                        );
+                        $this->send($cfg);
+                    }
+                }
+            }
+        }
+    }
+
+    private function send($arr){
+        $recipientsMailboxs = Mailbox::find()->where(['type'=>1])->all();
+        $addresserMailbox = Mailbox::find()->where(['type'=>0])->all();
+        $email = $addresserMailbox[array_rand($addresserMailbox,1)];
+
+        $path = Yii::getAlias('@webroot').'/../config/mailer.php';
+        $fh = fopen($path, "r+");
+        $new_content = '<?php return [\'sendEmailUser\' => \''.$email->email_address.'\',\'sendEmailPassword\' => \''.$email->password.'\',\'messageConfigFrom\' => \''.$email->email_address.'\'];';
+        if( flock($fh, LOCK_EX) ){//加写锁
+            ftruncate($fh,0); // 将文件截断到给定的长度
+            rewind($fh); // 倒回文件指针的位置
+            fwrite($fh,$new_content);
+            flock($fh, LOCK_UN); //解锁
+        }
+        fclose($fh);
+
+        if($arr['type'] == 1){
+            $arr['qian3_lucky_txt'] ? $luckyQian3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['qian3_lucky_txt']) : $luckyQian3Str = '没有中奖 T.T';
+            $arr['hou3_lucky_txt'] ? $luckyHou3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['hou3_lucky_txt']) : $luckyHou3Str = '没有中奖 T.T';
+            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+                .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
+                .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'
+                .'当前期号:'.$arr['qihao'] .'<br/>'
+                .'开奖号码:'.$arr['code'].'<br/>'
+                .'前三中奖:'.$luckyQian3Str .'<br/>'
+                .'后三中奖:'.$luckyHou3Str;
+        }
+
+        if($arr['type'] == 2){
+            $html = '报警提醒:<br/>当前'.$arr['regret_number']
+                .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
+                .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+                .'以下是彩种信息:<br/><br/>';
+
+            foreach($arr['NewestCodes'] as $newstcode){
+                $newstcode->analysisolds->front_three_lucky_txt ? $qian3zjh = $newstcode->analysisolds->front_three_lucky_txt : $qian3zjh = '没有中奖 T.T';
+                $newstcode->analysisolds->after_three_lucky_txt ? $hou3zjh = $newstcode->analysisolds->after_three_lucky_txt : $hou3zjh = '没有中奖 T.T';
+
+                $url = array_keys($this->codeType, $newstcode->type);
+                $url = $url[0];
+                $urlName = array_keys($this->urlArr, $url);
+                $urlName = $urlName[0];
+                $shishicaiUrl = $this->shishicaiUrl[$urlName];
+
+                $html .= '<a href="'.$shishicaiUrl.'">传送门--->'.$urlName.'</a><br/>'
+                    .'当前彩种:'.$urlName.' - [旧时时彩]<br/>'
+                    .'当前期号:'.$newstcode->qishu .'<br/>'
+                    .'开奖号码:'. $newstcode->code .'<br/>'
+                    .'前三中奖:'. $qian3zjh .'<br/>'
+                    .'后三中奖:'. $hou3zjh .'<br/><br/>';
+            }
+        }
+
+        foreach($recipientsMailboxs as $obj){
+            $mail= Yii::$app->mailer->compose();
+            $mail->setTo($obj->email_address);
+            $mail->setSubject("小蛮牛提醒");
+            //$mail->setTextBody('zheshisha');   //发布纯文字文本
+            $mail->setHtmlBody($html);    //发布可以带html标签的文本
+
+            if($mail->send()){
+                if($arr['type']==1 ){
+                    $emailType = '每一期中奖邮寄通知 <br/> ';
+                }else{
+                    $emailType = 'N期未中奖邮件通知 <br/> ';
+                }
+                echo $emailType."邮件通知发送成功.success<br/>";
+            }else{
+                echo "邮件通知发送失败.failse";
+            }
+        }
+
     }
 
 }

@@ -6,7 +6,7 @@ $index = 0;
 $content = str_replace("\r\n", ' ', $data->txt); //把换行符 替换成空格
 $contentArr = explode(' ',$content);
 $contentArr = array_filter($contentArr);
-$contentArr = array_chunk($contentArr,5);
+$contentArr = array_chunk($contentArr,3);
 ?>
 <?php foreach($contentArr as $val): ?>
     <tr>

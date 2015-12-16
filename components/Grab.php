@@ -33,10 +33,10 @@ class Grab{
     public function __construct($url){
         $h = date('H',time());
         $i = date('i',time());
-        if($h<9 || ($h==23 && $i>5) ){
+        if($h<8 || ($h==23 && $i>5) ){
             //早上没到9点就不工作
             //晚上 23点15以后就不工作了
-            echo '休息了,亲';
+            echo '休息了,亲<br/>';
             exit;
         }
 
@@ -90,50 +90,53 @@ class Grab{
         exit;
         */
 
-        $qihao2 = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',0)->innertext;
-        $code = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',1)->innertext;
+        $qihao2 = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',0)->plaintext;
+        $code = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',1)->plaintext;
         if($code != '--'){
             // == '--' 正在开奖中
-            $sizeProportion = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',2)->find('span',0)->innertext;
-            $jioubili = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',2)->find('span',1)->innertext;
-            $code_1 = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',1)->find('em',0)->innertext;
-            $code_2 = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',1)->find('em',1)->innertext;
-            $code_3 = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',1)->find('em',2)->innertext;
-            $code = $code_1.$code_2.$code_3;
-            $codeArr = explode(" ",$code);
-            list($one,$two,$three,$four,$five) = $codeArr;
+            $isKaiJiang = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',2)->plaintext;
+            if($isKaiJiang != '--' && $isKaiJiang != '开奖中'){
+                //能读取到数据
+                $sizeProportion = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',2)->find('span',0)->plaintext;
+                $jioubili = $this->grab->find('div[class=mod-aside mod-aside-xssckj]',0)->find('div[class=bd]',0)->find('div[class=kpkjcode]',0)->find('table',0)->find('tr',1)->find('td',2)->find('span',1)->plaintext;
+                $codeArr = explode(" ",$code);
+                list($one,$two,$three,$four,$five) = $codeArr;
 
-            $result = Code::findOne(['qishu'=>$qihao2,'type'=>$this->codeType[$url]]);
-            if($result){
+                $result = Code::findOne(['qishu'=>$qihao2,'type'=>$this->codeType[$url]]);
+                if($result){
+                    $urlName = array_keys($this->urlArr,$url);
+                    echo $urlName[0].' - [新时时彩] 最新数据已经采集过了<br/>';
+                    return;
+                }
+
+                $model = new Code();
+                $model->qishu = $qihao2;
+                $model->one = $one;
+                $model->two = $two;
+                $model->three = $three;
+                $model->four = $four;
+                $model->five = $five;
+                $model->type = $this->codeType[$url];
+                $model->size = $sizeProportion;
+                $model->jiou = $jioubili;
+                $model->time = time();
+
+                if($model->validate() && $model->save()){
+                    $urlName = array_keys($this->urlArr,$url);
+                    $logModel = new Log();
+                    $logModel->type = 1;
+                    $logModel->content = $urlName[0].'.开奖信息抓取成功';
+                    $logModel->time = time();
+                    $logModel->save();
+                    echo $urlName[0].'.开奖信息抓取成功-[新时时彩]<br/>';
+                    $this->find($qihao2,$urlName[0],$codeArr,$model->id);
+                    return;
+                }
+
+            }else{
                 $urlName = array_keys($this->urlArr,$url);
-                echo $urlName[0].' - [新时时彩] 最新数据已经采集过了<br/>';
-                return;
+                echo $urlName[0].'等待开奖...<br/>';
             }
-
-            $model = new Code();
-            $model->qishu = $qihao2;
-            $model->one = $one;
-            $model->two = $two;
-            $model->three = $three;
-            $model->four = $four;
-            $model->five = $five;
-            $model->type = $this->codeType[$url];
-            $model->size = $sizeProportion;
-            $model->jiou = $jioubili;
-            $model->time = time();
-
-            if($model->validate() && $model->save()){
-                $urlName = array_keys($this->urlArr,$url);
-                $logModel = new Log();
-                $logModel->type = 1;
-                $logModel->content = $urlName[0].'.开奖信息抓取成功';
-                $logModel->time = time();
-                $logModel->save();
-                echo $urlName[0].'.开奖信息抓取成功-[新时时彩]<br/>';
-                $this->find($qihao2,$urlName[0],$codeArr,$model->id);
-                return;
-            }
-
 
         }else{
             $urlName = array_keys($this->urlArr,$url);
@@ -145,12 +148,10 @@ class Grab{
     function find($qihao,$urlName,$codeArr,$code_id){
         sort($codeArr); //数组从小到大排序 用户需求
         //数据分析
-        $config = Configure::find()->all(); //系统报警配置
-        $config = $config[0];
+        $config = Configure::findOne(['type'=>1]); //系统报警配置
 
         //记录中奖与未中奖号码
-        $model = Comparison::find()->all();
-        $model = $model[0];
+        $model = Comparison::findOne(['type'=>1]);
         $data = $model->txt;
 
         $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
@@ -203,8 +204,8 @@ class Grab{
 
         if($config->state == 1){
             //系统开启邮件 通知
-//            if(date('H',time()) > intval($config->start_time) && date('H',time()) < intval($config->end_time) ){
-            if(true ){
+            if(date('H',time()) > intval($config->start_time) && date('H',time()) < intval($config->end_time) ){
+//            if(true){
                 //报警时间段内
                 if($config->forever == 1){
                     //每一期 邮件通知打开
@@ -221,50 +222,32 @@ class Grab{
 
                 // 用户设置 几期都未中奖 报警通知
                 $NewestCodes = Code::find()->orderBy('time DESC')->limit($config->regret_number)->all();
-                if(count($NewestCodes) >= $config->regret_number){
-                    //所有的最新的数据 必须 大于等于 用户设置的报警期数
-                    $NewestCodesArr = array();
-                    foreach($NewestCodes as $obj){
-                        $objArr = array(
-                            sprintf("%02d",$obj->one), //不足2位数字 左侧自动补全0
-                            sprintf("%02d",$obj->two),
-                            sprintf("%02d",$obj->three),
-                            sprintf("%02d",$obj->four),
-                            sprintf("%02d",$obj->five),
-                        );
-                        sort($objArr);//将数组排序按从大到小排序
-                        array_push(
-                            $NewestCodesArr,
-                            $objArr
-                        );
-                    }
-
-                    // 查询用户设置的报警 期数内 是否都未中奖
-                    $lucky = false;
-                    foreach($NewestCodesArr as $newest){
-                        foreach($dataArr as $dataTxt){
-                            if($dataTxt == $newest){
-                                $lucky = true; //用户设置的当前 期数内有中奖
-                                break;
-                            }
+                if(count($NewestCodes) == $config->regret_number){
+                    //所有的最新的数据 必须 等于 用户设置的报警期数
+                    $codeLucky = true;
+                    foreach($NewestCodes as $codeold){
+                        if(!empty($codeold->analysis->lucky_txt)){
+                            //N 期内有中奖 不发送报警
+                            $codeLucky = false;
+                            break;
                         }
                     }
-
-                    if($lucky == false){
+                    if($codeLucky){
                         //发送报警通知 当前 $config->regret_number 内 都未中奖
                         $cfg = array(
                             'type'=>2,
-                            'codeArr'=>$codeArr,
-                            'regretCodeIds'=>$NewestCodes,
-                            'regret_number'=>$config->regret_number
+                            'regret_number'=>$config->regret_number,
+                            'NewestCodes'=>$NewestCodes //最新三期 未中奖 数据
                         );
                         $this->send($cfg);
                     }
                 }
+
             }
 
         }
     }
+
 
     public function send($arr){
         $recipientsMailboxs = Mailbox::find()->where(['type'=>1])->all();
@@ -290,16 +273,20 @@ class Grab{
                 .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'
                 .'当前期号:'.$arr['qihao'] .'<br/>'
                 .'开奖号码:'.implode(",",$arr['codeArr']).'<br/>'
-                .'中奖号码为:'.$luckyStr .'<br/>'
-                .'未中奖号码为:<br/>'.$regretStr;
+                .'中奖号码:'.$luckyStr .'<br/>'
+                .'未中奖号码:<br/>'.$regretStr;
         }
+
         if($arr['type'] == 2){
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
-                    .'期内 没有一组中奖号码！！！！！！<br/>'
-                    .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-                    .'以下是彩种信息:<br/><br/>';
-            foreach($arr['regretCodeIds'] as $regret){
-                $url = array_keys($this->codeType, $regret->type);
+                .'期内 没有一组中奖号码！！！！！！<br/>'
+                .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+                .'以下是彩种信息:<br/><br/>';
+
+            foreach($arr['NewestCodes'] as $newstcode){
+                $lucky_txt = '没有中奖 T.T';
+
+                $url = array_keys($this->codeType, $newstcode->type);
                 $url = $url[0];
                 $urlName = array_keys($this->urlArr, $url);
                 $urlName = $urlName[0];
@@ -307,10 +294,11 @@ class Grab{
 
                 $html .= '<a href="'.$shishicaiUrl.'">传送门--->'.$urlName.'</a><br/>'
                     .'当前彩种:'.$urlName.' - [新时时彩]<br/>'
-                    .'当前期号:'.$regret->qishu .'<br/>'
-                    .'开奖号码:'. $regret->one.','.$regret->two.','.$regret->three.','.$regret->four.','.$regret->five .'<br/>'
-                    .'未中奖!!!!!!!<br/><br/>';
+                    .'当前期号:'.$newstcode->qishu .'<br/>'
+                    .'开奖号码:'. $newstcode->one.','.$newstcode->two.','.$newstcode->three.','.$newstcode->four.','.$newstcode->five .'<br/>'
+                    .'中奖状态:'. $lucky_txt .'<br/><br/>';
             }
+
         }
 
         foreach($recipientsMailboxs as $obj){
@@ -330,7 +318,6 @@ class Grab{
             }else{
                 echo "邮件通知发送失败.failse";
             }
-
         }
 
     }
