@@ -38,8 +38,6 @@ $this->registerJs($script);
             <br/>
             后二个位:&nbsp;&nbsp;<?= $m->after_two_the_unit ?>
             <br/>
-            更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
-            <br/>
             前三是否中奖:&nbsp;&nbsp;
             <?php if(!empty($m->analysisolds->front_three_lucky_txt)) :?>
                 <san class="badge" style="background: red">中</san>
@@ -53,6 +51,8 @@ $this->registerJs($script);
             <?php else : ?>
                 <san class="badge">没中</san>
             <?php endif ?>
+            <br/>
+            更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
             <br/>
 
             <div style="margin-top: 10px">

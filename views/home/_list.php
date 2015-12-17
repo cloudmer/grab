@@ -30,14 +30,15 @@ $this->registerJs($script);
             <br/>
             奇偶比例:&nbsp;&nbsp;<?= $m->jiou ?>
             <br/>
-            更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
-            <br/>
             是否中奖:&nbsp;&nbsp;
             <?php if(!empty($m->analysis->lucky_txt)) :?>
                 <san class="badge" style="background: red">中</san>
             <?php else : ?>
                 <san class="badge">没中</san>
             <?php endif ?>
+            <br/>
+            更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
+            <br/>
 
             <div style="margin-top: 10px">
                 <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-data-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
