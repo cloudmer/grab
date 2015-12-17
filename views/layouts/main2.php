@@ -39,6 +39,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header class="header header--fixed hide-from-print animated slideDown">
+    <?php $action = Yii::$app->controller->action->id?>
     <?php
     NavBar::begin([
         'brandLabel' => '小蛮牛',
@@ -49,9 +50,10 @@ AppAsset::register($this);
         'encodeLabels' => false,
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => '江西(新)', 'url' => ['/home?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 ? 'active' : (!Yii::$app->request->get('type') ? 'active' : null ) ]],
-            ['label' => '广东(新)', 'url' => ['/home?type=2'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 2 ? 'active' : null]],
-            ['label' => '山东(新)', 'url' => ['/home?type=3'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 3 ? 'active' : null]],
+            ['label' => '江西(新)', 'url' => ['/home?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'index' ? 'active' : (!Yii::$app->request->get('type') && $action == 'index' ? 'active' : null ) ]],
+            ['label' => '广东(新)', 'url' => ['/home?type=2'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 2 && $action == 'index' ? 'active' : null]],
+            ['label' => '山东(新)', 'url' => ['/home?type=3'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 3 && $action == 'index' ? 'active' : null]],
+            ['label' => '重庆(旧)', 'url' => ['/home/old/?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'old' ? 'active' : null]],
             Yii::$app->user->isGuest ?
                 ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
                 ['label' => '退出登陆 (' . Yii::$app->user->identity->username . ')',

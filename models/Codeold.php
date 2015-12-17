@@ -31,6 +31,18 @@ class Codeold extends \yii\db\ActiveRecord
         return 'codeold';
     }
 
+    public static $urlArr = array(
+        '重庆 - [老时时彩] '=>'http://cp.360.cn/ssccq/?r_a=26ruYj',
+    );
+
+    public static $codeType = array(
+        'http://cp.360.cn/ssccq/?r_a=26ruYj'=>'1',
+    );
+
+    public static $shishicaiUrl = array(
+        '重庆 - [老时时彩] '=>'http://www.shishicai.cn/cqssc/touzhu/',
+    );
+
     /**
      * @inheritdoc
      */

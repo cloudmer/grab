@@ -27,14 +27,14 @@ $this->registerJs($script);
 
 <div class="container">
     <div class="contents">
-        <?= $this->render('_list',['model'=>$model])?>
+        <?= $this->render('_oldlist',['model'=>$model])?>
     </div>
 
-    <div class="text-center more" style="margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/index')?>">
+    <div class="text-center more" style="margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/old')?>">
         <span style="padding: 9px 31px;" class="label label-success">加载更多</span>
     </div>
 
-    <div class="text-center null" style="display: none;margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/index')?>">
+    <div class="text-center null" style="display: none;margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/old')?>">
         <span style="padding: 9px 31px;color: black" class="label">没有更多数据了..</span>
     </div>
 

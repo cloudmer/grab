@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Code;
+use app\models\Codeold;
 use yii\data\Pagination;
 
 class HomeController extends \yii\web\Controller
@@ -32,6 +33,23 @@ class HomeController extends \yii\web\Controller
         $model = Code::find()->where(['type'=>$type])->orderBy('time DESC')->all();
         return $this->render('index',['model'=>$model]);
         */
+    }
+
+    public function actionOld(){
+        $type = \Yii::$app->request->get('type') ? \Yii::$app->request->get('type') : 1;
+        $data = Codeold::find()->where(['type'=>$type])->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '3']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/3)) < $page){
+                return false;
+            }
+            return $this->renderAjax('_oldlist',['model'=>$model]);
+        }
+
+        return $this->render('old',['model'=>$model]);
+
     }
 
 }

@@ -32,43 +32,59 @@ $this->registerJs($script);
             <br/>
             更新时间:&nbsp;&nbsp;<?= date('Y-m-d H:i:s',$m->time) ?>
             <br/>
-
-            <?php if(!Yii::$app->user->isGuest) : ?>
-
-                <div style="margin-top: 10px">
-                    <a class="btn-block text-center" style='text-decoration:none;' role="button" data-toggle="collapse" href="#collapseExample-lucky-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
-                        <span class="label label-info">点击查看 - 中奖号码</span>
-                    </a>
-                    <div class="collapse" id="collapseExample-lucky-<?= $m->id ?>" style="margin-top: 10px">
-                        <div class="well text-center">
-                            <?= $m->analysis->lucky_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->lucky_txt) : '没有中奖！！！' ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 10px">
-                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-regret-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
-                        <span class="label label-info">点击查看 - 未中奖号码</span>
-                    </a>
-                    <div class="collapse" id="collapseExample-regret-<?= $m->id ?>" style="margin-top: 10px">
-                        <div class="well text-center">
-                            <?= $m->analysis->regret_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->regret_txt) : '恭喜,全中奖了！！！' ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 10px">
-                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-data-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
-                        <span class="label label-info">点击查看 - 当前导入数据</span>
-                    </a>
-                    <div class="collapse" id="collapseExample-data-<?= $m->id ?>" style="margin-top: 10px">
-                        <div class="well text-center">
-                            <?= $m->analysis->data_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->data_txt) : '当前暂无数据导入' ?>
-                        </div>
-                    </div>
-                </div>
-
+            是否中奖:&nbsp;&nbsp;
+            <?php if(!empty($m->analysis->lucky_txt)) :?>
+                <san class="badge" style="background: red">中</san>
+            <?php else : ?>
+                <san class="badge">没中</san>
             <?php endif ?>
+
+            <div style="margin-top: 10px">
+                <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-data-<?= $m->id ?>" aria-expanded="true" aria-controls="collapseExample">
+                    <span class="label label-info">点击查看 - 当前导入数据</span>
+                </a>
+                <div class="collapse" id="collapseExample-data-<?= $m->id ?>" style="margin-top: 10px">
+                    <div class="well text-center">
+                        <?= $m->analysis->data_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->data_txt) : '当前暂无数据导入' ?>
+                    </div>
+                </div>
+            </div>
+
+<!--            --><?php //if(!Yii::$app->user->isGuest) : ?>
+<!--                <div style="margin-top: 10px">-->
+<!--                    <a class="btn-block text-center" style='text-decoration:none;' role="button" data-toggle="collapse" href="#collapseExample-lucky---><?//= $m->id ?><!--" aria-expanded="true" aria-controls="collapseExample">-->
+<!--                        <span class="label label-info">点击查看 - 中奖号码</span>-->
+<!--                    </a>-->
+<!--                    <div class="collapse" id="collapseExample-lucky---><?//= $m->id ?><!--" style="margin-top: 10px">-->
+<!--                        <div class="well text-center">-->
+<!--                            --><?//= $m->analysis->lucky_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->lucky_txt) : '没有中奖！！！' ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--                <div style="margin-top: 10px">-->
+<!--                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-regret---><?//= $m->id ?><!--" aria-expanded="true" aria-controls="collapseExample">-->
+<!--                        <span class="label label-info">点击查看 - 未中奖号码</span>-->
+<!--                    </a>-->
+<!--                    <div class="collapse" id="collapseExample-regret---><?//= $m->id ?><!--" style="margin-top: 10px">-->
+<!--                        <div class="well text-center">-->
+<!--                            --><?//= $m->analysis->regret_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->regret_txt) : '恭喜,全中奖了！！！' ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--                <div style="margin-top: 10px">-->
+<!--                    <a class="btn-block text-center" style='text-decoration:none; margin-top: 10px' role="button" data-toggle="collapse" href="#collapseExample-data---><?//= $m->id ?><!--" aria-expanded="true" aria-controls="collapseExample">-->
+<!--                        <span class="label label-info">点击查看 - 当前导入数据</span>-->
+<!--                    </a>-->
+<!--                    <div class="collapse" id="collapseExample-data---><?//= $m->id ?><!--" style="margin-top: 10px">-->
+<!--                        <div class="well text-center">-->
+<!--                            --><?//= $m->analysis->data_txt ? str_replace(PHP_EOL, '<br/>', $m->analysis->data_txt) : '当前暂无数据导入' ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            --><?php //endif ?>
+
         </div>
     </div>
 <?php endforeach ?>
