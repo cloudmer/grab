@@ -53,7 +53,7 @@ $this->registerJs($script);
             <?= $form->field($model, 'type')->label('')->hiddenInput()?>
             <?= $form->field($model, 'email_address')->label('邮箱地址')->textInput(['placeholder'=>'邮箱地址'])?>
             <?php if($type==0) : ?>
-                <?= $form->field($model, 'password')->label('密码')->textInput(['placeholder'=>'密码'])?>
+                <?= $form->field($model, 'password')->label('客户端授权密码')->textInput(['placeholder'=>'客户端授权密码'])?>
             <?php endif ?>
         </div>
         <div class="modal-footer">
