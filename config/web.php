@@ -75,6 +75,7 @@ $config = [
                 'from'=>[$mailer['messageConfigFrom']=>'小蛮牛提醒']
             ],
         ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

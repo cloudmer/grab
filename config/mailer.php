@@ -1,1 +1,1 @@
-<?php return ['sendEmailUser' => '15228883771@163.com','sendEmailPassword' => 'whb1993822','messageConfigFrom' => '15228883771@163.com'];
+<?php return ['sendEmailUser' => '18889082777@163.com','sendEmailPassword' => 'xiaomanniu110','messageConfigFrom' => '18889082777@163.com'];
