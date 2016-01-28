@@ -31,6 +31,7 @@ class Grab{
     );
 
     public function __construct($url){
+        /*
         $h = date('H',time());
         $i = date('i',time());
         if($h<8 || ($h==23 && $i>5) ){
@@ -39,6 +40,7 @@ class Grab{
             echo '休息了,亲<br/>';
             exit;
         }
+        */
 
         ini_set('memory_limit','888M');
         include_once('simplehtmldom_1_5/simple_html_dom.php');
