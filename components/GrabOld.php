@@ -284,7 +284,7 @@ class GrabOld{
         }
 
         if($arr['type'] == 2){
-            $html = '老-N-'.$arr['regret_number'].'   前3 N'.$arr['q3'].'次'.'   后3 N'.$arr['h3'].'次';
+            $html = '老-N-'.$arr['regret_number'].'   前3&nbsp;Y'.$arr['q3'].'次'.'   后3&nbsp;Y'.$arr['h3'].'次';
             /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
