@@ -1865,3 +1865,384 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1453970898.2109
     'REQUEST_TIME' => 1453970898
 ]
+2016-03-01 22:23:57 [127.0.0.1][-][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "Admin".' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php(83): yii\base\Module->runAction('Admin', Array)
+#1 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'é¡µé¢æœªæ‰¾åˆ°ã€‚' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php:95
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2016-03-01 22:23:57 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    '__utma' => '139365550.1103076880.1453966246.1453966246.1453970898.2'
+    '__utmz' => '139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    '_csrf' => '598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW\";}'
+]
+
+$_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Roaming'
+    'asl_log' => 'Destination=file'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'ASUS-Ò¹ÔÆ'
+    'ComSpec' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'FPS_BROWSER_APP_PROFILE_STRING' => 'Internet Explorer'
+    'FPS_BROWSER_USER_PROFILE_STRING' => 'Default'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\ASUS-PC'
+    'LOCALAPPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Local'
+    'LOGONSERVER' => '\\\\MicrosoftAccount'
+    'NUMBER_OF_PROCESSORS' => '8'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter;;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\syswow64;D:\\phpfind\\phpb;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;D:\\Program Files\\TortoiseSVN\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 60 Stepping 3, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '3c03'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PSModulePath' => 'C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'TEMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'TMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'USERDOMAIN' => 'ASUS-Ò¹ÔÆ'
+    'USERDOMAIN_ROAMINGPROFILE' => 'ASUS-Ò¹ÔÆ'
+    'USERNAME' => 'ASUS-PC'
+    'USERPROFILE' => 'C:\\Users\\ASUS-PC'
+    'windir' => 'C:\\WINDOWS'
+    'HTTP_COOKIE' => '__utma=139365550.1103076880.1453966246.1453966246.1453970898.2; __utmz=139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _csrf=598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW%22%3B%7D'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en;q=0.6,en-US;q=0.4'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_HOST' => 'local.grab.com'
+    'REDIRECT_STATUS' => '200'
+    'SERVER_NAME' => 'local.grab.com'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'REMOTE_PORT' => '54739'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_SOFTWARE' => 'nginx/1.5.8'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'DOCUMENT_ROOT' => 'D:/phpfind/WWW/grab/web'
+    'DOCUMENT_URI' => '/index.php'
+    'REQUEST_URI' => '/Admin'
+    'SCRIPT_NAME' => '/index.php'
+    'CONTENT_LENGTH' => ''
+    'CONTENT_TYPE' => ''
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'SCRIPT_FILENAME' => 'D:/phpfind/WWW/grab/web/index.php'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1456842237.6296
+    'REQUEST_TIME' => 1456842237
+]
+2016-03-01 22:24:00 [127.0.0.1][-][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "admin".' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php(83): yii\base\Module->runAction('admin', Array)
+#1 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'é¡µé¢æœªæ‰¾åˆ°ã€‚' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php:95
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2016-03-01 22:24:00 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    '__utma' => '139365550.1103076880.1453966246.1453966246.1453970898.2'
+    '__utmz' => '139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    '_csrf' => '598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW\";}'
+]
+
+$_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Roaming'
+    'asl_log' => 'Destination=file'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'ASUS-Ò¹ÔÆ'
+    'ComSpec' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'FPS_BROWSER_APP_PROFILE_STRING' => 'Internet Explorer'
+    'FPS_BROWSER_USER_PROFILE_STRING' => 'Default'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\ASUS-PC'
+    'LOCALAPPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Local'
+    'LOGONSERVER' => '\\\\MicrosoftAccount'
+    'NUMBER_OF_PROCESSORS' => '8'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter;;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\syswow64;D:\\phpfind\\phpb;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;D:\\Program Files\\TortoiseSVN\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 60 Stepping 3, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '3c03'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PSModulePath' => 'C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'TEMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'TMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'USERDOMAIN' => 'ASUS-Ò¹ÔÆ'
+    'USERDOMAIN_ROAMINGPROFILE' => 'ASUS-Ò¹ÔÆ'
+    'USERNAME' => 'ASUS-PC'
+    'USERPROFILE' => 'C:\\Users\\ASUS-PC'
+    'windir' => 'C:\\WINDOWS'
+    'HTTP_COOKIE' => '__utma=139365550.1103076880.1453966246.1453966246.1453970898.2; __utmz=139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _csrf=598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW%22%3B%7D'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en;q=0.6,en-US;q=0.4'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_HOST' => 'local.grab.com'
+    'REDIRECT_STATUS' => '200'
+    'SERVER_NAME' => 'local.grab.com'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'REMOTE_PORT' => '54739'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_SOFTWARE' => 'nginx/1.5.8'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'DOCUMENT_ROOT' => 'D:/phpfind/WWW/grab/web'
+    'DOCUMENT_URI' => '/index.php'
+    'REQUEST_URI' => '/admin'
+    'SCRIPT_NAME' => '/index.php'
+    'CONTENT_LENGTH' => ''
+    'CONTENT_TYPE' => ''
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'SCRIPT_FILENAME' => 'D:/phpfind/WWW/grab/web/index.php'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1456842240.668
+    'REQUEST_TIME' => 1456842240
+]
+2016-03-01 22:24:06 [127.0.0.1][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "admin/favicon.png".' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php(83): yii\base\Module->runAction('admin/favicon.p...', Array)
+#1 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'é¡µé¢æœªæ‰¾åˆ°ã€‚' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php:95
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2016-03-01 22:24:06 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '_csrf' => '598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW\";}'
+    'PHPSESSID' => 'lp7hu0fe03fq0j6d30n9p3qe00'
+    '_identity' => 'dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa:2:{i:0;s:9:\"_identity\";i:1;s:16:\"[1,null,2592000]\";}'
+    '__utmt' => '1'
+    '__utma' => '139365550.1103076880.1453966246.1453970898.1456842246.3'
+    '__utmb' => '139365550.1.10.1456842246'
+    '__utmc' => '139365550'
+    '__utmz' => '139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Roaming'
+    'asl_log' => 'Destination=file'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'ASUS-Ò¹ÔÆ'
+    'ComSpec' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'FPS_BROWSER_APP_PROFILE_STRING' => 'Internet Explorer'
+    'FPS_BROWSER_USER_PROFILE_STRING' => 'Default'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\ASUS-PC'
+    'LOCALAPPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Local'
+    'LOGONSERVER' => '\\\\MicrosoftAccount'
+    'NUMBER_OF_PROCESSORS' => '8'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter;;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\syswow64;D:\\phpfind\\phpb;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;D:\\Program Files\\TortoiseSVN\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 60 Stepping 3, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '3c03'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PSModulePath' => 'C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'TEMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'TMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'USERDOMAIN' => 'ASUS-Ò¹ÔÆ'
+    'USERDOMAIN_ROAMINGPROFILE' => 'ASUS-Ò¹ÔÆ'
+    'USERNAME' => 'ASUS-PC'
+    'USERPROFILE' => 'C:\\Users\\ASUS-PC'
+    'windir' => 'C:\\WINDOWS'
+    'HTTP_COOKIE' => '_csrf=598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW%22%3B%7D; PHPSESSID=lp7hu0fe03fq0j6d30n9p3qe00; _identity=dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A16%3A%22%5B1%2Cnull%2C2592000%5D%22%3B%7D; __utmt=1; __utma=139365550.1103076880.1453966246.1453970898.1456842246.3; __utmb=139365550.1.10.1456842246; __utmc=139365550; __utmz=139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en;q=0.6,en-US;q=0.4'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_REFERER' => 'http://local.grab.com/admin/manage'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_HOST' => 'local.grab.com'
+    'REDIRECT_STATUS' => '200'
+    'SERVER_NAME' => 'local.grab.com'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'REMOTE_PORT' => '54744'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_SOFTWARE' => 'nginx/1.5.8'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'DOCUMENT_ROOT' => 'D:/phpfind/WWW/grab/web'
+    'DOCUMENT_URI' => '/index.php'
+    'REQUEST_URI' => '/admin/favicon.png'
+    'SCRIPT_NAME' => '/index.php'
+    'CONTENT_LENGTH' => ''
+    'CONTENT_TYPE' => ''
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'SCRIPT_FILENAME' => 'D:/phpfind/WWW/grab/web/index.php'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1456842246.2602
+    'REQUEST_TIME' => 1456842246
+]
+2016-03-01 22:24:09 [127.0.0.1][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: admin/data-old/favicon.png' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Controller.php:122
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('favicon.png', Array)
+#1 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php(83): yii\base\Module->runAction('admin/data-old/...', Array)
+#2 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'é¡µé¢æœªæ‰¾åˆ°ã€‚' in D:\phpfind\WWW\grab\vendor\yiisoft\yii2\web\Application.php:95
+Stack trace:
+#0 D:\phpfind\WWW\grab\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\phpfind\WWW\grab\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2016-03-01 22:24:09 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '_csrf' => '598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW\";}'
+    'PHPSESSID' => 'lp7hu0fe03fq0j6d30n9p3qe00'
+    '__utmt' => '1'
+    '_identity' => 'dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa:2:{i:0;s:9:\"_identity\";i:1;s:16:\"[1,null,2592000]\";}'
+    '__utma' => '139365550.1103076880.1453966246.1453970898.1456842246.3'
+    '__utmb' => '139365550.2.10.1456842246'
+    '__utmc' => '139365550'
+    '__utmz' => '139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+]
+
+$_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Roaming'
+    'asl_log' => 'Destination=file'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'ASUS-Ò¹ÔÆ'
+    'ComSpec' => 'C:\\WINDOWS\\system32\\cmd.exe'
+    'FPS_BROWSER_APP_PROFILE_STRING' => 'Internet Explorer'
+    'FPS_BROWSER_USER_PROFILE_STRING' => 'Default'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'C:'
+    'HOMEPATH' => '\\Users\\ASUS-PC'
+    'LOCALAPPDATA' => 'C:\\Users\\ASUS-PC\\AppData\\Local'
+    'LOGONSERVER' => '\\\\MicrosoftAccount'
+    'NUMBER_OF_PROCESSORS' => '8'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\Program Files\\Broadcom\\Broadcom 802.11 Network Adapter;;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\;C:\\Program Files\\WIDCOMM\\Bluetooth Software\\syswow64;D:\\phpfind\\phpb;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;D:\\Program Files\\TortoiseSVN\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 60 Stepping 3, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '3c03'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PSModulePath' => 'C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'C:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\WINDOWS'
+    'TEMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'TMP' => 'C:\\Users\\ASUS-PC\\AppData\\Local\\Temp'
+    'USERDOMAIN' => 'ASUS-Ò¹ÔÆ'
+    'USERDOMAIN_ROAMINGPROFILE' => 'ASUS-Ò¹ÔÆ'
+    'USERNAME' => 'ASUS-PC'
+    'USERPROFILE' => 'C:\\Users\\ASUS-PC'
+    'windir' => 'C:\\WINDOWS'
+    'HTTP_COOKIE' => '_csrf=598923409cfbb32d8dda40b3fe20aa8ee7cd162dd3f04ea88bc3c251f194affca%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22T7-j1PUr7xbLIdMFV1nneaiW6e-BBLsW%22%3B%7D; PHPSESSID=lp7hu0fe03fq0j6d30n9p3qe00; __utmt=1; _identity=dca1bcf76bf8e379bcbfd37c13bdfdb3cf1126806234992f2d72570718197b2fa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A16%3A%22%5B1%2Cnull%2C2592000%5D%22%3B%7D; __utma=139365550.1103076880.1453966246.1453970898.1456842246.3; __utmb=139365550.2.10.1456842246; __utmc=139365550; __utmz=139365550.1453966246.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.8,en;q=0.6,en-US;q=0.4'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_REFERER' => 'http://local.grab.com/admin/data-old/index'
+    'HTTP_ACCEPT' => '*/*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_HOST' => 'local.grab.com'
+    'REDIRECT_STATUS' => '200'
+    'SERVER_NAME' => 'local.grab.com'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'REMOTE_PORT' => '54744'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_SOFTWARE' => 'nginx/1.5.8'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'DOCUMENT_ROOT' => 'D:/phpfind/WWW/grab/web'
+    'DOCUMENT_URI' => '/index.php'
+    'REQUEST_URI' => '/admin/data-old/favicon.png'
+    'SCRIPT_NAME' => '/index.php'
+    'CONTENT_LENGTH' => ''
+    'CONTENT_TYPE' => ''
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'SCRIPT_FILENAME' => 'D:/phpfind/WWW/grab/web/index.php'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1456842249.9214
+    'REQUEST_TIME' => 1456842249
+]

@@ -224,14 +224,18 @@ class GrabOld{
                 if(count($NewestCodes) == $config->regret_number){
                     $codeQian3Lucky = true;
                     $codeHou3Lucky = true;
+                    $q3_number = 0;
+                    $h3_number = 0;
                     foreach($NewestCodes as $codeold){
                         if(!empty($codeold->analysisolds->front_three_lucky_txt)){
                             //前三有中奖
                             $codeQian3Lucky = false;
+                            $q3_number += 1;
                         }
                         if(!empty($codeold->analysisolds->after_three_lucky_txt)){
                             //后三有中奖
                             $codeHou3Lucky = false;
+                            $h3_number += 1;
                         }
                     }
 
@@ -240,7 +244,9 @@ class GrabOld{
                         $cfg = array(
                             'type'=>2,
                             'regret_number'=>$config->regret_number,
-                            'NewestCodes'=>$NewestCodes //最新三期 未中奖 数据
+                            'NewestCodes'=>$NewestCodes, //最新三期 未中奖 数据
+                            'q3'=>$q3_number,
+                            'h3'=>$h3_number
                         );
                         $this->send($cfg);
                     }
@@ -278,7 +284,7 @@ class GrabOld{
         }
 
         if($arr['type'] == 2){
-            $html = '老-N-'.$arr['regret_number'];
+            $html = '老-N-'.$arr['regret_number'].'   前3 N'.$arr['q3'].'次'.'   后3 N'.$arr['h3'].'次';
             /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
