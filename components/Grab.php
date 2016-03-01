@@ -280,6 +280,8 @@ class Grab{
         }
 
         if($arr['type'] == 2){
+            $html = '新-N-'.$arr['regret_number'];
+            /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 没有一组中奖号码！！！！！！<br/>'
                 .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
@@ -300,7 +302,7 @@ class Grab{
                     .'开奖号码:'. $newstcode->one.','.$newstcode->two.','.$newstcode->three.','.$newstcode->four.','.$newstcode->five .'<br/>'
                     .'中奖状态:'. $lucky_txt .'<br/><br/>';
             }
-
+            */
         }
 
         foreach($recipientsMailboxs as $obj){

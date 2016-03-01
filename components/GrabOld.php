@@ -278,6 +278,8 @@ class GrabOld{
         }
 
         if($arr['type'] == 2){
+            $html = '老-N-'.$arr['regret_number'];
+            /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
                 .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
@@ -300,6 +302,7 @@ class GrabOld{
                     .'前三中奖:'. $qian3zjh .'<br/>'
                     .'后三中奖:'. $hou3zjh .'<br/><br/>';
             }
+            */
         }
 
         foreach($recipientsMailboxs as $obj){
