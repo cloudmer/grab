@@ -148,13 +148,17 @@ class GrabOld{
         //将中奖号码前三 后三
         $codeTxts = str_replace(" ", '', $code);
         $qian3 = $codeTxts[0].$codeTxts[1].$codeTxts[2];
+        $center3 = $codeTxts[1].$codeTxts[2].$codeTxts[3];
         $hou3 = $codeTxts[2].$codeTxts[3].$codeTxts[4];
         $qian3 = intval($qian3);
+        $center3 = intval($center3);
         $hou3 = intval($hou3);
 
         //当前开奖号码 对比 数据库
         $qian3_lucky = array();
         $qian3_regret = $dataArr;
+        $center3_lucky = array();
+        $center3_regret = $dataArr;
         $hou3_lucky = array();
         $hou3_regret = $dataArr;
         foreach($dataArr as $key=>$val){
@@ -162,6 +166,11 @@ class GrabOld{
             if(intval($val) == $qian3){
                 array_push($qian3_lucky,$val); // 添加到前三中奖数据里
                 unset($qian3_regret[$key]);
+            }
+            //中三对比
+            if(intval($val) == $center3){
+                array_push($center3_lucky,$val); // 添加到前三中奖数据里
+                unset($center3_regret[$key]);
             }
             //后三对比
             if(intval($val) == $hou3){
@@ -179,6 +188,14 @@ class GrabOld{
         foreach($qian3_regret as $key=>$val){
             $qian3_regret_txt .= $val."\r\n";
         }
+        $center3_lucky_txt = null;
+        foreach($center3_lucky as $key=>$val){
+            $center3_lucky_txt .= $val."\r\n";
+        }
+        $center3_regret_txt = null;
+        foreach($center3_regret as $key=>$val){
+            $center3_regret_txt .= $val."\r\n";
+        }
         $hou3_lucky_txt = null;
         foreach($hou3_lucky as $key=>$val){
             $hou3_lucky_txt .= $val."\r\n";
@@ -193,6 +210,8 @@ class GrabOld{
         $analysisold->code_id = $code_id;
         $analysisold->front_three_lucky_txt = $qian3_lucky_txt;
         $analysisold->front_three_regret_txt = $qian3_regret_txt;
+        $analysisold->center_three_lucky_txt = $center3_lucky_txt;
+        $analysisold->center_three_regret_txt = $center3_regret_txt;
         $analysisold->after_three_lucky_txt = $hou3_lucky_txt;
         $analysisold->after_three_regret_txt = $hou3_regret_txt;
         $analysisold->data_txt = $data;
@@ -214,6 +233,8 @@ class GrabOld{
                         'urlName'=>$urlName,
                         'qian3_lucky_txt'=>$qian3_lucky_txt,
                         'qian3_regret_txt'=>$qian3_regret_txt,
+                        'center3_lucky_txt'=>$center3_lucky_txt,
+                        'center3_regret_txt'=>$center3_regret_txt,
                         'hou3_lucky_txt'=>$hou3_lucky_txt,
                         'hou3_regret_txt'=>$hou3_regret_txt
                     );
@@ -223,14 +244,21 @@ class GrabOld{
                 $NewestCodes = Codeold::find()->orderBy('time DESC')->limit($config->regret_number)->all();
                 if(count($NewestCodes) == $config->regret_number){
                     $codeQian3Lucky = true;
+                    $codeCenter3Lucky = true;
                     $codeHou3Lucky = true;
                     $q3_number = 0;
+                    $c3_number = 0;
                     $h3_number = 0;
                     foreach($NewestCodes as $codeold){
                         if(!empty($codeold->analysisolds->front_three_lucky_txt)){
                             //前三有中奖
                             $codeQian3Lucky = false;
                             $q3_number += 1;
+                        }
+                        if(!empty($codeold->analysisolds->center_three_lucky_txt)){
+                            //中三有中奖
+                            $codeCenter3Lucky = false;
+                            $c3_number += 1;
                         }
                         if(!empty($codeold->analysisolds->after_three_lucky_txt)){
                             //后三有中奖
@@ -246,6 +274,7 @@ class GrabOld{
                             'regret_number'=>$config->regret_number,
                             'NewestCodes'=>$NewestCodes, //最新三期 未中奖 数据
                             'q3'=>$q3_number,
+                            'c3'=>$c3_number,
                             'h3'=>$h3_number
                         );
                         $this->send($cfg);
@@ -273,6 +302,7 @@ class GrabOld{
 
         if($arr['type'] == 1){
             $arr['qian3_lucky_txt'] ? $luckyQian3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['qian3_lucky_txt']) : $luckyQian3Str = '没有中奖 T.T';
+            $arr['center3_lucky_txt'] ? $luckyCenter3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['center3_lucky_txt']) : $luckyCenter3Str = '没有中奖 T.T';
             $arr['hou3_lucky_txt'] ? $luckyHou3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['hou3_lucky_txt']) : $luckyHou3Str = '没有中奖 T.T';
             $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
                 .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
@@ -280,11 +310,12 @@ class GrabOld{
                 .'当前期号:'.$arr['qihao'] .'<br/>'
                 .'开奖号码:'.$arr['code'].'<br/>'
                 .'前三中奖:'.$luckyQian3Str .'<br/>'
+                .'中三中奖:'.$luckyCenter3Str .'<br/>'
                 .'后三中奖:'.$luckyHou3Str;
         }
 
         if($arr['type'] == 2){
-            $html = '老-N-'.$arr['regret_number'].'   前3&nbsp;Y'.$arr['q3'].'次'.'   后3&nbsp;Y'.$arr['h3'].'次';
+            $html = '老-N-'.$arr['regret_number'].'   前3&nbsp;Y'.$arr['q3'].'次'.'   中3&nbsp;Y'.$arr['c3'].'次'.'   后3&nbsp;Y'.$arr['h3'].'次';
             /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
