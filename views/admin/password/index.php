@@ -17,7 +17,7 @@
         </header>
         <div class="main-box-body clearfix">
 
-            <? if(isset($error) || isset($success)): ?>
+            <?php if(isset($error) || isset($success)): ?>
                 <?php isset($error) ? $class = 'alert-warning' : null ?>
                 <?php isset($success) ? $class = 'alert-success' : null ?>
                 <div class="alert alert-block <?= $class ?>">

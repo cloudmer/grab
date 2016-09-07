@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Code;
 use app\models\Codeold;
+use app\models\Tjssc;
+use app\models\Xjssc;
 use yii\data\Pagination;
 
 class HomeController extends \yii\web\Controller
@@ -50,6 +52,42 @@ class HomeController extends \yii\web\Controller
 
         return $this->render('old',['model'=>$model]);
 
+    }
+
+    /**
+     * 天津时时彩
+     */
+    public function actionTjssc(){
+        $data = Tjssc::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/tjssc/_list',['model'=>$model]);
+        }
+
+        return $this->render('/home/tjssc/index',['model'=>$model]);
+    }
+
+    /**
+     * 新疆时时彩
+     */
+    public function actionXjssc(){
+        $data = Xjssc::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/xjssc/_list',['model'=>$model]);
+        }
+
+        return $this->render('/home/xjssc/index',['model'=>$model]);
     }
 
 }
