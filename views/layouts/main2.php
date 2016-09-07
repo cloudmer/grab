@@ -53,7 +53,9 @@ AppAsset::register($this);
             ['label' => '江西(新)', 'url' => ['/home?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'index' ? 'active' : (!Yii::$app->request->get('type') && $action == 'index' ? 'active' : null ) ]],
             ['label' => '广东(新)', 'url' => ['/home?type=2'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 2 && $action == 'index' ? 'active' : null]],
             ['label' => '山东(新)', 'url' => ['/home?type=3'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 3 && $action == 'index' ? 'active' : null]],
-            ['label' => '重庆(旧)', 'url' => ['/home/old/?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'old' ? 'active' : null]],
+            ['label' => '重庆时时彩', 'url' => ['/home/old/?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'old' ? 'active' : null]],
+            ['label' => '天津时时彩', 'url' => ['/home/tjssc'],'linkOptions'=>['class'=>$action == 'tjssc' ? 'active' : null]],
+            ['label' => '新疆时时彩', 'url' => ['/home/xjssc'],'linkOptions'=>['class'=>$action == 'xjssc' ? 'active' : null]],
             Yii::$app->user->isGuest ?
                 ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
                 ['label' => '退出登陆 (' . Yii::$app->user->identity->username . ')',
