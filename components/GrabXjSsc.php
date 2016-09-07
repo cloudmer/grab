@@ -97,7 +97,7 @@ class GrabXjSsc
     private function insert_mysql(){
         $exists = Xjssc::findOne(['qishu'=>$this->data['qihao'],'code'=>$this->data['code']]);
         if($exists){
-//            exit("新疆时时彩数据已经采集过了 时间:".date('Y-m-d H:i:s')."\r\n");
+            exit("新疆时时彩数据已经采集过了 时间:".date('Y-m-d H:i:s')."\r\n");
         }
 
         //开奖前三 号码
