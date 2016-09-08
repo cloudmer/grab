@@ -56,6 +56,7 @@ AppAsset::register($this);
             ['label' => '重庆时时彩', 'url' => ['/home/old/?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'old' ? 'active' : null]],
             ['label' => '天津时时彩', 'url' => ['/home/tjssc'],'linkOptions'=>['class'=>$action == 'tjssc' ? 'active' : null]],
             ['label' => '新疆时时彩', 'url' => ['/home/xjssc'],'linkOptions'=>['class'=>$action == 'xjssc' ? 'active' : null]],
+            ['label' => '数据分组', 'url' => ['/home/grouping'],'linkOptions'=>['class'=>$action == 'grouping' ? 'active' : null]],
             Yii::$app->user->isGuest ?
                 ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
                 ['label' => '退出登陆 (' . Yii::$app->user->identity->username . ')',
