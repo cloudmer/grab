@@ -141,11 +141,19 @@ class HomeController extends \yii\web\Controller
         if($type == 2){
             //天津时时彩
             $tjssc = Tjssc::find()->where([$name=>$val])->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
+            var_dump($name);
+            var_dump($val);
+            var_dump($tjssc);
+            exit;
             return $tjssc;
         }
         if($type == 3){
             //新疆时时彩
             $xjssc = Xjssc::find()->where([$name=>$val])->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
+            var_dump($name);
+            var_dump($val);
+            var_dump($xjssc);
+            exit;
             return $xjssc;
         }
     }
