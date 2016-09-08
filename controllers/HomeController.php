@@ -106,7 +106,7 @@ class HomeController extends \yii\web\Controller
             if(!\Yii::$app->request->post('cp_unit')){
                 $error_msg = '请选择分组单位';
             }
-            if(!\Yii::$app->request->post('cp_unit_val')){
+            if(\Yii::$app->request->post('cp_unit_val') == ''){
                 $error_msg = '请选择单位值';
             }
         }

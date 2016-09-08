@@ -132,7 +132,7 @@ $this->registerJs($script);
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <select class="form-control" name="cp_unit_val">
-                    <option value="0" selected="">请选择单位值</option>
+                    <option value="" selected="">请选择单位值</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -154,6 +154,7 @@ $this->registerJs($script);
 
 <?php if($error_msg): ?>
     <div class="alert alert-warning" role="alert" style="margin: 24px"><?php echo '警告：'.$error_msg.'!!! ' ?></div>
+    <?php return;?>
 <?php endif ?>
 
 
