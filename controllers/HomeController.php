@@ -144,6 +144,8 @@ class HomeController extends \yii\web\Controller
             var_dump($name);
             var_dump($val);
             var_dump($tjssc);
+            var_dump($start_time);
+            var_dump($end_time);
             exit;
             return $tjssc;
         }
@@ -153,6 +155,8 @@ class HomeController extends \yii\web\Controller
             var_dump($name);
             var_dump($val);
             var_dump($xjssc);
+            var_dump($start_time);
+            var_dump($end_time);
             exit;
             return $xjssc;
         }
