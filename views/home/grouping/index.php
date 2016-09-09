@@ -108,11 +108,10 @@ $this->registerJs($script);
     <div class="row">
         <form action="" method="post">
             <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-<!--                <input type="text" class="form-control"  name="appDate" id="appDate" placeholder="请选择查询时间">-->
-                <input type="text" class="form-control"  name="date" id="appDate" placeholder="请选择查询时间">
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<!--            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">-->
+<!--                <input type="text" class="form-control"  name="date" id="appDate" placeholder="请选择查询时间">-->
+<!--            </div>-->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <select class="form-control" name="cp_type">
                     <option value="0" selected="">请选择彩票类型</option>
                     <option value="1">重庆时时彩</option>
@@ -126,8 +125,8 @@ $this->registerJs($script);
                     <option value="1">万位</option>
                     <option value="2">千位</option>
                     <option value="3">百位</option>
-                    <option value="3">十位</option>
-                    <option value="3">个位</option>
+                    <option value="4">十位</option>
+                    <option value="5">个位</option>
                 </select>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -169,7 +168,7 @@ $this->registerJs($script);
             <th class="text-center">后三</th>
         </tr>
 
-        <?= $this->render('_list',['model'=>$model,'type'=>$type,'unit'=>$unit,'unit_val'=>$unit_val])?>
+        <?= $this->render('_list',['model'=>$model,'type'=>$type,'name'=>$name,'unit'=>$unit,'unit_val'=>$unit_val])?>
 
         </tbody>
     </table>

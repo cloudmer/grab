@@ -55,6 +55,24 @@ class HomeController extends \yii\web\Controller
     }
 
     /**
+     * 重庆时时彩
+     */
+    public function actionCqssc(){
+        $data = Codeold::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/cqssc/_list',['model'=>$model]);
+        }
+
+        return $this->render('/home/cqssc/index',['model'=>$model]);
+    }
+
+    /**
      * 天津时时彩
      */
     public function actionTjssc(){
@@ -97,9 +115,11 @@ class HomeController extends \yii\web\Controller
     public function actionGrouping(){
         $error_msg = null;
         if(\Yii::$app->request->post()){
+            /*
             if(!\Yii::$app->request->post('date')){
                 $error_msg = '请选择查询日期';
             }
+            */
             if(!\Yii::$app->request->post('cp_type')){
                 $error_msg = '请选择彩票类型';
             }
@@ -120,6 +140,7 @@ class HomeController extends \yii\web\Controller
             'error_msg' => $error_msg,
             'model'     => $model,
             'type'      => \Yii::$app->request->post('cp_type'),
+            'name'      => $this->getUnit(\Yii::$app->request->post('cp_unit')),
             'unit'      => \Yii::$app->request->post('cp_unit'),
             'unit_val'      => \Yii::$app->request->post('cp_unit_val'),
         ]);
@@ -130,26 +151,80 @@ class HomeController extends \yii\web\Controller
      */
     private function getdate($type){
         //查询选择时间的前2天数据
-        $date = \Yii::$app->request->post('date');
+//        $date = \Yii::$app->request->post('date');
+        $date = date('Y-m-d');
         $start_time = strtotime( "$date -2 day" );
         $end_time = strtotime( $date );
         $name = $this->getUnit(\Yii::$app->request->post('cp_unit'));
         $val = \Yii::$app->request->post('cp_unit_val');
         if($type == 1){
             //重庆时时彩
-            echo '重庆时时彩';exit;
+            $cqssc = Codeold::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+            $newCqssc = [];
+            $number = 0;
+            foreach ($cqssc as $key=>$m){
+                //将开奖号中间的空格去掉
+                $code = str_replace(" ", '', $m->code);
+                if($code[\Yii::$app->request->post('cp_unit')] == $val){
+                    $newCqssc [] = $m;
+                    $number = 1;
+                }else{
+                    if($number>0 && $number<2){
+                        $newCqssc [] = $m;
+                        $number += 1;
+                    }
+                    if($number == 2){
+                        $number = 0;
+                    }
+                }
+            }
+            return $newCqssc;
         }
         if($type == 2){
             //天津时时彩
-//            $tjssc = Tjssc::find()->where([$name=>intval($val)])->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
-            $tjssc = Tjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
-            return $tjssc;
+            $tjssc = Tjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+
+            $newTjssc = [];
+            $number = 0;
+            foreach ($tjssc as $key=>$m){
+                if($m->$name == $val){
+                    $newTjssc [] = $m;
+                    $number = 1;
+                }else{
+                    if($number>0 && $number<2){
+                        $newTjssc [] = $m;
+                        $number += 1;
+                    }
+                    if($number == 2){
+                        $number = 0;
+                    }
+                }
+            }
+
+            return $newTjssc;
         }
         if($type == 3){
             //新疆时时彩
-//            $xjssc = Xjssc::find()->where([$name=>intval($val)])->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
-            $xjssc = Xjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time DESC')->all();
-            return $xjssc;
+            $xjssc = Xjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+
+            $newXjssc = [];
+            $number = 0;
+            foreach ($xjssc as $key=>$m){
+                if($m->$name == $val){
+                    $newXjssc [] = $m;
+                    $number = 1;
+                }else{
+                    if($number>0 && $number<2){
+                        $newXjssc [] = $m;
+                        $number += 1;
+                    }
+                    if($number == 2){
+                        $number = 0;
+                    }
+                }
+            }
+
+            return $newXjssc;
         }
     }
 
