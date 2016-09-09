@@ -11,7 +11,7 @@
                         <?php echo $code[0] ?>
                     </span>
                 <?php else: ?>
-                    <?php echo $m->one ?>
+                    <?php echo $code[0] ?>
                 <?php endif; ?>
 
                 <?php if($unit == 2 && $code[1] == $unit_val): ?>
@@ -19,7 +19,7 @@
                         <?php echo $code[1] ?>
                     </span>
                 <?php else: ?>
-                    <?php echo $m->two ?>
+                    <?php echo $code[1] ?>
                 <?php endif; ?>
 
                 <?php if($unit == 3 && $code[2] == $unit_val): ?>
@@ -27,7 +27,7 @@
                         <?php echo $code[2] ?>
                     </span>
                 <?php else: ?>
-                    <?php echo $m->three ?>
+                    <?php echo $code[2] ?>
                 <?php endif; ?>
 
                 <?php if($unit == 4 && $code[3] == $unit_val): ?>
@@ -35,7 +35,7 @@
                         <?php echo $code[3] ?>
                     </span>
                 <?php else: ?>
-                    <?php echo $m->four ?>
+                    <?php echo $code[3] ?>
                 <?php endif; ?>
 
                 <?php if($unit == 5 && $code[4] == $unit_val): ?>
@@ -43,7 +43,7 @@
                         <?php echo $code[4] ?>
                     </span>
                 <?php else: ?>
-                    <?php echo $m->five ?>
+                    <?php echo $code[4] ?>
                 <?php endif; ?>
 
 
