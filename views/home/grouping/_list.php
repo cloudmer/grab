@@ -9,45 +9,46 @@
             <td class="text-center"><?= $m->qishu ?></td>
             <td class="text-center">
 
-                <?php if($unit != 1): ?>
-                    <?php echo $m->one ?>
-                <?php else : ?>
+                <?php if($unit == 1 && $m->one == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
                         <?php echo $m->one ?>
                     </span>
-                <?php endif;?>
+                <?php else: ?>
+                    <?php echo $m->one ?>
+                <?php endif; ?>
 
-                <?php if($unit != 2): ?>
-                    <?php echo $m->two ?>
-                <?php else : ?>
+                <?php if($unit == 2 && $m->two == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
                         <?php echo $m->two ?>
                     </span>
-                <?php endif;?>
+                <?php else: ?>
+                    <?php echo $m->two ?>
+                <?php endif; ?>
 
-                <?php if($unit != 3): ?>
-                    <?php echo $m->three ?>
-                <?php else : ?>
+                <?php if($unit == 3 && $m->three == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
                         <?php echo $m->three ?>
                     </span>
-                <?php endif;?>
+                <?php else: ?>
+                    <?php echo $m->three ?>
+                <?php endif; ?>
 
-                <?php if($unit != 4): ?>
-                    <?php echo $m->four ?>
-                <?php else : ?>
+                <?php if($unit == 4 && $m->four == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
-                        <?php echo $m->four ?>
+                        <?php echo $m->one ?>
                     </span>
-                <?php endif;?>
+                <?php else: ?>
+                    <?php echo $m->four ?>
+                <?php endif; ?>
 
-                <?php if($unit != 5): ?>
-                    <?php echo $m->five ?>
-                <?php else : ?>
+                <?php if($unit == 5 && $m->five == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
                         <?php echo $m->five ?>
                     </span>
-                <?php endif;?>
+                <?php else: ?>
+                    <?php echo $m->five ?>
+                <?php endif; ?>
+
 
             </td>
             <td class="text-center"><span class="badge bg-gray" <?php echo !empty($m->analysisTjsscs->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisTjsscs->front_three_lucky_txt) ? '中' : '未';  ?> </span></td>
@@ -65,45 +66,45 @@
             <td class="text-center"><?= $m->qishu ?></td>
 
             <td class="text-center">
-                <?php if($unit != 1): ?>
+                <?php if($unit == 1 && $m->one == $unit_val): ?>
+                    <span class="badge bg-gray" style="background: red">
+                        <?php echo $m->one ?>
+                    </span>
+                <?php else: ?>
                     <?php echo $m->one ?>
-                <?php else : ?>
-                    <span class="badge bg-gray" style="background: red">
-                            <?php echo $m->one ?>
-                        </span>
-                <?php endif;?>
+                <?php endif; ?>
 
-                <?php if($unit != 2): ?>
+                <?php if($unit == 2 && $m->two == $unit_val): ?>
+                    <span class="badge bg-gray" style="background: red">
+                        <?php echo $m->two ?>
+                    </span>
+                <?php else: ?>
                     <?php echo $m->two ?>
-                <?php else : ?>
-                    <span class="badge bg-gray" style="background: red">
-                            <?php echo $m->two ?>
-                        </span>
-                <?php endif;?>
+                <?php endif; ?>
 
-                <?php if($unit != 3): ?>
+                <?php if($unit == 3 && $m->three == $unit_val): ?>
+                    <span class="badge bg-gray" style="background: red">
+                        <?php echo $m->three ?>
+                    </span>
+                <?php else: ?>
                     <?php echo $m->three ?>
-                <?php else : ?>
-                    <span class="badge bg-gray" style="background: red">
-                            <?php echo $m->three ?>
-                        </span>
-                <?php endif;?>
+                <?php endif; ?>
 
-                <?php if($unit != 4): ?>
+                <?php if($unit == 4 && $m->four == $unit_val): ?>
+                    <span class="badge bg-gray" style="background: red">
+                        <?php echo $m->one ?>
+                    </span>
+                <?php else: ?>
                     <?php echo $m->four ?>
-                <?php else : ?>
-                    <span class="badge bg-gray" style="background: red">
-                            <?php echo $m->four ?>
-                        </span>
-                <?php endif;?>
+                <?php endif; ?>
 
-                <?php if($unit != 5): ?>
-                    <?php echo $m->five ?>
-                <?php else : ?>
+                <?php if($unit == 5 && $m->five == $unit_val): ?>
                     <span class="badge bg-gray" style="background: red">
-                            <?php echo $m->five ?>
-                        </span>
-                <?php endif;?>
+                        <?php echo $m->five ?>
+                    </span>
+                <?php else: ?>
+                    <?php echo $m->five ?>
+                <?php endif; ?>
             </td>
 
             <td class="text-center"><span class="badge bg-gray" <?php echo !empty($m->analysisXjsscs->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisXjsscs->front_three_lucky_txt) ? '中' : '未';  ?> </span></td>

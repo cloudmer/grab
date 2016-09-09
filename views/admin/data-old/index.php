@@ -57,10 +57,12 @@ $this->registerJs($script);
                 <div>
                     提示说明:上传文件只能是 txt 文本格式<br/>
                     上传数据说明:数据格式如下<br/>
-                    01 02 03<br/>
-                    01 02 03<br/>
+                    011<br/>
+                    012<br/>
+                    013<br/>
+                    014<br/>
                     ...<br/>
-                    友情提示:开启开奖号码单数都有个0 比如:01 02 03,那么上传的文本也最好按这种格式上传<br/>
+                    友情提示:012 这种三个数字 后面跟一个空格再加一个回车键换行 中文输入法入下的输入不行<br/>
                 </div>
                 <div class="btn-group pull-right">
                     <button data-toggle="dropdown" class="upload-file btn btn-primary dropdown-toggle has-tooltip" type="button" title="" data-original-title="Labels">

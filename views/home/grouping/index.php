@@ -169,7 +169,7 @@ $this->registerJs($script);
             <th class="text-center">后三</th>
         </tr>
 
-        <?= $this->render('_list',['model'=>$model,'type'=>$type,'unit'=>$unit])?>
+        <?= $this->render('_list',['model'=>$model,'type'=>$type,'unit'=>$unit,'unit_val'=>$unit_val])?>
 
         </tbody>
     </table>

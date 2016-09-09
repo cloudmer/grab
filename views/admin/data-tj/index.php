@@ -62,7 +62,7 @@ $this->registerJs($script);
                     013<br/>
                     014<br/>
                     ...<br/>
-                    友情提示:012 这种三个数字 后面跟一个空格再加一个回车键换行 中文注入下不行<br/>
+                    友情提示:012 这种三个数字 后面跟一个空格再加一个回车键换行 中文输入法入下的输入不行<br/>
                 </div>
                 <div class="btn-group pull-right">
                     <button data-toggle="dropdown" class="upload-file btn btn-primary dropdown-toggle has-tooltip" type="button" title="" data-original-title="Labels">
