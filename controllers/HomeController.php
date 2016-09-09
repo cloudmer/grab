@@ -178,6 +178,10 @@ class HomeController extends \yii\web\Controller
                     }
                 }
             }
+            echo '<pre>';
+            var_dump($cqssc);
+            var_dump($newCqssc);
+            exit;
             return $newCqssc;
         }
         if($type == 2){
