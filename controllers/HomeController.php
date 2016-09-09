@@ -165,7 +165,7 @@ class HomeController extends \yii\web\Controller
             foreach ($cqssc as $key=>$m){
                 //将开奖号中间的空格去掉
                 $code = str_replace(" ", '', $m->code);
-                if($code[\Yii::$app->request->post('cp_unit')] == $val){
+                if($code[\Yii::$app->request->post('cp_unit') -1 ] == $val){
                     $newCqssc [] = $m;
                     $number = 1;
                 }else{
@@ -178,10 +178,6 @@ class HomeController extends \yii\web\Controller
                     }
                 }
             }
-            echo '<pre>';
-            var_dump($cqssc);
-            var_dump($newCqssc);
-            exit;
             return $newCqssc;
         }
         if($type == 2){
