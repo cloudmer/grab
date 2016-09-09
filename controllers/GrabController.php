@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\components\Grab;
+use app\components\GrabCqSsc;
 use app\components\GrabOld;
 use app\components\GrabTjSsc;
 use app\components\GrabXjSsc;
@@ -18,6 +19,14 @@ class GrabController extends \yii\web\Controller
 
     public function actionOld(){
         new GrabOld('http://cp.360.cn/ssccq/?r_a=26ruYj'); // 重庆 - 老时时彩
+    }
+
+
+    /**
+     * 抓取重庆时时彩数据
+     */
+    public function actionCqssc(){
+        new GrabCqSsc();
     }
 
     /**
