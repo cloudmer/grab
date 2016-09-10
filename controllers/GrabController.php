@@ -1,6 +1,7 @@
 <?php
 
 namespace app\controllers;
+use app\components\Danger;
 use app\components\Grab;
 use app\components\GrabCqSsc;
 use app\components\GrabOld;
@@ -27,6 +28,7 @@ class GrabController extends \yii\web\Controller
      */
     public function actionCqssc(){
         new GrabCqSsc();
+//        new Danger('cq');
     }
 
     /**

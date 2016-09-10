@@ -116,21 +116,30 @@ class GrabTjSsc
         list($z3_lucky,$z3_regert) = $this->isLucky($z3); //中三是否中奖
         list($h3_lucky,$h3_regert) = $this->isLucky($h3); //侯三是否中奖
 
+        //前三是组6还是组3
+        $q3_type = $this->is_type($q3);
+        //中三是组6还是组3
+        $z3_type = $this->is_type($z3);
+        //后三是组6还是组3
+        $h3_type = $this->is_type($h3);
 
         //开启事物
         $innerTransaction = Yii::$app->db->beginTransaction();
         try{
             /* 插入 开奖记录表数据 */
             $tjsscModel = new Tjssc();
-            $tjsscModel->qishu    = $this->data['qihao'];
-            $tjsscModel->one      = $this->data['code'][0];
-            $tjsscModel->two      = $this->data['code'][1];
-            $tjsscModel->three    = $this->data['code'][2];
-            $tjsscModel->four     = $this->data['code'][3];
-            $tjsscModel->five     = $this->data['code'][4];
-            $tjsscModel->code     = $this->data['code'];
-            $tjsscModel->kj_time  = $this->data['kjsj'];
-            $tjsscModel->time  = time();
+            $tjsscModel->qishu             = $this->data['qihao'];
+            $tjsscModel->one               = $this->data['code'][0];
+            $tjsscModel->two               = $this->data['code'][1];
+            $tjsscModel->three             = $this->data['code'][2];
+            $tjsscModel->four              = $this->data['code'][3];
+            $tjsscModel->five              = $this->data['code'][4];
+            $tjsscModel->code              = $this->data['code'];
+            $tjsscModel->front_three_type  = $q3_type;
+            $tjsscModel->center_three_type = $z3_type;
+            $tjsscModel->after_three_type  = $z3_type;
+            $tjsscModel->kj_time           = $this->data['kjsj'];
+            $tjsscModel->time              = time();
             $tjsscModel->save();
 
             /* 插入 开奖记录关联的 数据分析表 */
@@ -155,6 +164,20 @@ class GrabTjSsc
             $innerTransaction->rollBack();
             $this->setLog(false,'天津时时彩数据与数据分析存入失败');
             exit("天津时时彩数据分析存入失败 时间:".date('Y-m-d H:i:s')."\r\n");
+        }
+    }
+
+    /**
+     * 是组6 还是组3
+     */
+    private function is_type($code){
+        $codeArr = str_split($code);
+        //是组6
+        if(count($codeArr) == count(array_unique($codeArr))){
+            return 1;
+        }else{
+            //是组三
+            return 2;
         }
     }
 

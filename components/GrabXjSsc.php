@@ -112,21 +112,30 @@ class GrabXjSsc
         list($z3_lucky,$z3_regert) = $this->isLucky($z3); //中三是否中奖
         list($h3_lucky,$h3_regert) = $this->isLucky($h3); //侯三是否中奖
 
+        //前三是组6还是组3
+        $q3_type = $this->is_type($q3);
+        //中三是组6还是组3
+        $z3_type = $this->is_type($z3);
+        //后三是组6还是组3
+        $h3_type = $this->is_type($h3);
 
         //开启事物
         $innerTransaction = Yii::$app->db->beginTransaction();
         try{
             /* 插入 开奖记录表数据 */
             $xjsscModel = new Xjssc();
-            $xjsscModel->qishu    = $this->data['qihao'];
-            $xjsscModel->one      = $this->data['code'][0];
-            $xjsscModel->two      = $this->data['code'][1];
-            $xjsscModel->three    = $this->data['code'][2];
-            $xjsscModel->four     = $this->data['code'][3];
-            $xjsscModel->five     = $this->data['code'][4];
-            $xjsscModel->code     = $this->data['code'];
-            $xjsscModel->kj_time  = $this->data['kjsj'];
-            $xjsscModel->time  = time();
+            $xjsscModel->qishu             = $this->data['qihao'];
+            $xjsscModel->one               = $this->data['code'][0];
+            $xjsscModel->two               = $this->data['code'][1];
+            $xjsscModel->three             = $this->data['code'][2];
+            $xjsscModel->four              = $this->data['code'][3];
+            $xjsscModel->five              = $this->data['code'][4];
+            $xjsscModel->code              = $this->data['code'];
+            $xjsscModel->front_three_type  = $q3_type;
+            $xjsscModel->center_three_type = $z3_type;
+            $xjsscModel->after_three_type  = $z3_type;
+            $xjsscModel->kj_time           = $this->data['kjsj'];
+            $xjsscModel->time              = time();
             $xjsscModel->save();
 
             /* 插入 开奖记录关联的 数据分析表 */
@@ -150,6 +159,20 @@ class GrabXjSsc
             $innerTransaction->rollBack();
             $this->setLog(false,'新疆时时彩数据与数据分析存入失败');
             exit("新疆时时彩数据分析存入失败 时间:".date('Y-m-d H:i:s')."\r\n");
+        }
+    }
+
+    /**
+     * 是组6 还是组3
+     */
+    private function is_type($code){
+        $codeArr = str_split($code);
+        //是组6
+        if(count($codeArr) == count(array_unique($codeArr))){
+            return 1;
+        }else{
+            //是组三
+            return 2;
         }
     }
 

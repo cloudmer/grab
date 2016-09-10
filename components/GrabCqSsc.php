@@ -44,7 +44,7 @@ class GrabCqSsc
         ini_set('memory_limit','888M');
         $this->get_data();     //抓取数据
         $this->insert_mysql(); //记录数据
-//        $this->warning();      //邮件报警
+        $this->warning();      //邮件报警
     }
 
     /**
@@ -111,21 +111,30 @@ class GrabCqSsc
         list($z3_lucky,$z3_regert) = $this->isLucky($z3); //中三是否中奖
         list($h3_lucky,$h3_regert) = $this->isLucky($h3); //侯三是否中奖
 
+        //前三是组6还是组3
+        $q3_type = $this->is_type($q3);
+        //中三是组6还是组3
+        $z3_type = $this->is_type($z3);
+        //后三是组6还是组3
+        $h3_type = $this->is_type($h3);
 
         //开启事物
         $innerTransaction = Yii::$app->db->beginTransaction();
         try{
             /* 插入 开奖记录表数据 */
             $cqsscModel = new Cqssc();
-            $cqsscModel->qishu    = $this->data['qihao'];
-            $cqsscModel->one      = $this->data['code'][0];
-            $cqsscModel->two      = $this->data['code'][1];
-            $cqsscModel->three    = $this->data['code'][2];
-            $cqsscModel->four     = $this->data['code'][3];
-            $cqsscModel->five     = $this->data['code'][4];
-            $cqsscModel->code     = $this->data['code'];
-            $cqsscModel->kj_time  = $this->data['kjsj'];
-            $cqsscModel->time  = time();
+            $cqsscModel->qishu             = $this->data['qihao'];
+            $cqsscModel->one               = $this->data['code'][0];
+            $cqsscModel->two               = $this->data['code'][1];
+            $cqsscModel->three             = $this->data['code'][2];
+            $cqsscModel->four              = $this->data['code'][3];
+            $cqsscModel->five              = $this->data['code'][4];
+            $cqsscModel->code              = $this->data['code'];
+            $cqsscModel->front_three_type  = $q3_type;
+            $cqsscModel->center_three_type = $z3_type;
+            $cqsscModel->after_three_type  = $z3_type;
+            $cqsscModel->kj_time           = $this->data['kjsj'];
+            $cqsscModel->time              = time();
             $cqsscModel->save();
 
             /* 插入 开奖记录关联的 数据分析表 */
@@ -150,6 +159,20 @@ class GrabCqSsc
             $innerTransaction->rollBack();
             $this->setLog(false,'重庆时时彩数据与数据分析存入失败');
             exit("重庆时时彩数据分析存入失败 时间:".date('Y-m-d H:i:s')."\r\n");
+        }
+    }
+
+    /**
+     * 是组6 还是组3
+     */
+    private function is_type($code){
+        $codeArr = str_split($code);
+        //是组6
+        if(count($codeArr) == count(array_unique($codeArr))){
+            return 1;
+        }else{
+            //是组三
+            return 2;
         }
     }
 
