@@ -140,7 +140,7 @@ class GrabCqSsc
             $cqsscModel->code              = $this->data['code'];
             $cqsscModel->front_three_type  = $q3_type;
             $cqsscModel->center_three_type = $z3_type;
-            $cqsscModel->after_three_type  = $z3_type;
+            $cqsscModel->after_three_type  = $h3_type;
             $cqsscModel->kj_time           = $this->data['kjsj'];
             $cqsscModel->time              = time();
             $cqsscModel->save();

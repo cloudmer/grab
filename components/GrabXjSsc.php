@@ -141,7 +141,7 @@ class GrabXjSsc
             $xjsscModel->code              = $this->data['code'];
             $xjsscModel->front_three_type  = $q3_type;
             $xjsscModel->center_three_type = $z3_type;
-            $xjsscModel->after_three_type  = $z3_type;
+            $xjsscModel->after_three_type  = $h3_type;
             $xjsscModel->kj_time           = $this->data['kjsj'];
             $xjsscModel->time              = time();
             $xjsscModel->save();

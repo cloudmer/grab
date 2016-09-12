@@ -145,7 +145,7 @@ class GrabTjSsc
             $tjsscModel->code              = $this->data['code'];
             $tjsscModel->front_three_type  = $q3_type;
             $tjsscModel->center_three_type = $z3_type;
-            $tjsscModel->after_three_type  = $z3_type;
+            $tjsscModel->after_three_type  = $h3_type;
             $tjsscModel->kj_time           = $this->data['kjsj'];
             $tjsscModel->time              = time();
             $tjsscModel->save();
