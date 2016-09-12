@@ -28,7 +28,6 @@ class GrabController extends \yii\web\Controller
      */
     public function actionCqssc(){
         new GrabCqSsc();
-//        new Danger('cq');
     }
 
     /**
@@ -44,4 +43,9 @@ class GrabController extends \yii\web\Controller
     public function actionXjssc(){
         new GrabXjSsc();
     }
+
+    public function actionTest(){
+        new Danger('cq');
+    }
+
 }

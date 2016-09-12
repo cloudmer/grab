@@ -50,7 +50,7 @@ class Reserve extends \yii\db\ActiveRecord
     /* 报警状态 */
     public static $get_status = [
         1 => '开启',
-        2 => '关闭'
+        0 => '关闭'
     ];
 
     /**

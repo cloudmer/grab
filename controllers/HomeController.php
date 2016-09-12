@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Code;
 use app\models\Codeold;
+use app\models\Cqssc;
 use app\models\Tjssc;
 use app\models\Xjssc;
 use yii\data\Pagination;
@@ -58,7 +59,7 @@ class HomeController extends \yii\web\Controller
      * 重庆时时彩
      */
     public function actionCqssc(){
-        $data = Codeold::find()->orderBy('time DESC');
+        $data = Codeold::find()->orderBy('time ASC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -94,7 +95,7 @@ class HomeController extends \yii\web\Controller
      * 新疆时时彩
      */
     public function actionXjssc(){
-        $data = Xjssc::find()->orderBy('time DESC');
+        $data = Xjssc::find()->orderBy('time ASC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -151,14 +152,39 @@ class HomeController extends \yii\web\Controller
      */
     private function getdate($type){
         //查询选择时间的前2天数据
-//        $date = \Yii::$app->request->post('date');
-        $date = date('Y-m-d');
-        $start_time = strtotime( "$date -2 day" );
-        $end_time = strtotime( $date );
         $name = $this->getUnit(\Yii::$app->request->post('cp_unit'));
         $val = \Yii::$app->request->post('cp_unit_val');
         if($type == 1){
             //重庆时时彩
+            //查询选择号码 最新出现的位置
+            $newest = Cqssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
+            if(!$newest){
+                //还没有出现过此号码
+                return false;
+            }
+            $end_time = $newest->time;
+            $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
+
+            $cqssc = Cqssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+
+            $newCqssc = [];
+            $number = 0;
+            foreach ($cqssc as $key=>$m){
+                if($m->$name == $val){
+                    $newCqssc [] = $m;
+                    $number = 1;
+                }else{
+                    if($number>0 && $number<2){
+                        $newCqssc [] = $m;
+                        $number += 1;
+                    }
+                    if($number == 2){
+                        $number = 0;
+                    }
+                }
+            }
+
+            /*
             $cqssc = Codeold::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
             $newCqssc = [];
             $number = 0;
@@ -178,11 +204,22 @@ class HomeController extends \yii\web\Controller
                     }
                 }
             }
+            */
+
             return $newCqssc;
         }
         if($type == 2){
             //天津时时彩
-            $tjssc = Tjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+            //查询选择号码 最新出现的位置
+            $newest = Tjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
+            if(!$newest){
+                //还没有出现过此号码
+                return false;
+            }
+            $end_time = $newest->time;
+            $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
+
+            $tjssc = Tjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<=','time',$end_time])->orderBy('time ASC')->all();
 
             $newTjssc = [];
             $number = 0;
@@ -205,6 +242,15 @@ class HomeController extends \yii\web\Controller
         }
         if($type == 3){
             //新疆时时彩
+            //查询选择号码 最新出现的位置
+            $newest = Tjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
+            if(!$newest){
+                //还没有出现过此号码
+                return false;
+            }
+            $end_time = $newest->time;
+            $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
+
             $xjssc = Xjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
 
             $newXjssc = [];
