@@ -59,7 +59,7 @@ class HomeController extends \yii\web\Controller
      * 重庆时时彩
      */
     public function actionCqssc(){
-        $data = Codeold::find()->orderBy('time ASC');
+        $data = Codeold::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -95,7 +95,7 @@ class HomeController extends \yii\web\Controller
      * 新疆时时彩
      */
     public function actionXjssc(){
-        $data = Xjssc::find()->orderBy('time ASC');
+        $data = Xjssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
