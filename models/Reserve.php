@@ -10,7 +10,6 @@ use Yii;
  * @property integer $id
  * @property integer $type
  * @property integer $cp_type
- * @property integer $code_type
  * @property integer $number
  * @property integer $qishu
  * @property integer $status
@@ -41,12 +40,6 @@ class Reserve extends \yii\db\ActiveRecord
         3 => '新疆时时彩',
     ];
 
-    /* 奖号类型 */
-    public static $get_code_type = [
-        1 => '组6',
-        2 => '组3',
-    ];
-
     /* 报警状态 */
     public static $get_status = [
         1 => '开启',
@@ -59,8 +52,8 @@ class Reserve extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'cp_type', 'code_type', 'number', 'qishu', 'time'], 'required'],
-            [['type', 'cp_type', 'code_type', 'number', 'qishu', 'status', 'time'], 'integer']
+            [['type', 'cp_type', 'number', 'qishu', 'time'], 'required'],
+            [['type', 'cp_type', 'number', 'qishu', 'status', 'time'], 'integer']
         ];
     }
 
@@ -73,7 +66,6 @@ class Reserve extends \yii\db\ActiveRecord
             'id' => 'ID',
             'type' => '报警单位',
             'cp_type' => '彩票类型',
-            'code_type' => '奖号类型',
             'number' => '预定号码',
             'qishu' => '报警期数',
             'status' => '报警状态',

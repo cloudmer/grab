@@ -101,7 +101,6 @@ $this->registerJs($script);
                         <tr>
                             <th>报警单位</th>
                             <th>彩票类型</th>
-                            <th>奖号类型</th>
                             <th>预定号码</th>
                             <th>报警期数</th>
                             <th>报警状态</th>

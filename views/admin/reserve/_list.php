@@ -30,7 +30,6 @@ $this->registerJs($script);
     <tr id="menu-<?= $model->id?>">
         <td> <?= \app\models\Reserve::$get_cp_type[$model->cp_type] ?>  </td>
         <td><?= \app\models\Reserve::$get_type[$model->type] ?></td>
-        <td> <?= \app\models\Reserve::$get_code_type[$model->code_type] ?>  </td>
         <td> <?= $model->number ?>  </td>
         <td> <?= $model->qishu ?>  </td>
         <td> <?= \app\models\Reserve::$get_status[$model->status] ?>  </td>
@@ -57,7 +56,6 @@ $this->registerJs($script);
     <tr id="menu-<?= $m->id?>">
         <td> <?= \app\models\Reserve::$get_cp_type[$m->cp_type] ?>  </td>
         <td><?= \app\models\Reserve::$get_type[$m->type] ?></td>
-        <td> <?= \app\models\Reserve::$get_code_type[$m->code_type] ?>  </td>
         <td> <?= $m->number ?>  </td>
         <td> <?= $m->qishu ?>  </td>
         <td> <?= \app\models\Reserve::$get_status[$m->status] ?>  </td>

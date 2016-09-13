@@ -51,7 +51,7 @@ class GrabXjSsc
      * 预定号码报警
      */
     private function reserve_warning(){
-        new Danger('xj');
+        new Reserve('xj');
     }
 
     /**

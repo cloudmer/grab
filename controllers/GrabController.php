@@ -1,12 +1,12 @@
 <?php
 
 namespace app\controllers;
-use app\components\Danger;
 use app\components\Grab;
 use app\components\GrabCqSsc;
 use app\components\GrabOld;
 use app\components\GrabTjSsc;
 use app\components\GrabXjSsc;
+use app\components\Reserve;
 
 class GrabController extends \yii\web\Controller
 {
@@ -42,10 +42,6 @@ class GrabController extends \yii\web\Controller
      */
     public function actionXjssc(){
         new GrabXjSsc();
-    }
-
-    public function actionTest(){
-        new Danger('cq');
     }
 
 }

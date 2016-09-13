@@ -57,7 +57,6 @@ $this->registerJs($script);
             <?= $form->field($model, 'id')->label(false)->hiddenInput()?>
             <?= $form->field($model,'cp_type')->dropDownList([1=>'重庆时时彩',2=>'天津时时彩',3=>'新疆时时彩'])?>
             <?= $form->field($model,'type')->dropDownList([1=>'所有',2=>'前三',3=>'中三',4=>'后三'])?>
-            <?= $form->field($model,'code_type')->dropDownList([1=>'组6',2=>'组3'])?>
 
             <?= $form->field($model, 'number')->textInput(['placeholder'=>'报警期数','type'=>'number','maxlength'=>1])?>
             <?= $form->field($model, 'qishu')->textInput(['placeholder'=>'报警期数','type'=>'number','maxlength'=>3])?>
