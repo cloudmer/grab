@@ -21,7 +21,7 @@ $(document).ready(function(){
             secureuri: true,
             fileElementId: 'upload-file',
             dataType: 'json',
-            data:{_csrf:csrf,type:4},
+            data:{_csrf:csrf,type:22},
             success: function (data, status) {
                 if(data.state){
                     toastr.success('上传成功,页面即将刷新');

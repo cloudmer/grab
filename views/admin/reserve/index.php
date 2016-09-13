@@ -85,7 +85,7 @@ $this->registerJs($script);
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <h2>菜单栏管理</h2>
+                <h2>预定号码管理</h2>
 
                 <div class="btn-group pull-right">
                     <button data-toggle="dropdown" data-url="/admin/reserve/form" class="btn btn-primary dropdown-toggle has-tooltip add-reserve" type="button" title="" data-original-title="Labels">
