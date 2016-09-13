@@ -186,14 +186,6 @@ class Reserve
     }
 
     /**
-     * 获取预定的号码
-     * @param $number; 配置里的预定号码 可能为1-3位数
-     */
-    private function get_reserve_number($number){
-        $this->reserve_number = $number;
-    }
-
-    /**
      * 递归开奖数据
      * @param int $limit 默认查询当前 最新的100期内容
      */
@@ -256,6 +248,11 @@ class Reserve
             $position_name = '后3';
         }
 
+        //是否报警 当本期开的号码 的是包含 预定号码才报警
+        if(!$this->is_warning($position)){
+            return;
+        }
+
         //当前几期未开 >= 报警阀值 就报警
         if($danger_num >= $this->danger_number){
             echo '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
@@ -265,18 +262,27 @@ class Reserve
     }
 
     /**
-     * 中3 递归开奖数据
+     * 是否报警
+     * @param $position 当本期来的是包含 预定号码才报警
+     * @param $position 单位;
+     * @return bool
      */
-    private function z3_recursionCodes(){
-
+    private function is_warning($position){
+        if($position == 'q3'){
+            //检查前3是否包含号码
+            $code = $this->newest->one.$this->newest->two.$this->newest->three;
+        }
+        if($position == 'z3'){
+            //检查中3是否包含号码
+            $code = $this->newest->two.$this->newest->three.$this->newest->four;
+        }
+        if($position == 'h3'){
+            //检查后3是否包含号码
+            $code = $this->newest->three.$this->newest->four.$this->newest->five;
+        }
+        return $this->in_reserve_number($code);
     }
 
-    /**
-     * 后3 递归开奖数据
-     */
-    private function h3_recursionCodes(){
-
-    }
 
     /**
      * 按照算法 分析开奖号后的 危险警报次数
