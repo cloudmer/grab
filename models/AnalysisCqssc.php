@@ -16,6 +16,7 @@ use Yii;
  * @property string $after_three_lucky_txt
  * @property string $after_three_regret_txt
  * @property string $data_txt
+ * @property string $type
  * @property integer $time
  *
  * @property Cqssc $cqssc
@@ -36,7 +37,7 @@ class AnalysisCqssc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cqssc_id', 'time'], 'required'],
+            [['cqssc_id', 'type', 'time'], 'required'],
             [['cqssc_id', 'time'], 'integer'],
             [['front_three_lucky_txt', 'front_three_regret_txt', 'center_three_lucky_txt', 'center_three_regret_txt', 'after_three_lucky_txt', 'after_three_regret_txt', 'data_txt'], 'string']
         ];
@@ -57,6 +58,7 @@ class AnalysisCqssc extends \yii\db\ActiveRecord
             'after_three_lucky_txt' => 'After Three Lucky Txt',
             'after_three_regret_txt' => 'After Three Regret Txt',
             'data_txt' => 'Data Txt',
+            'type' => 'Type',
             'time' => 'Time',
         ];
     }

@@ -69,17 +69,20 @@ class Reserve
         if($this->cptype == 'cq'){
             //重庆时时彩
             $config = \app\models\Reserve::find()->where(['cp_type'=>1])->all();
-            $this->cp_name = '重庆';
+//            $this->cp_name = '重庆';
+            $this->cp_name = '庆';
         }
         if($this->cptype == 'tj'){
             ///天津时时彩
             $config = \app\models\Reserve::find()->where(['cp_type'=>2])->all();
-            $this->cp_name = '天津';
+//            $this->cp_name = '天津';
+            $this->cp_name = '津';
         }
         if($this->cptype == 'xj'){
             //新疆时时彩
             $config = \app\models\Reserve::find()->where(['cp_type'=>3])->all();
-            $this->cp_name = '新疆';
+//            $this->cp_name = '新疆';
+            $this->cp_name = '疆';
         }
         if(!$config){
             echo '系统还未添加 -['.$this->cp_name.'彩票] 预定报警号码,请先添加'."\r\n";
@@ -239,13 +242,16 @@ class Reserve
      */
     private function mail_contents($position,$danger_num){
         if($position == 'q3'){
-            $position_name = '前3';
+//            $position_name = '前3';
+            $position_name = '前';
         }
         if($position == 'z3'){
-            $position_name = '中3';
+//            $position_name = '中3';
+            $position_name = '中';
         }
         if($position == 'h3'){
-            $position_name = '后3';
+//            $position_name = '后3';
+            $position_name = '后';
         }
 
         //是否报警 当本期开的号码 的是包含 预定号码才报警
@@ -256,7 +262,8 @@ class Reserve
         //当前几期未开 >= 报警阀值 就报警
         if($danger_num >= $this->danger_number){
             echo '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
-            $this->content .= '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了<br/>';
+//            $this->content .= '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了<br/>';
+            $this->content .= $this->cp_name.' - '.$position_name.' - 组合:'.$this->reserve_number.' 已经有'.$danger_num.'  N<br/>';
         }
         echo $this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
     }

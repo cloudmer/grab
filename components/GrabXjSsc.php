@@ -35,8 +35,14 @@ class GrabXjSsc
     /* 新疆时时彩 上传的数据包 数组 */
     private $data_packet;
 
-    /* 新疆时时彩 上传的数据包 txt 文本内容 */
+    /* 新疆时时彩 上传的数据包2 数组 */
+    private $data_packet_2;
+
+    /* 新疆时时彩 上传的数据包1 txt 文本内容 */
     private $data_packet_txt;
+
+    /* 新疆时时彩 上传的数据包2 txt 文本内容 */
+    private $data_packet_txt_2;
 
     public function __construct()
     {
@@ -116,9 +122,9 @@ class GrabXjSsc
         $h3 = $this->data['code'][2].$this->data['code'][3].$this->data['code'][4];
         $this->analysisCode();
 
-        list($q3_lucky,$q3_regert) = $this->isLucky($q3); //前三中奖情况
-        list($z3_lucky,$z3_regert) = $this->isLucky($z3); //中三是否中奖
-        list($h3_lucky,$h3_regert) = $this->isLucky($h3); //侯三是否中奖
+        list($q3_data1_lucky,$q3_data1_regert,$q3_data2_lucky,$q3_data2_regert) = $this->isLucky($q3); //前三中奖情况
+        list($z3_data1_lucky,$z3_data1_regert,$z3_data2_lucky,$z3_data2_regert) = $this->isLucky($z3); //中三是否中奖
+        list($h3_data1_lucky,$h3_data1_regert,$h3_data2_lucky,$h3_data2_regert) = $this->isLucky($h3); //侯三是否中奖
 
         //前三是组6还是组3
         $q3_type = $this->is_type($q3);
@@ -146,17 +152,32 @@ class GrabXjSsc
             $xjsscModel->time              = time();
             $xjsscModel->save();
 
-            /* 插入 开奖记录关联的 数据分析表 */
+            /* 插入 开奖记录关联的 数据分析表 数据包1解析的结果 */
             $analysisXjsscModel = new AnalysisXjssc();
-            $analysisXjsscModel->xjssc_id = $xjsscModel->id;
-            $analysisXjsscModel->front_three_lucky_txt = $q3_lucky;
-            $analysisXjsscModel->front_three_regret_txt = $q3_regert;
-            $analysisXjsscModel->center_three_lucky_txt = $z3_lucky;
-            $analysisXjsscModel->center_three_regret_txt = $z3_regert;
-            $analysisXjsscModel->after_three_lucky_txt = $h3_lucky;
-            $analysisXjsscModel->after_three_regret_txt = $h3_regert;
-            $analysisXjsscModel->data_txt = $this->data_packet_txt;
-            $analysisXjsscModel->time = time();
+            $analysisXjsscModel->xjssc_id                = $xjsscModel->id;
+            $analysisXjsscModel->front_three_lucky_txt   = $q3_data1_lucky;
+            $analysisXjsscModel->front_three_regret_txt  = $q3_data1_regert;
+            $analysisXjsscModel->center_three_lucky_txt  = $z3_data1_lucky;
+            $analysisXjsscModel->center_three_regret_txt = $z3_data1_regert;
+            $analysisXjsscModel->after_three_lucky_txt   = $h3_data1_lucky;
+            $analysisXjsscModel->after_three_regret_txt  = $h3_data1_regert;
+            $analysisXjsscModel->data_txt                = $this->data_packet_txt;
+            $analysisXjsscModel->type                    = 1;
+            $analysisXjsscModel->time                    = time();
+            $analysisXjsscModel->save();
+
+            /* 插入 开奖记录关联的 数据分析表 数据包1解析的结果 */
+            $analysisXjsscModel = new AnalysisXjssc();
+            $analysisXjsscModel->xjssc_id                = $xjsscModel->id;
+            $analysisXjsscModel->front_three_lucky_txt   = $q3_data2_lucky;
+            $analysisXjsscModel->front_three_regret_txt  = $q3_data2_regert;
+            $analysisXjsscModel->center_three_lucky_txt  = $z3_data2_lucky;
+            $analysisXjsscModel->center_three_regret_txt = $z3_data2_regert;
+            $analysisXjsscModel->after_three_lucky_txt   = $h3_data2_lucky;
+            $analysisXjsscModel->after_three_regret_txt  = $h3_data2_regert;
+            $analysisXjsscModel->data_txt                = $this->data_packet_txt_2;
+            $analysisXjsscModel->type                    = 2;
+            $analysisXjsscModel->time                    = time();
             $analysisXjsscModel->save();
 
             $innerTransaction->commit(); //事物提交
@@ -188,7 +209,7 @@ class GrabXjSsc
      * 解析 上传数据
      */
     private function analysisCode(){
-        //新疆时时彩的数据包
+        //新疆时时彩的数据包1
         $model = Comparison::findOne(['type'=>4]);
         $data = $model->txt;
         $this->data_packet_txt = $model->txt;
@@ -196,6 +217,15 @@ class GrabXjSsc
         $dataArr = explode(' ',$dataTxts);
         $dataArr = array_filter($dataArr);
         $this->data_packet = $dataArr;
+
+        //新疆时时彩的数据包2
+        $model = Comparison::findOne(['type'=>44]);
+        $data = $model->txt;
+        $this->data_packet_txt_2 = $model->txt;
+        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
+        $dataArr = explode(' ',$dataTxts);
+        $dataArr = array_filter($dataArr);
+        $this->data_packet_2 = $dataArr;
     }
 
     /**
@@ -204,6 +234,7 @@ class GrabXjSsc
      * @return bool
      */
     private function isLucky($code){
+        //数据包1 中的中奖号码与未中奖号码
         $data_packet = $this->data_packet;
         $lucky = null;  //中奖号码
         $regert = null; //未中奖号码
@@ -214,7 +245,26 @@ class GrabXjSsc
                 $regert .= $val."\r\n";
             }
         }
-        return [$lucky,$regert];
+
+        $data1_lucky = $lucky;
+        $data1_regert = $regert;
+
+        //数据包2 中的中奖号码与未中奖号码
+        $data_packet = $this->data_packet_2;
+        $lucky = null;  //中奖号码
+        $regert = null; //未中奖号码
+        foreach ($data_packet as $key=>$val){
+            if($val == $code){
+                $lucky = $val;
+            }else{
+                $regert .= $val."\r\n";
+            }
+        }
+
+        $data2_lucky = $lucky;   //数据包2中的中奖号码
+        $data2_regert = $regert; //数据包2中的未中奖号码
+
+        return [$data1_lucky,$data1_regert,$data2_lucky,$data2_regert];
     }
 
     /**
@@ -253,17 +303,17 @@ class GrabXjSsc
     private function forever_notice(){
         //最新抓取的一期号码,本次进程所抓取的 开奖信息
         $new_data = Xjssc::findOne(['qishu'=>$this->data['qihao'],'code'=>$this->data['code']]);
-        //新疆时时彩 数据分析
-        $analysisXjsscs = $new_data->analysisXjsscs;
-        $analysisXjsscs->front_three_lucky_txt
+        //新疆时时彩 数据包1分析
+        $analysisXjsscsData1 = $new_data->analysisXjsscsData1;
+        $analysisXjsscsData1->front_three_lucky_txt
             ? $q3 = '中奖'
             : $q3 = '未中奖' ;
 
-        $analysisXjsscs->center_three_lucky_txt
+        $analysisXjsscsData1->center_three_lucky_txt
             ? $z3 = '中奖'
             : $z3 = '未中奖' ;
 
-        $analysisXjsscs->after_three_lucky_txt
+        $analysisXjsscsData1->after_three_lucky_txt
             ? $h3 = '中奖'
             : $h3 = '未中奖' ;
 
@@ -272,9 +322,29 @@ class GrabXjSsc
             .'当前彩种:新疆 - [时时彩]<br/>'
             .'当前期号:'.$this->data['qihao'] .'<br/>'
             .'开奖号码:'.$this->data['code'].'<br/>'
-            .'前三中奖:'.$q3 .'<br/>'
-            .'中三中奖:'.$z3 .'<br/>'
-            .'后三中奖:'.$h3;
+            .'数据包1 - 前三中奖:'.$q3 .'<br/>'
+            .'数据包1 - 中三中奖:'.$z3 .'<br/>'
+            .'数据包1 - 后三中奖:'.$h3 .'<br/><br/>';
+
+        //新疆时时彩 数据包2分析
+        $analysisXjsscsData2 = $new_data->analysisXjsscsData2;
+        $analysisXjsscsData2->front_three_lucky_txt
+            ? $q3 = '中奖'
+            : $q3 = '未中奖' ;
+
+        $analysisXjsscsData2->center_three_lucky_txt
+            ? $z3 = '中奖'
+            : $z3 = '未中奖' ;
+
+        $analysisXjsscsData2->after_three_lucky_txt
+            ? $h3 = '中奖'
+            : $h3 = '未中奖' ;
+
+        $mail_contents .=
+            '数据包2 - 前三中奖:'.$q3 .'<br/>'
+            .'数据包2 - 中三中奖:'.$z3 .'<br/>'
+            .'数据包2 - 后三中奖:'.$h3;
+
 
         $this->send_mail($mail_contents);
     }
@@ -291,40 +361,89 @@ class GrabXjSsc
         if(count($newestCodes) != $regret_number){
             return;
         }
-        $q3_lucky = false; // 最新的几期内 前三中奖状态 初始化为 false;
-        $z3_lucky = false; // 最新的几期内 中三中奖状态 初始化为 false;
-        $h3_lucky = false; // 最新的几期内 后三中奖状态 初始化为 false;
+
+        $q3_data1_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
+        $z3_data1_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
+        $h3_data1_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
+
+        $q3_data2_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
+        $z3_data2_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
+        $h3_data2_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
+
         foreach ($newestCodes as $obj){
-            //新疆时时彩 数据分析
-            $analysisXjsscs = $obj->analysisXjsscs;
+            //新疆时时彩 数据包1 数据分析
+            $analysisXjsscsData1 = $obj->analysisXjsscsData1;
             //当前 N 期内 前三号码 中过奖
-            if($analysisXjsscs->front_three_lucky_txt){
-                $q3_lucky = true;
+            if($analysisXjsscsData1->front_three_lucky_txt){
+                $q3_data1_lucky = true;
             }
             //当前 N 期内 中三号码 中过奖
-            if($analysisXjsscs->center_three_lucky_txt){
-                $z3_lucky = true;
+            if($analysisXjsscsData1->center_three_lucky_txt){
+                $z3_data1_lucky = true;
             }
             //当前 N 期内 后三号码 中过奖
-            if($analysisXjsscs->after_three_lucky_txt){
-                $h3_lucky = true;
+            if($analysisXjsscsData1->after_three_lucky_txt){
+                $h3_data1_lucky = true;
+            }
+
+            //新疆时时彩 数据包1 数据分析
+            $analysisXjsscsData2 = $obj->analysisXjsscsData2;
+            //当前 N 期内 前三号码 中过奖
+            if($analysisXjsscsData2->front_three_lucky_txt){
+                $q3_data2_lucky = true;
+            }
+            //当前 N 期内 中三号码 中过奖
+            if($analysisXjsscsData2->center_three_lucky_txt){
+                $z3_data2_lucky = true;
+            }
+            //当前 N 期内 后三号码 中过奖
+            if($analysisXjsscsData2->after_three_lucky_txt){
+                $h3_data2_lucky = true;
             }
         }
 
         //当前 N 期内 都中奖了,不报警
-        if($q3_lucky && $z3_lucky &&$h3_lucky){
+        if($q3_data1_lucky && $z3_data1_lucky &&$h3_data1_lucky && $q3_data2_lucky && $z3_data2_lucky && $h3_data2_lucky ){
             return;
         }
 
-        $q3_lucky ? $q3_msg = '中奖' : $q3_msg = '未中奖';
-        $z3_lucky ? $z3_msg = '中奖' : $z3_msg = '未中奖';
-        $h3_lucky ? $h3_msg = '中奖' : $h3_msg = '未中奖';
+        /*
+        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] 中奖' : $q3_data1_msg = '[数据包1] 未中奖';
+        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] 中奖' : $z3_data1_msg = '[数据包1] 未中奖';
+        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] 中奖' : $h3_data1_msg = '[数据包1] 未中奖';
+
+        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] 中奖' : $q3_data2_msg = '[数据包2] 未中奖';
+        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] 中奖' : $z3_data2_msg = '[数据包2] 未中奖';
+        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] 中奖' : $h3_data2_msg = '[数据包2] 未中奖';
+        */
+        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] Y' : $q3_data1_msg = '[数据包1] N';
+        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] Y' : $z3_data1_msg = '[数据包1] N';
+        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] Y' : $h3_data1_msg = '[数据包1] N';
+
+        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] Y' : $q3_data2_msg = '[数据包2] N';
+        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] Y' : $z3_data2_msg = '[数据包2] N';
+        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] Y' : $h3_data2_msg = '[数据包2] N';
+
         $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+            /*
             .'通知类型:新疆 - [时时彩] 当前'.$regret_number.'期内 报警提示<br/>'
             .'当前彩种:新疆 - [时时彩]<br/>'
-            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_msg;
+            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data1_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data1_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data1_msg.'<br/><br/>'
+
+            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data2_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data2_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data2_msg;
+            */
+            .'通知类型:疆 当前'.$regret_number.'期 报警提示<br/>'
+            .'前: '.$q3_data1_msg.'<br/>'
+            .'中: '.$z3_data1_msg.'<br/>'
+            .'后: '.$h3_data1_msg.'<br/><br/>'
+
+            .'前: '.$q3_data2_msg.'<br/>'
+            .'中: '.$z3_data2_msg.'<br/>'
+            .'后: '.$h3_data2_msg;
 
         $this->send_mail($mail_contents,0);
     }

@@ -33,11 +33,17 @@ class GrabCqSsc
     /* 抓取后的数据 array */
     private $data;
 
-    /* 重庆时时彩 上传的数据包 数组 */
+    /* 重庆时时彩 上传的数据包1 数组 */
     private $data_packet;
 
-    /* 重庆时时彩 上传的数据包 txt 文本内容 */
+    /* 重庆时时彩 上传的数据包2 数组 */
+    private $data_packet_2;
+
+    /* 重庆时时彩 上传的数据包1 txt 文本内容 */
     private $data_packet_txt;
+
+    /* 重庆时时彩 上传的数据包2 txt 文本内容 */
+    private $data_packet_txt_2;
 
     public function __construct()
     {
@@ -115,9 +121,9 @@ class GrabCqSsc
         $h3 = $this->data['code'][2].$this->data['code'][3].$this->data['code'][4];
         $this->analysisCode();
 
-        list($q3_lucky,$q3_regert) = $this->isLucky($q3); //前三中奖情况
-        list($z3_lucky,$z3_regert) = $this->isLucky($z3); //中三是否中奖
-        list($h3_lucky,$h3_regert) = $this->isLucky($h3); //侯三是否中奖
+        list($q3_data1_lucky,$q3_data1_regert,$q3_data2_lucky,$q3_data2_regert) = $this->isLucky($q3); //前三中奖情况
+        list($z3_data1_lucky,$z3_data1_regert,$z3_data2_lucky,$z3_data2_regert) = $this->isLucky($z3); //中三是否中奖
+        list($h3_data1_lucky,$h3_data1_regert,$h3_data2_lucky,$h3_data2_regert) = $this->isLucky($h3); //侯三是否中奖
 
         //前三是组6还是组3
         $q3_type = $this->is_type($q3);
@@ -145,21 +151,35 @@ class GrabCqSsc
             $cqsscModel->time              = time();
             $cqsscModel->save();
 
-            /* 插入 开奖记录关联的 数据分析表 */
+            /* 插入 开奖记录关联的 数据分析表 数据包1解析的结果 */
             $analysisCqsscModel = new AnalysisCqssc();
-            $analysisCqsscModel->cqssc_id = $cqsscModel->id;
-            $analysisCqsscModel->front_three_lucky_txt = $q3_lucky;
-            $analysisCqsscModel->front_three_regret_txt = $q3_regert;
-            $analysisCqsscModel->center_three_lucky_txt = $z3_lucky;
-            $analysisCqsscModel->center_three_regret_txt = $z3_regert;
-            $analysisCqsscModel->after_three_lucky_txt = $h3_lucky;
-            $analysisCqsscModel->after_three_regret_txt = $h3_regert;
-            $analysisCqsscModel->data_txt = $this->data_packet_txt;
-            $analysisCqsscModel->time = time();
+            $analysisCqsscModel->cqssc_id                = $cqsscModel->id;
+            $analysisCqsscModel->front_three_lucky_txt   = $q3_data1_lucky;
+            $analysisCqsscModel->front_three_regret_txt  = $q3_data1_regert;
+            $analysisCqsscModel->center_three_lucky_txt  = $z3_data1_lucky;
+            $analysisCqsscModel->center_three_regret_txt = $z3_data1_regert;
+            $analysisCqsscModel->after_three_lucky_txt   = $h3_data1_lucky;
+            $analysisCqsscModel->after_three_regret_txt  = $h3_data1_regert;
+            $analysisCqsscModel->data_txt                = $this->data_packet_txt;
+            $analysisCqsscModel->type                    = 1; //数据包1解析的数据
+            $analysisCqsscModel->time                    = time();
+            $analysisCqsscModel->save();
+
+            /* 插入 开奖记录关联的 数据分析表 数据包2解析的结果 */
+            $analysisCqsscModel = new AnalysisCqssc();
+            $analysisCqsscModel->cqssc_id                = $cqsscModel->id;
+            $analysisCqsscModel->front_three_lucky_txt   = $q3_data2_lucky;
+            $analysisCqsscModel->front_three_regret_txt  = $q3_data2_regert;
+            $analysisCqsscModel->center_three_lucky_txt  = $z3_data2_lucky;
+            $analysisCqsscModel->center_three_regret_txt = $z3_data2_regert;
+            $analysisCqsscModel->after_three_lucky_txt   = $h3_data2_lucky;
+            $analysisCqsscModel->after_three_regret_txt  = $h3_data2_regert;
+            $analysisCqsscModel->data_txt                = $this->data_packet_txt_2;
+            $analysisCqsscModel->type                    = 2; //数据包2解析的数据
+            $analysisCqsscModel->time                    = time();
             $analysisCqsscModel->save();
 
             $innerTransaction->commit(); //事物提交
-
 
             $this->setLog(true,'重庆时时彩数据抓取成功');
             echo "重庆时时彩数据抓取成功 时间:".date('Y-m-d H:i:s')."\r\n";
@@ -188,7 +208,7 @@ class GrabCqSsc
      * 解析 上传数据
      */
     private function analysisCode(){
-        //重庆时时彩的数据包
+        //重庆时时彩的数据包1
         $model = Comparison::findOne(['type'=>2]);
         $data = $model->txt;
         $this->data_packet_txt = $model->txt;
@@ -196,14 +216,24 @@ class GrabCqSsc
         $dataArr = explode(' ',$dataTxts);
         $dataArr = array_filter($dataArr);
         $this->data_packet = $dataArr;
+
+        //重庆时时彩的数据包2
+        $model = Comparison::findOne(['type'=>22]);
+        $data = $model->txt;
+        $this->data_packet_txt_2 = $model->txt;
+        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
+        $dataArr = explode(' ',$dataTxts);
+        $dataArr = array_filter($dataArr);
+        $this->data_packet_2 = $dataArr;
     }
 
     /**
-     * 数据包里的号码是否中奖
+     * 数据包1里的号码是否中奖
      * @param $code 需要查询的 前三 or 中三 or 后三号码;
      * @return bool
      */
     private function isLucky($code){
+        //数据包1 中的中奖号码与未中奖号码
         $data_packet = $this->data_packet;
         $lucky = null;  //中奖号码
         $regert = null; //未中奖号码
@@ -214,7 +244,26 @@ class GrabCqSsc
                 $regert .= $val."\r\n";
             }
         }
-        return [$lucky,$regert];
+
+        $data1_lucky = $lucky;
+        $data1_regert = $regert;
+
+        //数据包2 中的中奖号码与未中奖号码
+        $data_packet = $this->data_packet_2;
+        $lucky = null;  //中奖号码
+        $regert = null; //未中奖号码
+        foreach ($data_packet as $key=>$val){
+            if($val == $code){
+                $lucky = $val;
+            }else{
+                $regert .= $val."\r\n";
+            }
+        }
+
+        $data2_lucky = $lucky;   //数据包2中的中奖号码
+        $data2_regert = $regert; //数据包2中的未中奖号码
+
+        return [$data1_lucky,$data1_regert,$data2_lucky,$data2_regert];
     }
 
     /**
@@ -253,17 +302,17 @@ class GrabCqSsc
     private function forever_notice(){
         //最新抓取的一期号码,本次进程所抓取的 开奖信息
         $new_data = Cqssc::findOne(['qishu'=>$this->data['qihao'],'code'=>$this->data['code']]);
-        //重庆时时彩 数据分析
-        $analysisCqsscs = $new_data->analysisCqsscs;
-        $analysisCqsscs->front_three_lucky_txt
+        //重庆时时彩 数据包1分析
+        $analysisCqsscsData1 = $new_data->analysisCqsscsData1;
+        $analysisCqsscsData1->front_three_lucky_txt
             ? $q3 = '中奖'
             : $q3 = '未中奖' ;
 
-        $analysisCqsscs->center_three_lucky_txt
+        $analysisCqsscsData1->center_three_lucky_txt
             ? $z3 = '中奖'
             : $z3 = '未中奖' ;
 
-        $analysisCqsscs->after_three_lucky_txt
+        $analysisCqsscsData1->after_three_lucky_txt
             ? $h3 = '中奖'
             : $h3 = '未中奖' ;
 
@@ -272,9 +321,29 @@ class GrabCqSsc
             .'当前彩种:重庆 - [时时彩]<br/>'
             .'当前期号:'.$this->data['qihao'] .'<br/>'
             .'开奖号码:'.$this->data['code'].'<br/>'
-            .'前三中奖:'.$q3 .'<br/>'
-            .'中三中奖:'.$z3 .'<br/>'
-            .'后三中奖:'.$h3;
+            .'数据包1 - 前三中奖:'.$q3 .'<br/>'
+            .'数据包1 - 中三中奖:'.$z3 .'<br/>'
+            .'数据包1 - 后三中奖:'.$h3 .'<br/><br/>';
+
+        //重庆时时彩 数据包2分析
+        $analysisCqsscsData2 = $new_data->analysisCqsscsData2;
+        //有数据包2的分析数据 才提示
+        $analysisCqsscsData2->front_three_lucky_txt
+            ? $q3 = '中奖'
+            : $q3 = '未中奖' ;
+
+        $analysisCqsscsData2->center_three_lucky_txt
+            ? $z3 = '中奖'
+            : $z3 = '未中奖' ;
+
+        $analysisCqsscsData2->after_three_lucky_txt
+            ? $h3 = '中奖'
+            : $h3 = '未中奖' ;
+
+        $mail_contents .=
+            '数据包2 - 前三中奖:'.$q3 .'<br/>'
+            .'数据包2 - 中三中奖:'.$z3 .'<br/>'
+            .'数据包2 - 后三中奖:'.$h3;
 
         $this->send_mail($mail_contents);
     }
@@ -291,40 +360,94 @@ class GrabCqSsc
         if(count($newestCodes) != $regret_number){
             return;
         }
-        $q3_lucky = false; // 最新的几期内 前三中奖状态 初始化为 false;
-        $z3_lucky = false; // 最新的几期内 中三中奖状态 初始化为 false;
-        $h3_lucky = false; // 最新的几期内 后三中奖状态 初始化为 false;
+
+
+        $q3_data1_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
+        $z3_data1_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
+        $h3_data1_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
+
+        $q3_data2_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
+        $z3_data2_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
+        $h3_data2_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
+
         foreach ($newestCodes as $obj){
-            //重庆时时彩 数据分析
-            $analysisCqsscs = $obj->analysisCqsscs;
+
+            //重庆时时彩 数据包1 数据分析
+            $analysisCqsscsData1 = $obj->analysisCqsscsData1;
             //当前 N 期内 前三号码 中过奖
-            if($analysisCqsscs->front_three_lucky_txt){
-                $q3_lucky = true;
+            if($analysisCqsscsData1->front_three_lucky_txt){
+                $q3_data1_lucky = true;
             }
             //当前 N 期内 中三号码 中过奖
-            if($analysisCqsscs->center_three_lucky_txt){
-                $z3_lucky = true;
+            if($analysisCqsscsData1->center_three_lucky_txt){
+                $z3_data1_lucky = true;
             }
             //当前 N 期内 后三号码 中过奖
-            if($analysisCqsscs->after_three_lucky_txt){
-                $h3_lucky = true;
+            if($analysisCqsscsData1->after_three_lucky_txt){
+                $h3_data1_lucky = true;
             }
+
+            //重庆时时彩 数据包2 数据分析
+            $analysisCqsscsData2 = $obj->analysisCqsscsData2;
+            if($analysisCqsscsData2){
+                //当前 N 期内 前三号码 中过奖
+                if($analysisCqsscsData2->front_three_lucky_txt){
+                    $q3_data2_lucky = true;
+                }
+                //当前 N 期内 中三号码 中过奖
+                if($analysisCqsscsData2->center_three_lucky_txt){
+                    $z3_data2_lucky = true;
+                }
+                //当前 N 期内 后三号码 中过奖
+                if($analysisCqsscsData2->after_three_lucky_txt){
+                    $h3_data2_lucky = true;
+                }
+            }
+
         }
 
         //当前 N 期内 都中奖了,不报警
-        if($q3_lucky && $z3_lucky &&$h3_lucky){
+        if($q3_data1_lucky && $z3_data1_lucky &&$h3_data1_lucky && $q3_data2_lucky && $z3_data2_lucky && $h3_data2_lucky ){
             return;
         }
 
-        $q3_lucky ? $q3_msg = '中奖' : $q3_msg = '未中奖';
-        $z3_lucky ? $z3_msg = '中奖' : $z3_msg = '未中奖';
-        $h3_lucky ? $h3_msg = '中奖' : $h3_msg = '未中奖';
+        /*
+        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] 中奖' : $q3_data1_msg = '[数据包1] 未中奖';
+        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] 中奖' : $z3_data1_msg = '[数据包1] 未中奖';
+        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] 中奖' : $h3_data1_msg = '[数据包1] 未中奖';
+
+        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] 中奖' : $q3_data2_msg = '[数据包2] 未中奖';
+        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] 中奖' : $z3_data2_msg = '[数据包2] 未中奖';
+        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] 中奖' : $h3_data2_msg = '[数据包2] 未中奖';
+        */
+        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] Y' : $q3_data1_msg = '[数据包1] N';
+        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] Y' : $z3_data1_msg = '[数据包1] N';
+        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] Y' : $h3_data1_msg = '[数据包1] N';
+
+        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] Y' : $q3_data2_msg = '[数据包2] N';
+        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] Y' : $z3_data2_msg = '[数据包2] N';
+        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] Y' : $h3_data2_msg = '[数据包2] N';
+
         $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+            /*
             .'通知类型:重庆 - [时时彩] 当前'.$regret_number.'期内 报警提示<br/>'
             .'当前彩种:重庆 - [时时彩]<br/>'
-            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_msg;
+            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data1_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data1_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data1_msg.'<br/><br/>'
+
+            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data2_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data2_msg.'<br/>'
+            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data2_msg;
+            */
+            .'通知类型:庆 当前'.$regret_number.'期 报警提示<br/>'
+            .'前: '.$q3_data1_msg.'<br/>'
+            .'中: '.$z3_data1_msg.'<br/>'
+            .'后: '.$h3_data1_msg.'<br/><br/>'
+
+            .'前: '.$q3_data2_msg.'<br/>'
+            .'中: '.$z3_data2_msg.'<br/>'
+            .'后: '.$h3_data2_msg;
 
         $this->send_mail($mail_contents,0);
     }

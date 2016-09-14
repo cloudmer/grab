@@ -24,12 +24,13 @@ $(document).ready(function(){
     
     //加载更多
     $(".more").click(function(){
+        var type = $type;
         var d = dialog({fixed: true}).show();
         var _this = $(this);
         _this.hide();
         var page = $(this).attr('data-page');
         var url = $(this).attr('data-url');
-        $.get(url,{page:page},function(data){
+        $.get(url,{page:page,type:type},function(data){
             d.close().remove();
             if(data == false){
                 $(".null").css({display:'block'});
@@ -39,6 +40,10 @@ $(document).ready(function(){
             _this.attr('data-page',parseInt(page)+1);
             _this.show();
         });
+    })
+    
+    $(".form-control").change(function() {
+        $("form").submit();
     })
     
     
@@ -63,10 +68,29 @@ $this->registerJs($script);
         background-position: -100px -53px;
         display: none;
     }
+    .row{
+        margin-right:0;
+        margin-left:0;
+    }
+
+    .row select{
+        margin: 5px 0 5px 0;
+    }
 </style>
 
 
-
+<div style="margin: 0 10px 0 10px">
+    <div class="row">
+        <form action="" method="get">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <select class="form-control" name="type">
+                    <option value="1" <?php if($type == 1){ echo 'selected="selected"'; }?> >数据包1</option>
+                    <option value="2" <?php if($type == 2){ echo 'selected="selected"'; }?> >数据包2</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
 
 <table class="table table-hover">
     <tbody class="contents">
@@ -78,7 +102,7 @@ $this->registerJs($script);
         <th class="text-center">后三</th>
     </tr>
 
-    <?= $this->render('_list',['model'=>$model])?>
+    <?= $this->render('_list',['model'=>$model,'type'=>$type])?>
 
     </tbody>
 </table>

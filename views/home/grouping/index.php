@@ -111,7 +111,7 @@ $this->registerJs($script);
 <!--            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">-->
 <!--                <input type="text" class="form-control"  name="date" id="appDate" placeholder="请选择查询时间">-->
 <!--            </div>-->
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <select class="form-control" name="cp_type">
                     <option value="0" selected="">请选择彩票类型</option>
                     <option value="1">重庆时时彩</option>
@@ -119,6 +119,14 @@ $this->registerJs($script);
                     <option value="3">新疆时时彩</option>
                 </select>
             </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <select class="form-control" name="type">
+                    <option value="1" <?php if($data_type == 1){ echo 'selected="selected"'; }?> >数据包1</option>
+                    <option value="2" <?php if($data_type == 2){ echo 'selected="selected"'; }?> >数据包2</option>
+                </select>
+            </div>
+
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <select class="form-control" name="cp_unit">
                     <option value="0" selected="">请选择分组单位</option>
@@ -168,7 +176,7 @@ $this->registerJs($script);
             <th class="text-center">后三</th>
         </tr>
 
-        <?= $this->render('_list',['model'=>$model,'type'=>$type,'name'=>$name,'unit'=>$unit,'unit_val'=>$unit_val])?>
+        <?= $this->render('_list',['model'=>$model,'type'=>$type,'name'=>$name,'unit'=>$unit,'unit_val'=>$unit_val,'data_type'=>$data_type])?>
 
         </tbody>
     </table>

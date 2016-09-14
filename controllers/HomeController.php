@@ -59,7 +59,10 @@ class HomeController extends \yii\web\Controller
      * 重庆时时彩
      */
     public function actionCqssc(){
-        $data = Codeold::find()->orderBy('time DESC');
+        $type = \Yii::$app->request->get('type');
+        !$type ? $type = 1 : false;
+
+        $data = Cqssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -67,16 +70,19 @@ class HomeController extends \yii\web\Controller
             if(intval(ceil($data->count()/10)) < $page){
                 return false;
             }
-            return $this->renderAjax('/home/cqssc/_list',['model'=>$model]);
+            return $this->renderAjax('/home/cqssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/cqssc/index',['model'=>$model]);
+        return $this->render('/home/cqssc/index',['model'=>$model,'type'=>$type]);
     }
 
     /**
      * 天津时时彩
      */
     public function actionTjssc(){
+        $type = \Yii::$app->request->get('type');
+        !$type ? $type = 1 : false;
+
         $data = Tjssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
@@ -85,16 +91,19 @@ class HomeController extends \yii\web\Controller
             if(intval(ceil($data->count()/10)) < $page){
                 return false;
             }
-            return $this->renderAjax('/home/tjssc/_list',['model'=>$model]);
+            return $this->renderAjax('/home/tjssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/tjssc/index',['model'=>$model]);
+        return $this->render('/home/tjssc/index',['model'=>$model,'type'=>$type]);
     }
 
     /**
      * 新疆时时彩
      */
     public function actionXjssc(){
+        $type = \Yii::$app->request->get('type');
+        !$type ? $type = 1 : false;
+
         $data = Xjssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
@@ -103,10 +112,10 @@ class HomeController extends \yii\web\Controller
             if(intval(ceil($data->count()/10)) < $page){
                 return false;
             }
-            return $this->renderAjax('/home/xjssc/_list',['model'=>$model]);
+            return $this->renderAjax('/home/xjssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/xjssc/index',['model'=>$model]);
+        return $this->render('/home/xjssc/index',['model'=>$model,'type'=>$type]);
     }
 
 
@@ -114,6 +123,9 @@ class HomeController extends \yii\web\Controller
      * 数据分组
      */
     public function actionGrouping(){
+        $type = \Yii::$app->request->post('type');
+        !$type ? $type = 1 : false;
+
         $error_msg = null;
         if(\Yii::$app->request->post()){
             /*
@@ -144,6 +156,7 @@ class HomeController extends \yii\web\Controller
             'name'      => $this->getUnit(\Yii::$app->request->post('cp_unit')),
             'unit'      => \Yii::$app->request->post('cp_unit'),
             'unit_val'      => \Yii::$app->request->post('cp_unit_val'),
+            'data_type'     => $type,
         ]);
     }
 

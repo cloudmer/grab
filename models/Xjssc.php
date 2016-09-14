@@ -22,6 +22,8 @@ use Yii;
  * @property integer $time
  *
  * @property AnalysisXjssc[] $analysisXjsscs
+ * @property AnalysisXjssc[] $analysisXjsscsData1
+ * @property AnalysisXjssc[] $analysisXjsscsData2
  */
 class Xjssc extends \yii\db\ActiveRecord
 {
@@ -75,4 +77,23 @@ class Xjssc extends \yii\db\ActiveRecord
     {
         return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id']);
     }
+
+    /**
+     * 新疆时时彩数据包1解析数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysisXjsscsData1()
+    {
+        return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id'])->where(['type'=>1]);
+    }
+
+    /**
+     * 新疆时时彩数据包2解析数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysisXjsscsData2()
+    {
+        return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id'])->where(['type'=>2]);
+    }
+
 }

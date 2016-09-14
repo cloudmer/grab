@@ -22,6 +22,8 @@ use Yii;
  * @property integer $time
  *
  * @property AnalysisCqssc[] $analysisCqsscs
+ * @property AnalysisCqssc[] $analysisCqsscsData1
+ * @property AnalysisCqssc[] $analysisCqsscsData2
  */
 class Cqssc extends \yii\db\ActiveRecord
 {
@@ -75,4 +77,21 @@ class Cqssc extends \yii\db\ActiveRecord
     {
         return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id']);
     }
+
+    /**
+     * 重庆时时彩数据包1解析数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysisCqsscsData1(){
+        return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>1]);
+    }
+
+    /**
+     * 重庆时时彩数据包2解析数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysisCqsscsData2(){
+        return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>2]);
+    }
+
 }
