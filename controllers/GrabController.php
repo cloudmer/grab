@@ -46,8 +46,4 @@ class GrabController extends \yii\web\Controller
         new GrabXjSsc();
     }
 
-    public function actionTest(){
-        new Alarm('cq');
-    }
-
 }
