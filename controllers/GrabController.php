@@ -17,7 +17,7 @@ class GrabController extends \yii\web\Controller
         new Grab('http://cp.360.cn/dlcjx/?r_a=7zIRFz');
         new Grab('http://cp.360.cn/gd11/?r_a=yiiEJb');
         new Grab('http://cp.360.cn/yun11/?r_a=JfMbIz');
-        new GrabOld('http://cp.360.cn/ssccq/?r_a=26ruYj'); // 重庆 - 老时时彩
+//        new GrabOld('http://cp.360.cn/ssccq/?r_a=26ruYj'); // 重庆 - 老时时彩
     }
 
     public function actionOld(){
@@ -44,6 +44,10 @@ class GrabController extends \yii\web\Controller
      */
     public function actionXjssc(){
         new GrabXjSsc();
+    }
+
+    public function actionTest(){
+        new Alarm('cq');
     }
 
 }

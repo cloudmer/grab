@@ -76,7 +76,7 @@ class Alarm
         $start = $this->config_one->start_time; //报警开启时间
         $end   = $this->config_one->end_time;   //报警结束时间
         //检查是否在报警时段
-        if(date('H') < $start || date('H') > $end ){
+        if( ($start && $end) && (date('H') < $start || date('H') > $end) ){
             //当前非报警时段
             echo $this->cp_name."时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
@@ -102,7 +102,7 @@ class Alarm
         $start = $this->config_two->start_time; //报警开启时间
         $end   = $this->config_two->end_time;   //报警结束时间
         //检查是否在报警时段
-        if(date('H') < $start || date('H') > $end ){
+        if( ($start && $end) && (date('H') < $start || date('H') > $end) ){
             //当前非报警时段
             echo $this->cp_name."时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
