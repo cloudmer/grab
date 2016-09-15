@@ -173,3 +173,39 @@ DROP COLUMN `code_type`;
 ALTER TABLE `grab`.`comparison`
 CHANGE COLUMN `type` `type` TINYINT(10) NOT NULL COMMENT '1表示新时时彩\n2表示重庆时时彩\n22表示重庆时时彩数据包2\n3表示天津时时彩\n33表示重庆时时彩数据包2\n4表示新疆时时彩\n44表示新疆时时彩数据包2' ,
 COMMENT = '数据导入 表' ;
+
+ALTER TABLE `grab`.`analysisCqssc`
+ADD COLUMN `type` INT(11) NOT NULL DEFAULT 1 COMMENT '数据包\n1=>重庆时时彩数据包1\n2=>重庆时时彩数据包2' AFTER `time`;
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>重庆时时彩数据包1\n2=>重庆时时彩数据包2' AFTER `data_txt`;
+
+
+ALTER TABLE `grab`.`analysisTjssc`
+ADD COLUMN `type` INT(11) NOT NULL DEFAULT 1 COMMENT '数据包\n1=>天津时时彩数据包1\n2=>天津时时彩数据包2' AFTER `time`;
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>天津时时彩数据包1\n2=>天津时时彩数据包2' AFTER `data_txt`;
+
+ALTER TABLE `grab`.`analysisXjssc`
+ADD COLUMN `type` INT(11) NOT NULL DEFAULT 1 COMMENT '数据包\n1=>新疆时时彩数据包1\n2=>新疆时时彩数据包2' AFTER `time`;
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>新疆时时彩数据包1\n2=>新疆时时彩数据包2' AFTER `data_txt`;
+
+
+ALTER TABLE `grab`.`analysisTjssc`
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>天津时时彩数据包1\n2=>天津时时彩数据包2' AFTER `data_txt`;
+
+ALTER TABLE `grab`.`analysisCqssc`
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>重庆时时彩数据包1\n2=>重庆时时彩数据包2' AFTER `data_txt`;
+
+ALTER TABLE `grab`.`analysisXjssc`
+CHANGE COLUMN `type` `type` INT(11) NOT NULL DEFAULT '1' COMMENT '数据包\n1=>新疆时时彩数据包1\n2=>新疆时时彩数据包2' AFTER `data_txt`;
+
+
+ALTER TABLE `grab`.`configure`
+CHANGE COLUMN `type` `type` INT(11) NOT NULL COMMENT '1 新时时彩\n2 重庆时时彩 数据包1报警设置\n22 重启时时彩 数据包2报警设置\n3 新疆时时彩 数据包1报警设置\n33 新疆时时彩 数据包2报警设置\n4 天津时时彩 数据包1报警设置\n44 天津时时彩 数据包2报警设置' ;
+
+
+
+INSERT INTO `grab`.`configure` (`id`, `start_time`, `end_time`, `regret_number`, `forever`, `state`, `type`) VALUES ('5', '09', '23', '3', '0', '1', '22');
+INSERT INTO `grab`.`configure` (`id`, `start_time`, `end_time`, `regret_number`, `forever`, `state`, `type`) VALUES ('6', '09', '23', '3', '0', '1', '33');
+INSERT INTO `grab`.`configure` (`id`, `start_time`, `end_time`, `regret_number`, `forever`, `state`, `type`) VALUES ('7', '09', '23', '3', '0', '1', '44');
+
+
+
