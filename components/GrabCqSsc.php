@@ -23,7 +23,6 @@ date_default_timezone_set('PRC');
 class GrabCqSsc
 {
 
-
     /**
      * 信息来源网：http://cp.360.cn/ssccq/?r_a=26ruY
      * 最新开奖信息查询网
@@ -59,6 +58,13 @@ class GrabCqSsc
      */
     private function reserve_warning(){
         new Reserve('cq');
+    }
+
+    /**
+     * 邮件报警
+     */
+    private function warning(){
+        new Alarm('cq');
     }
 
     /**
@@ -266,237 +272,6 @@ class GrabCqSsc
         return [$data1_lucky,$data1_regert,$data2_lucky,$data2_regert];
     }
 
-    /**
-     * 邮件报警
-     */
-    private function warning(){
-        $config = Configure::findOne(['type'=>2]); //重庆时时彩 系统报警配置
-        $start = $config->start_time; //报警开启时间
-        $end = $config->end_time;     //报警结束时间
-        $regret_number = $config->regret_number; //当前最新N期内未中奖 则报警
-        $forever = $config->forever; //是否开启每一期中奖与未中奖通知;
-        $state = $config->state; //是否开启报警
-        //检查是否开启报警
-        if(!$state){
-            //当前关闭报警通知
-            exit("重庆时时彩报警通知关闭状态 时间:".date('Y-m-d H:i:s')."\r\n");
-        }
-        //检查是否在报警时段
-        if(date('H') < $start || date('H') > $end ){
-            //当前非报警时段
-            exit("重庆时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n");
-        }
-        //是否开启每期中奖与未接邮件通知
-        if($forever){
-            //每期 中奖与不中奖都邮件通知
-            $this->forever_notice();
-        }
-
-        //当前 系统设置的 N 期不中奖  则邮件报警 用户设置 几期都未中奖 报警通知
-        $this->danger($regret_number);
-    }
-
-    /**
-     * 每期邮件通知
-     */
-    private function forever_notice(){
-        //最新抓取的一期号码,本次进程所抓取的 开奖信息
-        $new_data = Cqssc::findOne(['qishu'=>$this->data['qihao'],'code'=>$this->data['code']]);
-        //重庆时时彩 数据包1分析
-        $analysisCqsscsData1 = $new_data->analysisCqsscsData1;
-        $analysisCqsscsData1->front_three_lucky_txt
-            ? $q3 = '中奖'
-            : $q3 = '未中奖' ;
-
-        $analysisCqsscsData1->center_three_lucky_txt
-            ? $z3 = '中奖'
-            : $z3 = '未中奖' ;
-
-        $analysisCqsscsData1->after_three_lucky_txt
-            ? $h3 = '中奖'
-            : $h3 = '未中奖' ;
-
-        $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            .'通知类型:重庆 - [时时彩] 每一期开奖通知<br/>'
-            .'当前彩种:重庆 - [时时彩]<br/>'
-            .'当前期号:'.$this->data['qihao'] .'<br/>'
-            .'开奖号码:'.$this->data['code'].'<br/>'
-            .'数据包1 - 前三中奖:'.$q3 .'<br/>'
-            .'数据包1 - 中三中奖:'.$z3 .'<br/>'
-            .'数据包1 - 后三中奖:'.$h3 .'<br/><br/>';
-
-        //重庆时时彩 数据包2分析
-        $analysisCqsscsData2 = $new_data->analysisCqsscsData2;
-        //有数据包2的分析数据 才提示
-        $analysisCqsscsData2->front_three_lucky_txt
-            ? $q3 = '中奖'
-            : $q3 = '未中奖' ;
-
-        $analysisCqsscsData2->center_three_lucky_txt
-            ? $z3 = '中奖'
-            : $z3 = '未中奖' ;
-
-        $analysisCqsscsData2->after_three_lucky_txt
-            ? $h3 = '中奖'
-            : $h3 = '未中奖' ;
-
-        $mail_contents .=
-            '数据包2 - 前三中奖:'.$q3 .'<br/>'
-            .'数据包2 - 中三中奖:'.$z3 .'<br/>'
-            .'数据包2 - 后三中奖:'.$h3;
-
-        $this->send_mail($mail_contents);
-    }
-
-    /**
-     * 系统设置的N期内都不中奖 危险的情况 邮件报警
-     * 当前最新N期内未中奖 则报警
-     * @param $regret_number
-     */
-    private function danger($regret_number){
-        //当前 系统设置的 N 期不中奖  则邮件报警 用户设置 几期都未中奖 报警通知
-        $newestCodes = Cqssc::find()->orderBy('time DESC')->limit($regret_number)->all();
-        //如果 用户设置的报警期数 不等于 查询出来的数据条数 则不执行报警 (数据库里的数据小于报警期数)
-        if(count($newestCodes) != $regret_number){
-            return;
-        }
-
-
-        $q3_data1_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
-        $z3_data1_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
-        $h3_data1_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
-
-        $q3_data2_lucky = false; //数据包1 最新的几期内 前三中奖状态 初始化为 false;
-        $z3_data2_lucky = false; //数据包1 最新的几期内 中三中奖状态 初始化为 false;
-        $h3_data2_lucky = false; //数据包1 最新的几期内 后三中奖状态 初始化为 false;
-
-        foreach ($newestCodes as $obj){
-
-            //重庆时时彩 数据包1 数据分析
-            $analysisCqsscsData1 = $obj->analysisCqsscsData1;
-            //当前 N 期内 前三号码 中过奖
-            if($analysisCqsscsData1->front_three_lucky_txt){
-                $q3_data1_lucky = true;
-            }
-            //当前 N 期内 中三号码 中过奖
-            if($analysisCqsscsData1->center_three_lucky_txt){
-                $z3_data1_lucky = true;
-            }
-            //当前 N 期内 后三号码 中过奖
-            if($analysisCqsscsData1->after_three_lucky_txt){
-                $h3_data1_lucky = true;
-            }
-
-            //重庆时时彩 数据包2 数据分析
-            $analysisCqsscsData2 = $obj->analysisCqsscsData2;
-            if($analysisCqsscsData2){
-                //当前 N 期内 前三号码 中过奖
-                if($analysisCqsscsData2->front_three_lucky_txt){
-                    $q3_data2_lucky = true;
-                }
-                //当前 N 期内 中三号码 中过奖
-                if($analysisCqsscsData2->center_three_lucky_txt){
-                    $z3_data2_lucky = true;
-                }
-                //当前 N 期内 后三号码 中过奖
-                if($analysisCqsscsData2->after_three_lucky_txt){
-                    $h3_data2_lucky = true;
-                }
-            }
-
-        }
-
-        //当前 N 期内 都中奖了,不报警
-        if($q3_data1_lucky && $z3_data1_lucky &&$h3_data1_lucky && $q3_data2_lucky && $z3_data2_lucky && $h3_data2_lucky ){
-            return;
-        }
-
-        /*
-        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] 中奖' : $q3_data1_msg = '[数据包1] 未中奖';
-        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] 中奖' : $z3_data1_msg = '[数据包1] 未中奖';
-        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] 中奖' : $h3_data1_msg = '[数据包1] 未中奖';
-
-        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] 中奖' : $q3_data2_msg = '[数据包2] 未中奖';
-        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] 中奖' : $z3_data2_msg = '[数据包2] 未中奖';
-        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] 中奖' : $h3_data2_msg = '[数据包2] 未中奖';
-        */
-        $q3_data1_lucky ? $q3_data1_msg = '[数据包1] Y' : $q3_data1_msg = '[数据包1] N';
-        $z3_data1_lucky ? $z3_data1_msg = '[数据包1] Y' : $z3_data1_msg = '[数据包1] N';
-        $h3_data1_lucky ? $h3_data1_msg = '[数据包1] Y' : $h3_data1_msg = '[数据包1] N';
-
-        $q3_data2_lucky ? $q3_data2_msg = '[数据包2] Y' : $q3_data2_msg = '[数据包2] N';
-        $z3_data2_lucky ? $z3_data2_msg = '[数据包2] Y' : $z3_data2_msg = '[数据包2] N';
-        $h3_data2_lucky ? $h3_data2_msg = '[数据包2] Y' : $h3_data2_msg = '[数据包2] N';
-
-        $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            /*
-            .'通知类型:重庆 - [时时彩] 当前'.$regret_number.'期内 报警提示<br/>'
-            .'当前彩种:重庆 - [时时彩]<br/>'
-            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data1_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data1_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data1_msg.'<br/><br/>'
-
-            .'最新的'.$regret_number.'期内 前三是否中过奖: '.$q3_data2_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 中三是否中过奖: '.$z3_data2_msg.'<br/>'
-            .'最新的'.$regret_number.'期内 后三是否中过奖: '.$h3_data2_msg;
-            */
-            .'通知类型:庆 当前'.$regret_number.'期 报警提示<br/>'
-            .'前: '.$q3_data1_msg.'<br/>'
-            .'中: '.$z3_data1_msg.'<br/>'
-            .'后: '.$h3_data1_msg.'<br/><br/>'
-
-            .'前: '.$q3_data2_msg.'<br/>'
-            .'中: '.$z3_data2_msg.'<br/>'
-            .'后: '.$h3_data2_msg;
-
-        $this->send_mail($mail_contents,0);
-    }
-
-    /**
-     * 发送邮件
-     * @param $content  邮件内容;
-     * @param int $type 邮件类容 1为 每一期中奖邮件通知 2 为 N期未中奖邮件通知;
-     */
-    private function send_mail($content ,$type = 1){
-        //配置文件的 发件人地址
-        $sendEmailUser = Yii::$app->params['sendEmailUser'];
-
-        /* 将最新的发件人配置信息 写入配置文件 */
-        $addresserMailbox = Mailbox::find()->where(['type'=>0])->all();
-        $email = $addresserMailbox[array_rand($addresserMailbox,1)];
-        //数据库里的 发件人地址 与 配置文件不同时 则更新配置文件
-        if($sendEmailUser != $email){
-            $path = Yii::getAlias('@webroot').'/../config/mailer.php';
-            $fh = fopen($path, "r+");
-            $new_content = '<?php return [\'sendEmailUser\' => \''.$email->email_address.'\',\'sendEmailPassword\' => \''.$email->password.'\',\'messageConfigFrom\' => \''.$email->email_address.'\'];';
-            if( flock($fh, LOCK_EX) ){//加写锁
-                ftruncate($fh,0); // 将文件截断到给定的长度
-                rewind($fh); // 倒回文件指针的位置
-                fwrite($fh,$new_content);
-                flock($fh, LOCK_UN); //解锁
-            }
-            fclose($fh);
-        }
-
-        //收件人列表
-        $recipientsMailboxs = Mailbox::find()->where(['type'=>1])->all();
-        foreach ($recipientsMailboxs as $key=>$obj){
-            $mail= Yii::$app->mailer->compose();
-            $mail->setTo($obj->email_address);
-            $mail->setSubject("小蛮牛提醒");
-            //$mail->setTextBody('zheshisha');   //发布纯文字文本
-            $mail->setHtmlBody($content);    //发布可以带html标签的文本
-
-            if($mail->send()){
-                $type == 1
-                    ? $msg = '重庆时时彩 每一期邮寄通知'
-                    : $msg = '重庆时时彩 N期未中奖邮件通知';
-                echo $msg." 邮件发送成功 时间:".date('Y-m-d H:i:s')."\r\n";
-            }else{
-                echo " 邮件通知发送失败,请尽快与管理员联系 时间:".date('Y-m-d H:i:s')."\r\n";
-            }
-        }
-    }
 
     /**
      * 记录日志
@@ -512,6 +287,5 @@ class GrabCqSsc
         $logModel->time = time();
         $logModel->save();
     }
-
 
 }
