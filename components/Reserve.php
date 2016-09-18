@@ -176,7 +176,8 @@ class Reserve
         foreach ($recipientsMailboxs as $key=>$obj){
             $mail= Yii::$app->mailer->compose();
             $mail->setTo($obj->email_address);
-            $mail->setSubject("小蛮牛提醒");
+//            $mail->setSubject("小蛮牛提醒");
+            $mail->setSubject("机房提醒");
             //$mail->setTextBody('zheshisha');   //发布纯文字文本
             $mail->setHtmlBody($content);    //发布可以带html标签的文本
 
