@@ -72,7 +72,7 @@ $config = [
             ],
             'messageConfig'=>[
                 'charset'=>'UTF-8',
-                'from'=>[$mailer['messageConfigFrom']=>'小蛮牛提醒']
+                'from'=>[$mailer['messageConfigFrom']=>'机房提醒']
             ],
         ],
 
