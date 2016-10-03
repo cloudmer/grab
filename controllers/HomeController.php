@@ -13,7 +13,8 @@ class HomeController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-
+        $this->redirect('home/cqssc');
+        exit;
         $type = \Yii::$app->request->get('type') ? \Yii::$app->request->get('type') : 1;
         $data = Code::find()->where(['type'=>$type])->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '3']);
