@@ -261,7 +261,9 @@ class Reserve
         }
 
         //当前几期未开 >= 报警阀值 就报警
-        if($danger_num >= $this->danger_number){
+//        if($danger_num >= $this->danger_number){
+        //当前几期未开 等于 报警阀值 就报警
+        if($danger_num == $this->danger_number){
             echo '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
 //            $this->content .= '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了<br/>';
             $this->content .= $this->cp_name.' - '.$position_name.' - 组合:'.$this->reserve_number.' 已经有'.$danger_num.'  N<br/>';
