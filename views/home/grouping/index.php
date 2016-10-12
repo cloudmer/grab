@@ -41,17 +41,16 @@ $(document).ready(function(){
                 }
                 if(html){
                     $('.data_packet').html(html);
+                    $(document).on('click','.data_packet li',function() {
+                        $('.data_packet li').removeClass('on');
+                        $(this).addClass('on');
+                        var data_id = $(this).attr('data-id');
+                        $("#type").val(data_id);
+                    })
                 }
                 $("#cp_type").val(val);
             }
         },'json')
-    })
-    
-    $(document).on('click','.data_packet li',function() {
-        $('.data_packet li').removeClass('on');
-        $(this).addClass('on');
-        var data_id = $(this).attr('data-id');
-        $("#type").val(data_id);
     })
     
     $(".unit li").click(function(){
