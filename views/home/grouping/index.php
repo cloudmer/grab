@@ -27,6 +27,15 @@ $(document).ready(function(){
         $(".search_div").hide();
     })
     
+    $('.data_packet').on('click','li',function() {
+        $('.data_packet li').removeClass('on');
+        $(this).addClass('on');
+        var data_id = $(this).attr('data-id');
+        $("#type").val(data_id);
+    })
+    
+    
+    
     $(".c_type li").click(function(){
         $(".c_type li").removeClass('on');
         $(this).addClass('on');
@@ -41,12 +50,6 @@ $(document).ready(function(){
                 }
                 if(html){
                     $('.data_packet').html(html);
-                    $(document).on('click','.data_packet li',function() {
-                        $('.data_packet li').removeClass('on');
-                        $(this).addClass('on');
-                        var data_id = $(this).attr('data-id');
-                        $("#type").val(data_id);
-                    })
                 }
                 $("#cp_type").val(val);
             }
