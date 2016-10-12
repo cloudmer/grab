@@ -134,6 +134,138 @@ class Alarm
      * 检查当前期数内 是否未中奖 报警
      */
     private function inspect_alarm(){
+        $connection = \Yii::$app->db;
+
+        if($this->type == 'cq'){
+            $db_ssc_table_name = 'cqssc';
+            $db_analysis_table_name = 'analysisCqssc';
+            $db_foreign_key_id = 'cqssc_id';
+        }
+        if($this->type == 'tj'){
+            $db_ssc_table_name = 'tjssc';
+            $db_analysis_table_name = 'analysisTjssc';
+            $db_foreign_key_id = 'tjssc_id';
+        }
+        if($this->type == 'xj'){
+            $db_ssc_table_name = 'xjssc';
+            $db_analysis_table_name = 'analysisXjssc';
+            $db_foreign_key_id = 'xjssc_id';
+        }
+
+
+        //查询 当前数据包 前三中奖最新一次的出现位置
+//        $sql_q3_lucky_index_id = 'SELECT cqssc.id FROM cqssc LEFT JOIN analysisCqssc ON(cqssc.id=analysisCqssc.cqssc_id) WHERE analysisCqssc.front_three_lucky_txt != \'\' AND analysisCqssc.type='.$this->data_txt_id.' ORDER BY cqssc.time DESC LIMIT 1;';
+        $sql_q3_lucky_index_id = 'SELECT '.$db_ssc_table_name.'.id FROM '.$db_ssc_table_name.' LEFT JOIN '.$db_analysis_table_name.' ON('.$db_ssc_table_name.'.id='.$db_analysis_table_name.'.'.$db_foreign_key_id.') WHERE '.$db_analysis_table_name.'.front_three_lucky_txt != \'\' AND '.$db_analysis_table_name.'.type='.$this->data_txt_id.' ORDER BY '.$db_ssc_table_name.'.time DESC LIMIT 1;';
+        $command = $connection->createCommand($sql_q3_lucky_index_id);
+        $result_q3_lucky_index_id = $command->queryOne();
+        $result_q3_lucky_index_id ? $q3_lucky_index_id = intval($result_q3_lucky_index_id['id']) : $q3_lucky_index_id = 0;
+
+        //查询 当前数据包 中三中奖最新一次的出现位置
+//        $sql_z3_lucky_index_id = 'SELECT cqssc.id FROM cqssc LEFT JOIN analysisCqssc ON(cqssc.id=analysisCqssc.cqssc_id) WHERE analysisCqssc.center_three_lucky_txt != \'\' AND analysisCqssc.type='.$this->data_txt_id.' ORDER BY cqssc.time DESC LIMIT 1;';
+        $sql_z3_lucky_index_id = 'SELECT '.$db_ssc_table_name.'.id FROM '.$db_ssc_table_name.' LEFT JOIN '.$db_analysis_table_name.' ON('.$db_ssc_table_name.'.id='.$db_analysis_table_name.'.'.$db_foreign_key_id.') WHERE '.$db_analysis_table_name.'.center_three_lucky_txt != \'\' AND '.$db_analysis_table_name.'.type='.$this->data_txt_id.' ORDER BY '.$db_ssc_table_name.'.time DESC LIMIT 1;';
+        $command = $connection->createCommand($sql_z3_lucky_index_id);
+        $result_z3_lucky_index_id = $command->queryOne();
+        $result_z3_lucky_index_id ? $z3_lucky_index_id = intval($result_z3_lucky_index_id['id']) : $z3_lucky_index_id = 0;
+
+        //查询 当前数据包 后三中奖最新一次的出现位置
+//        $sql_h3_lucky_index_id = 'SELECT cqssc.id FROM cqssc LEFT JOIN analysisCqssc ON(cqssc.id=analysisCqssc.cqssc_id) WHERE analysisCqssc.after_three_lucky_txt != \'\' AND analysisCqssc.type='.$this->data_txt_id.' ORDER BY cqssc.time DESC LIMIT 1;';
+        $sql_h3_lucky_index_id = 'SELECT '.$db_ssc_table_name.'.id FROM '.$db_ssc_table_name.' LEFT JOIN '.$db_analysis_table_name.' ON('.$db_ssc_table_name.'.id='.$db_analysis_table_name.'.'.$db_foreign_key_id.') WHERE '.$db_analysis_table_name.'.after_three_lucky_txt != \'\' AND '.$db_analysis_table_name.'.type='.$this->data_txt_id.' ORDER BY '.$db_ssc_table_name.'.time DESC LIMIT 1;';
+        $command = $connection->createCommand($sql_h3_lucky_index_id);
+        $result_h3_lucky_index_id = $command->queryOne();
+        $result_h3_lucky_index_id ? $h3_lucky_index_id = intval($result_h3_lucky_index_id['id']) : $h3_lucky_index_id = 0;
+
+
+        //获取 前三 中三 后三 中奖 的最前一条数据 比如
+        // 1期 前3中 中3不中 后3不中
+        // 2期 前3不中 中3中 后3不中
+        // 3期 前3不中 中3中 后3中
+        //那么 取最前一条数据 取1期
+        $least_id = ($q3_lucky_index_id < $z3_lucky_index_id ? $q3_lucky_index_id : $z3_lucky_index_id) < $h3_lucky_index_id
+            ? ($q3_lucky_index_id < $z3_lucky_index_id ? $q3_lucky_index_id : $z3_lucky_index_id)
+            : $h3_lucky_index_id;
+
+//        if($this->data_txt_id == 2){
+//            echo '<pre>';
+//            echo $least_id;
+//            var_dump($q3_lucky_index_id);
+//            var_dump($z3_lucky_index_id);
+//            var_dump($h3_lucky_index_id);exit;
+//        }
+
+
+        //从最新一条数据 开始查询 到最新开奖期号的数据
+        //有可能 前三 中三 后三 都没有中奖过 那么查询全部数据 并分析
+//        $codes = $this->model->find()->andWhere(['>=','id',$least_id])->all();
+        $codes = $this->model->find()->andWhere(['>=','id',$least_id])->orderBy('time ASC')->all();
+
+        $q3_lucky_number = 0;
+        $z3_lucky_number = 0;
+        $h3_lucky_number = 0;
+
+        if($this->data_txt_id == 2){
+//            echo '<pre>';
+//            var_dump($codes);
+//            exit;
+        }
+
+        foreach ($codes as $key=>$m){
+            //获取当前彩种 分析数据中的 数据包 N 的分析数据
+            $analysis_data = $m->getAnalysis($this->data_txt_id)->one();
+
+            //当前 N 期内 前3号码 中过奖
+            if($analysis_data->front_three_lucky_txt){
+                $q3_lucky_number = 0;  //中奖了 归0
+            }else{
+                $q3_lucky_number += 1; //未中奖 增加1次计数
+            }
+            //当前 N 期内 中3号码 中过奖
+            if($analysis_data->center_three_lucky_txt){
+                $z3_lucky_number = 0;  //中奖了 归0
+            }else{
+                $z3_lucky_number += 1; //未中奖 增加1次计数
+            }
+
+            //当前 N 期内 后3号码 中过奖
+            if($analysis_data->after_three_lucky_txt){
+                $h3_lucky_number = 0;  //中奖了 归0
+            }else{
+                $h3_lucky_number += 1; //未中奖 增加1次计数
+            }
+        }
+
+        $mail_contents = null; //初始化邮件内容
+        //前三 中奖次数是否达到 报警状态 大于报警期数 不报警 等到周期走完
+        if($q3_lucky_number == $this->regret_number){
+            $mail_contents .= '前:'.$this->regret_number .' N <br/>';
+        }
+
+        //中三 中奖次数是否达到 报警状态 大于报警期数 不报警 等到周期走完
+        if($z3_lucky_number == $this->regret_number){
+            $mail_contents .= '中:'.$this->regret_number .' N <br/>';
+        }
+
+        //后三 中奖次数是否达到 报警状态 大于报警期数 不报警 等到周期走完
+        if($h3_lucky_number == $this->regret_number){
+            $mail_contents .= '后:'.$this->regret_number .' N <br/>';
+        }
+
+        $title = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
+            .'通知类型:'.$this->cp_alias_name.' - 当前 '.$this->regret_number.' 期 警报<br/>'
+            .'数据包别名:'.$this->alias .'<br/>';
+
+        //如果 达到报警条件 则报警
+        if($mail_contents){
+            $mail_contents = $title.$mail_contents;
+        }
+
+        echo '当前彩种: '.$this->cp_name.' 数据包别名:'.$this->alias
+            ."\r\n".' 前三:'.$q3_lucky_number.' N '
+            ."\r\n".' 中三:'.$z3_lucky_number.' N '
+            ."\r\n".' 后三:'.$h3_lucky_number.' N'."\r\n";
+
+        $this->danger_email_contents .= $mail_contents;
+
+        /*
         //多少期内 未中奖的报警期数
         $regret_number = $this->regret_number;
         $codes = $this->model->find()->orderBy('time DESC')->limit($regret_number)->all();
@@ -181,6 +313,7 @@ class Alarm
             .'后:'.$h3 .'<br/><br/>';
 
         $this->danger_email_contents .= $mail_contents;
+        */
     }
 
     /**
