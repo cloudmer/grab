@@ -258,10 +258,7 @@ class Alarm
             $mail_contents = $title.$mail_contents;
         }
 
-        echo '当前彩种: '.$this->cp_name.' 数据包别名:'.$this->alias
-            ."\r\n".' 前三:'.$q3_lucky_number.' N '
-            ."\r\n".' 中三:'.$z3_lucky_number.' N '
-            ."\r\n".' 后三:'.$h3_lucky_number.' N'."\r\n";
+//        echo '当前彩种: '.$this->cp_name.' 数据包别名:'.$this->alias ."\r\n".' 前三:'.$q3_lucky_number.' N ' ."\r\n".' 中三:'.$z3_lucky_number.' N ' ."\r\n".' 后三:'.$h3_lucky_number.' N'."\r\n";
 
         $this->danger_email_contents .= $mail_contents;
 
