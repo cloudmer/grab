@@ -136,6 +136,10 @@ class GrabXjSsc
         //后三是组6还是组3
         $h3_type = $this->is_type($h3);
 
+        if(!$isLucky || !$this->data_packet || !$this->data_packet_txt){
+            exit("重庆时时彩数据包还未上传,当前不存储数据,请尽快上传数据包 时间:".date('Y-m-d H:i:s')."\r\n");
+        }
+
         //开启事物
         $innerTransaction = Yii::$app->db->beginTransaction();
         try{
