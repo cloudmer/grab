@@ -79,21 +79,11 @@ class Xjssc extends \yii\db\ActiveRecord
     }
 
     /**
-     * 新疆时时彩数据包1解析数据
      * @return \yii\db\ActiveQuery
      */
-    public function getAnalysisXjsscsData1()
+    public function getAnalysis($data_txt_id)
     {
-        return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id'])->where(['type'=>1]);
-    }
-
-    /**
-     * 新疆时时彩数据包2解析数据
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAnalysisXjsscsData2()
-    {
-        return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id'])->where(['type'=>2]);
+        return $this->hasOne(AnalysisXjssc::className(), ['xjssc_id' => 'id'])->where(['type'=>$data_txt_id]);
     }
 
 }

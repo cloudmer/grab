@@ -4,8 +4,11 @@ namespace app\controllers;
 
 use app\models\Code;
 use app\models\Codeold;
+use app\models\Cqdata;
 use app\models\Cqssc;
+use app\models\Tjdata;
 use app\models\Tjssc;
+use app\models\Xjdata;
 use app\models\Xjssc;
 use yii\data\Pagination;
 
@@ -60,7 +63,9 @@ class HomeController extends \yii\web\Controller
      */
     public function actionCqssc(){
         $type = \Yii::$app->request->get('type');
-        !$type ? $type = 1 : false;
+
+        list($data_packet,$default) = $this->get_data_packet('cq');
+        !$type ? $type = $default->id : false;
 
         $data = Cqssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
@@ -73,7 +78,7 @@ class HomeController extends \yii\web\Controller
             return $this->renderAjax('/home/cqssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/cqssc/index',['model'=>$model,'type'=>$type]);
+        return $this->render('/home/cqssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
     }
 
     /**
@@ -81,7 +86,9 @@ class HomeController extends \yii\web\Controller
      */
     public function actionTjssc(){
         $type = \Yii::$app->request->get('type');
-        !$type ? $type = 1 : false;
+
+        list($data_packet,$default) = $this->get_data_packet('tj');
+        !$type ? $type = $default->id : false;
 
         $data = Tjssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
@@ -94,7 +101,7 @@ class HomeController extends \yii\web\Controller
             return $this->renderAjax('/home/tjssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/tjssc/index',['model'=>$model,'type'=>$type]);
+        return $this->render('/home/tjssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
     }
 
     /**
@@ -102,7 +109,9 @@ class HomeController extends \yii\web\Controller
      */
     public function actionXjssc(){
         $type = \Yii::$app->request->get('type');
-        !$type ? $type = 1 : false;
+
+        list($data_packet,$default) = $this->get_data_packet('xj');
+        !$type ? $type = $default->id : false;
 
         $data = Xjssc::find()->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
@@ -115,7 +124,7 @@ class HomeController extends \yii\web\Controller
             return $this->renderAjax('/home/xjssc/_list',['model'=>$model,'type'=>$type]);
         }
 
-        return $this->render('/home/xjssc/index',['model'=>$model,'type'=>$type]);
+        return $this->render('/home/xjssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
     }
 
 
@@ -156,7 +165,8 @@ class HomeController extends \yii\web\Controller
             'name'      => $this->getUnit(\Yii::$app->request->post('cp_unit')),
             'unit'      => \Yii::$app->request->post('cp_unit'),
             'unit_val'      => \Yii::$app->request->post('cp_unit_val'),
-            'data_type'     => $type,
+//            'data_type'     => $type,
+            'data_txt_id'     => $type,
         ]);
     }
 
@@ -167,7 +177,8 @@ class HomeController extends \yii\web\Controller
         //查询选择时间的前2天数据
         $name = $this->getUnit(\Yii::$app->request->post('cp_unit'));
         $val = \Yii::$app->request->post('cp_unit_val');
-        if($type == 1){
+
+        if($type == 'cq'){
             //重庆时时彩
             //查询选择号码 最新出现的位置
             $newest = Cqssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
@@ -178,7 +189,27 @@ class HomeController extends \yii\web\Controller
             $end_time = $newest->time;
             $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
 
-            $cqssc = Cqssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+            $cqssc = Cqssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<=','time',$end_time])->orderBy('time ASC')->all();
+
+            //检测 当前查询出来的数据中最后一起是不是最新的开奖期数 如果不是 那么他后面还有开奖数据
+            if($cqssc){
+               //获取查询结果的最后一条数据
+               //如果只查询出一条数据
+                if(count($cqssc) == 1){
+                   $last = $cqssc[0];
+                }else{
+                   $last = $cqssc[count($cqssc)-1];
+                 }
+
+                 //最新一起的开奖数据 的期数
+                $newest_qishu = Cqssc::find()->orderBy('time DESC')->limit(1)->select('qishu')->one();
+                $newest_qishu = $newest_qishu->qishu;
+                //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
+                if($newest_qishu != $last->qishu){
+                    $increase = Cqssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
+                    array_push($cqssc,$increase);
+               }
+            }
 
             $newCqssc = [];
             $number = 0;
@@ -197,31 +228,9 @@ class HomeController extends \yii\web\Controller
                 }
             }
 
-            /*
-            $cqssc = Codeold::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
-            $newCqssc = [];
-            $number = 0;
-            foreach ($cqssc as $key=>$m){
-                //将开奖号中间的空格去掉
-                $code = str_replace(" ", '', $m->code);
-                if($code[\Yii::$app->request->post('cp_unit') -1 ] == $val){
-                    $newCqssc [] = $m;
-                    $number = 1;
-                }else{
-                    if($number>0 && $number<2){
-                        $newCqssc [] = $m;
-                        $number += 1;
-                    }
-                    if($number == 2){
-                        $number = 0;
-                    }
-                }
-            }
-            */
-
             return $newCqssc;
         }
-        if($type == 2){
+        if($type == 'tj'){
             //天津时时彩
             //查询选择号码 最新出现的位置
             $newest = Tjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
@@ -233,6 +242,28 @@ class HomeController extends \yii\web\Controller
             $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
 
             $tjssc = Tjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<=','time',$end_time])->orderBy('time ASC')->all();
+
+
+            //检测 当前查询出来的数据中最后一起是不是最新的开奖期数 如果不是 那么他后面还有开奖数据
+            if($tjssc){
+                //获取查询结果的最后一条数据
+                //如果只查询出一条数据
+                if(count($tjssc) == 1){
+                    $last = $tjssc[0];
+                }else{
+                    $last = $tjssc[count($tjssc)-1];
+                }
+
+                //最新一起的开奖数据 的期数
+                $newest_qishu = Tjssc::find()->orderBy('time DESC')->limit(1)->select('qishu')->one();
+                $newest_qishu = $newest_qishu->qishu;
+
+                //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
+                if($newest_qishu != $last->qishu){
+                    $increase = Tjssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
+                    array_push($tjssc,$increase);
+                }
+            }
 
             $newTjssc = [];
             $number = 0;
@@ -253,10 +284,10 @@ class HomeController extends \yii\web\Controller
 
             return $newTjssc;
         }
-        if($type == 3){
+        if($type == 'xj'){
             //新疆时时彩
             //查询选择号码 最新出现的位置
-            $newest = Tjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
+            $newest = Xjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
             if(!$newest){
                 //还没有出现过此号码
                 return false;
@@ -264,7 +295,28 @@ class HomeController extends \yii\web\Controller
             $end_time = $newest->time;
             $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
 
-            $xjssc = Xjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<','time',$end_time])->orderBy('time ASC')->all();
+            $xjssc = Xjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<=','time',$end_time])->orderBy('time ASC')->all();
+
+            //检测 当前查询出来的数据中最后一起是不是最新的开奖期数 如果不是 那么他后面还有开奖数据
+            if($xjssc){
+                //获取查询结果的最后一条数据
+                //如果只查询出一条数据
+                if(count($xjssc) == 1){
+                    $last = $xjssc[0];
+                }else{
+                    $last = $xjssc[count($xjssc)-1];
+                }
+
+                //最新一起的开奖数据 的期数
+                $newest_qishu = Xjssc::find()->orderBy('time DESC')->limit(1)->select('qishu')->one();
+                $newest_qishu = $newest_qishu->qishu;
+
+                //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
+                if($newest_qishu != $last->qishu){
+                    $increase = Xjssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
+                    array_push($xjssc,$increase);
+                }
+            }
 
             $newXjssc = [];
             $number = 0;
@@ -312,4 +364,42 @@ class HomeController extends \yii\web\Controller
         return $name;
     }
 
+
+    /**
+     * 获取数据包
+     * @param $type 彩种类型
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    private function get_data_packet($type){
+        if($type == 'cq'){
+            $model = Cqdata::find()->select('id,alias')->all();
+            $default = Cqdata::find()->select('id,alias')->orderBy('time ASC')->one();
+        }
+        if($type == 'xj'){
+            $model = Xjdata::find()->select('id,alias')->all();
+            $default = Xjdata::find()->select('id,alias')->orderBy('time ASC')->one();
+        }
+        if($type == 'tj'){
+            $model = Tjdata::find()->select('id,alias')->all();
+            $default = Tjdata::find()->select('id,alias')->orderBy('time ASC')->one();
+        }
+        return [$model,$default];
+    }
+
+    /**
+     * 获取彩种类型数据包
+     */
+    public function actionDataPacket(){
+        $type = \Yii::$app->request->post('type');
+        if($type == 'cq'){
+            $model = Cqdata::find()->select('id,alias')->asArray()->all();
+        }
+        if($type == 'xj'){
+            $model = Xjdata::find()->select('id,alias')->asArray()->all();
+        }
+        if($type == 'tj'){
+            $model = Tjdata::find()->select('id,alias')->asArray()->all();
+        }
+        echo json_encode($model);
+    }
 }

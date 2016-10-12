@@ -79,19 +79,11 @@ class Cqssc extends \yii\db\ActiveRecord
     }
 
     /**
-     * 重庆时时彩数据包1解析数据
      * @return \yii\db\ActiveQuery
      */
-    public function getAnalysisCqsscsData1(){
-        return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>1]);
-    }
-
-    /**
-     * 重庆时时彩数据包2解析数据
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAnalysisCqsscsData2(){
-        return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>2]);
+    public function getAnalysis($data_txt_id)
+    {
+        return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>$data_txt_id]);
     }
 
 }

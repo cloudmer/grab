@@ -1,4 +1,4 @@
-<?php if($type == 1) :?>
+<?php if($type == 'cq') :?>
 
     <?php foreach ($model as $m) : ?>
         <tr>
@@ -47,33 +47,23 @@
 
 
             </td>
+
+            <?php $analysis = $m->getAnalysis($data_txt_id)->one(); ?>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData1->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisCqsscsData1->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData2->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisCqsscsData2->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->front_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData1->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisCqsscsData1->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData2->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisCqsscsData2->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->center_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->center_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData1->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisCqsscsData1->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisCqsscsData2->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisCqsscsData2->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->after_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->after_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
         </tr>
     <?php endforeach; ?>
 
 <?php endif ?>
 
-<?php if($type == 2) :?>
+<?php if($type == 'tj') :?>
 
     <?php foreach ($model as $m) : ?>
         <tr>
@@ -122,33 +112,22 @@
 
 
             </td>
+            <?php $analysis = $m->getAnalysis($data_txt_id)->one(); ?>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData1->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisTjsscsData1->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData2->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisTjsscsData2->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->front_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData1->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisTjsscsData1->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData2->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisTjsscsData2->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->center_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->center_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData1->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisTjsscsData1->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisTjsscsData2->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisTjsscsData2->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->after_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->after_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
         </tr>
     <?php endforeach; ?>
 
 <?php endif ?>
 
-<?php if($type == 3) :?>
+<?php if($type == 'xj') :?>
 
     <?php foreach ($model as $m) : ?>
 
@@ -197,26 +176,15 @@
                 <?php endif; ?>
             </td>
 
+            <?php $analysis = $m->getAnalysis($data_txt_id)->one(); ?>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData1->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisXjsscsData1->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData2->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($m->analysisXjsscsData2->front_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->front_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->front_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData1->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisXjsscsData1->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData2->center_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisXjsscsData2->center_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->center_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->center_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
             <td class="text-center">
-                <?php if($data_type==1): ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData1->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisXjsscsData1->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php else: ?>
-                    <span class="badge bg-gray" <?php echo !empty($m->analysisXjsscsData2->after_three_lucky_txt) ? 'style="background: red"' : false;  ?>> <?php echo !empty($m->analysisXjsscsData2->after_three_lucky_txt) ? '中' : '未';  ?> </span>
-                <?php endif;?>
+                <span class="badge bg-gray" <?php echo !empty($analysis->after_three_lucky_txt) ? 'style="background: red"' : false;  ?> >  <?php echo !empty($analysis->after_three_lucky_txt) ? '中' : '未';  ?> </span>
             </td>
         </tr>
     <?php endforeach; ?>

@@ -79,21 +79,11 @@ class Tjssc extends \yii\db\ActiveRecord
     }
 
     /**
-     * 天津时时彩数据包1解析数据
      * @return \yii\db\ActiveQuery
      */
-    public function getAnalysisTjsscsData1()
+    public function getAnalysis($data_txt_id)
     {
-        return $this->hasOne(AnalysisTjssc::className(), ['tjssc_id' => 'id'])->where(['type'=>1]);
-    }
-
-    /**
-     * 天津时时彩数据包2解析数据
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAnalysisTjsscsData2()
-    {
-        return $this->hasOne(AnalysisTjssc::className(), ['tjssc_id' => 'id'])->where(['type'=>2]);
+        return $this->hasOne(AnalysisTjssc::className(), ['tjssc_id' => 'id'])->where(['type'=>$data_txt_id]);
     }
 
 }

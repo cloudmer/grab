@@ -10,10 +10,8 @@ namespace app\components;
 
 use app\models\AnalysisTjssc;
 use app\models\Log;
-use app\models\Comparison;
-use app\models\Configure;
+use app\models\Tjdata;
 use app\models\Tjssc;
-use app\models\Mailbox;
 use Yii;
 
 //设置时区
@@ -32,17 +30,11 @@ class GrabTjSsc
     /* 抓取后的数据 array */
     private $data;
 
-    /* 天津时时彩 上传的数据包1 数组 */
+    /* 天津时时彩 上传的数据包 数组 */
     private $data_packet;
 
-    /* 天津时时彩 上传的数据包2 数组 */
-    private $data_packet_2;
-
-    /* 天津时时彩 上传的数据包1 txt 文本内容 */
+    /* 天津时时彩 上传的数据包 txt 文本内容 */
     private $data_packet_txt;
-
-    /* 天津时时彩 上传的数据包2 txt 文本内容 */
-    private $data_packet_txt_2;
 
     public function __construct()
     {
@@ -131,11 +123,12 @@ class GrabTjSsc
         $z3 = $this->data['code'][1].$this->data['code'][2].$this->data['code'][3];
         //后奖中三 号码
         $h3 = $this->data['code'][2].$this->data['code'][3].$this->data['code'][4];
+
+        //解析数据包
         $this->analysisCode();
 
-        list($q3_data1_lucky,$q3_data1_regert,$q3_data2_lucky,$q3_data2_regert) = $this->isLucky($q3); //前三中奖情况
-        list($z3_data1_lucky,$z3_data1_regert,$z3_data2_lucky,$z3_data2_regert) = $this->isLucky($z3); //中三是否中奖
-        list($h3_data1_lucky,$h3_data1_regert,$h3_data2_lucky,$h3_data2_regert) = $this->isLucky($h3); //侯三是否中奖
+        //中奖与未中奖号码
+        $isLucky = $this->isLucky($q3,$z3,$h3);
 
         //前三是组6还是组3
         $q3_type = $this->is_type($q3);
@@ -163,33 +156,21 @@ class GrabTjSsc
             $tjsscModel->time              = time();
             $tjsscModel->save();
 
-            /* 插入 开奖记录关联的 数据分析表 数据包1解析的结果 */
-            $analysisTjsscModel = new AnalysisTjssc();
-            $analysisTjsscModel->tjssc_id                = $tjsscModel->id;
-            $analysisTjsscModel->front_three_lucky_txt   = $q3_data1_lucky;
-            $analysisTjsscModel->front_three_regret_txt  = $q3_data1_regert;
-            $analysisTjsscModel->center_three_lucky_txt  = $z3_data1_lucky;
-            $analysisTjsscModel->center_three_regret_txt = $z3_data1_regert;
-            $analysisTjsscModel->after_three_lucky_txt   = $h3_data1_lucky;
-            $analysisTjsscModel->after_three_regret_txt  = $h3_data1_regert;
-            $analysisTjsscModel->data_txt                = $this->data_packet_txt;
-            $analysisTjsscModel->type                    = 1;
-            $analysisTjsscModel->time                    = time();
-            $analysisTjsscModel->save();
-
-            /* 插入 开奖记录关联的 数据分析表 数据包2解析的结果 */
-            $analysisTjsscModel = new AnalysisTjssc();
-            $analysisTjsscModel->tjssc_id                = $tjsscModel->id;
-            $analysisTjsscModel->front_three_lucky_txt   = $q3_data2_lucky;
-            $analysisTjsscModel->front_three_regret_txt  = $q3_data2_regert;
-            $analysisTjsscModel->center_three_lucky_txt  = $z3_data2_lucky;
-            $analysisTjsscModel->center_three_regret_txt = $z3_data2_regert;
-            $analysisTjsscModel->after_three_lucky_txt   = $h3_data2_lucky;
-            $analysisTjsscModel->after_three_regret_txt  = $h3_data2_regert;
-            $analysisTjsscModel->data_txt                = $this->data_packet_txt_2;
-            $analysisTjsscModel->type                    = 2;
-            $analysisTjsscModel->time                    = time();
-            $analysisTjsscModel->save();
+            /* 插入 开奖记录关联的 数据分析表 解析的结果 */
+            foreach ($isLucky as $key=>$val) {
+                $analysisTjsscModel = new AnalysisTjssc();
+                $analysisTjsscModel->tjssc_id                = $tjsscModel->id;
+                $analysisTjsscModel->front_three_lucky_txt   = $val['q3_lucky'];
+                $analysisTjsscModel->front_three_regret_txt  = $val['q3_regert'];
+                $analysisTjsscModel->center_three_lucky_txt  = $val['z3_lucky'];
+                $analysisTjsscModel->center_three_regret_txt = $val['z3_regert'];
+                $analysisTjsscModel->after_three_lucky_txt   = $val['h3_lucky'];
+                $analysisTjsscModel->after_three_regret_txt  = $val['h3_regert'];
+                $analysisTjsscModel->data_txt                = $this->data_packet_txt[$key]; //当前数据包文本内容
+                $analysisTjsscModel->type                    = $key; //数据包的id
+                $analysisTjsscModel->time                    = time();
+                $analysisTjsscModel->save();
+            }
 
             $innerTransaction->commit(); //事物提交
 
@@ -220,63 +201,69 @@ class GrabTjSsc
      * 解析 上传数据
      */
     private function analysisCode(){
-        //天津时时彩的数据包1
-        $model = Comparison::findOne(['type'=>3]);
-        $data = $model->txt;
-        $this->data_packet_txt = $model->txt;
-        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
-        $dataArr = explode(' ',$dataTxts);
-        $dataArr = array_filter($dataArr);
-        $this->data_packet = $dataArr;
-
-        //天津时时彩的数据包2
-        $model = Comparison::findOne(['type'=>33]);
-        $data = $model->txt;
-        $this->data_packet_txt_2 = $model->txt;
-        $dataTxts = str_replace("\r\n", ' ', $data); //将回车转换为空格
-        $dataArr = explode(' ',$dataTxts);
-        $dataArr = array_filter($dataArr);
-        $this->data_packet_2 = $dataArr;
+        //循环将 重庆数据包 内的数据 转换成数据放在全局变量里
+        $data = Tjdata::find()->select('id,data_txt')->all();
+        foreach ($data as $key=>$val){
+            $id = $val->id; //数据包id
+            $dataTxts = str_replace("\r\n", ' ', $val->data_txt); //将回车转换为空格
+            $dataArr = explode(' ',$dataTxts);
+            $dataArr = array_filter($dataArr);
+            $this->data_packet[$id] = $dataArr; //重庆数据包 内的数据 转换成数据放在全局变量里
+            $this->data_packet_txt[$id] = $val->data_txt; //重庆数据包 内的数据包文本格式 放在全局变量里
+        }
     }
 
     /**
      * 数据包里的号码是否中奖
-     * @param $code 需要查询的 前三 or 中三 or 后三号码;
+     * @param $q3 开奖前3号码;
+     * @param $z3 开奖中3号码;
+     * @param $h3 开奖后3号码;
      * @return bool
      */
-    private function isLucky($code){
-        //数据包1 中的中奖号码与未中奖号码
-        $data_packet = $this->data_packet;
-        $lucky = null;  //中奖号码
-        $regert = null; //未中奖号码
-        foreach ($data_packet as $key=>$val){
-            if($val == $code){
-                $lucky = $val;
-            }else{
-                $regert .= $val."\r\n";
+    private function isLucky($q3,$z3,$h3){
+        $arr = [];
+        foreach ($this->data_packet as $key=>$val){
+            $data_id = $key; //数据包id
+            $q3_lucky  = null;  //前三中奖号码
+            $q3_regert = null;  //前三未中奖号码
+
+            $z3_lucky  = null;  //中三中奖号码
+            $z3_regert = null;  //中三未中奖号码
+
+            $h3_lucky  = null;  //后三中奖号码
+            $h3_regert = null;  //后三未中奖号码
+
+            foreach ($val as $k=>$v){
+                //前三中奖状态
+                if($val == $q3){
+                    $q3_lucky = $v;
+                }else{
+                    $q3_regert .= $v."\r\n";
+                }
+                //中三中奖状态
+                if($val == $z3){
+                    $z3_lucky = $v;
+                }else{
+                    $z3_regert .= $v."\r\n";
+                }
+                //后三中奖状态
+                if($val == $h3){
+                    $h3_lucky = $v;
+                }else{
+                    $h3_regert .= $v."\r\n";
+                }
+                $arr[$key] = [
+                    'q3_lucky'=>$q3_lucky,
+                    'q3_regert'=>$q3_regert,
+                    'z3_lucky'=>$z3_lucky,
+                    'z3_regert'=>$z3_regert,
+                    'h3_lucky'=>$h3_lucky,
+                    'h3_regert'=>$h3_regert,
+                ];
             }
         }
 
-        $data1_lucky = $lucky;
-        $data1_regert = $regert;
-
-        //数据包2 中的中奖号码与未中奖号码
-        $data_packet = $this->data_packet_2;
-        $lucky = null;  //中奖号码
-        $regert = null; //未中奖号码
-        foreach ($data_packet as $key=>$val){
-            if($val == $code){
-                $lucky = $val;
-            }else{
-                $regert .= $val."\r\n";
-            }
-        }
-
-        $data2_lucky = $lucky;   //数据包2中的中奖号码
-        $data2_regert = $regert; //数据包2中的未中奖号码
-
-        return [$data1_lucky,$data1_regert,$data2_lucky,$data2_regert];
-
+        return $arr;
     }
 
 

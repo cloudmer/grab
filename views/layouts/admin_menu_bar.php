@@ -30,7 +30,7 @@
                     <?php foreach(Menus::menuSub(1) as $menu):?>
                         <?php if($menu->state): ?>
                         <?php $menu2 = Menus::menuSub(2,$menu->id) ?>
-                        <li class="<?= active($menu->controller);?>">
+                        <li class="<?= active($menu->controller,$menu->action);?>">
                             <a href="<?= $menu->controller.'/'.$menu->action ?>" class="<?= $menu2 ? 'dropdown-toggle' : null ?>">
                                 <i class="<?= $menu->icon ?>"></i>
                                 <span><?= $menu->name?></span>

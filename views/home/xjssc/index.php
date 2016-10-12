@@ -84,8 +84,9 @@ $this->registerJs($script);
         <form action="" method="get">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <select class="form-control" name="type">
-                    <option value="1" <?php if($type == 1){ echo 'selected="selected"'; }?> >数据包1</option>
-                    <option value="2" <?php if($type == 2){ echo 'selected="selected"'; }?> >数据包2</option>
+                    <?php foreach ($data_packet as $key=>$val): ?>
+                        <option value="<?= $val['id']?>" <?php if($type == $val['id']){ echo 'selected="selected"'; }?> ><?= $val['alias']; ?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
         </form>

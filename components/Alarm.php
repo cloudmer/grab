@@ -10,8 +10,11 @@ namespace app\components;
 
 
 use app\models\Configure;
+use app\models\Cqdata;
 use app\models\Cqssc;
+use app\models\Tjdata;
 use app\models\Tjssc;
+use app\models\Xjdata;
 use app\models\Xjssc;
 use app\models\Mailbox;
 use Yii;
@@ -31,11 +34,32 @@ class Alarm
     /* 当前的彩票类型数据模型 */
     protected $model;
 
-    /* 数据包1 报警配置项 */
-    protected $config_one;
+    /* 当前彩种的报警设置 */
+    protected $config;
 
-    /* 数据包2 报警配置项 */
-    protected $config_two;
+    /* 当前数据包id */
+    protected $data_txt_id;
+
+    /* 当前数据包别名 */
+    protected $alias;
+
+    /* 当前数据包报警期数 */
+    protected $regret_number;
+
+    /* 当前数据包报警开始时间 */
+    protected $start;
+
+    /* 当前数据包报警结束时间 */
+    protected $end;
+
+    /* 当前数据包是否开启每一期开奖通知 */
+    protected $forever;
+
+    /* 当前数据包是否开启每一期开奖通知邮件通知内容 */
+    protected $forever_email_contents;
+
+    /* 当前数据包 N期未中奖 邮件通知内容 */
+    protected $danger_email_contents;
 
     /**
      * 警报
@@ -59,81 +83,63 @@ class Alarm
      * 获取 最新几期的数据
      */
     private function get_codes(){
-        $this->analysis_config_one();
-        $this->analysis_config_two();
+        $this->analysis();
     }
 
     /**
-     * 分析 数据包1 是否要报警
+     * 分析数据
      */
-    private function analysis_config_one(){
-        //检查是否开启报警
-        if(!$this->config_one->state){
-            echo $this->cp_name."时时彩 数据包1 报警通知关闭状态 时间:".date('Y-m-d H:i:s')."\r\n";
-            return;
+    private function analysis(){
+        //获取报警配置项内的警报期数
+        foreach ($this->config as $key=>$val){
+            $this->data_txt_id  = $val['id'];             //数据包id
+            $this->alias         = $val['alias'];         //数据包别名
+            $this->regret_number = $val['regret_number']; //数据包报警期数
+            $this->start         = $val['start'];         //数据包报警开始时间
+            $this->end           = $val['end'];           //数据包报警结束时间
+            $this->forever       = $val['forever'];       //数据包是否开启每期报警通知
+            //查询报警期数内的
+            $this->query_codes();
         }
 
-        $start = $this->config_one->start_time; //报警开启时间
-        $end   = $this->config_one->end_time;   //报警结束时间
-        //检查是否在报警时段
-        if( ($start && $end) && (date('H') < $start || date('H') > $end) ){
-            //当前非报警时段
-            echo $this->cp_name."时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
-            return;
+        //每期开奖号 邮件通知
+        if($this->forever_email_contents){
+            $this->send_mail($this->forever_email_contents,1);
         }
 
-        // 当前彩种 数据包1 开启每期报警
-        if($this->config_one->forever){
-            $this->forever_mail(1);
+        //当前数据包 N 期未中 邮件报警
+        if($this->danger_email_contents){
+            $this->send_mail($this->danger_email_contents,2);
         }
-        $this->inspect_alarm(1);
     }
 
-    /**
-     * 分析 数据包2 是否要报警
-     */
-    private function analysis_config_two(){
-        //检查是否开启报警
-        if(!$this->config_two->state){
-            echo $this->cp_name."时时彩 数据包2 报警通知关闭状态 时间:".date('Y-m-d H:i:s')."\r\n";
-            return;
-        }
-
-        $start = $this->config_two->start_time; //报警开启时间
-        $end   = $this->config_two->end_time;   //报警结束时间
+    private function query_codes(){
         //检查是否在报警时段
-        if( ($start && $end) && (date('H') < $start || date('H') > $end) ){
+        if( ($this->start && $this->end) && (date('H') < $this->start || date('H') > $this->end) ){
             //当前非报警时段
-            echo $this->cp_name."时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
+            echo $this->cp_name.' 数据包别名: '.$this->alias. " - 时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
 
-        // 当前彩种 数据包2 开启每期报警
-        if($this->config_two->forever){
-            $this->forever_mail(2);
+        //是否开启每期开奖通知
+        if($this->forever){
+            $this->forever();
         }
-        $this->inspect_alarm(2);
+
+        //检查当前期数内 是否未中奖 报警
+        $this->inspect_alarm();
     }
 
     /**
      * 检查当前期数内 是否未中奖 报警
      */
-    /**
-     * @param $type 1=>数据包1的分析数据 2=>数据包2的分析数据
-     */
-    private function inspect_alarm($type){
-        if($type == 1){
-            $config = $this->config_one;
-        }
-        if($type == 2){
-            $config = $this->config_two;
-        }
-
+    private function inspect_alarm(){
         //多少期内 未中奖的报警期数
-        $regret_number = $config->regret_number;
+        $regret_number = $this->regret_number;
         $codes = $this->model->find()->orderBy('time DESC')->limit($regret_number)->all();
         //如果 用户设置的报警期数 不等于 查询出来的数据条数 则不执行报警 (数据库里的数据小于报警期数)
         if(count($codes) != $regret_number){
+            echo $this->cp_name.' 数据包别名: '.$this->alias. " - 时时彩报抓取数据还不满报警期数条数,请等待达到报警条件 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
 
@@ -142,29 +148,24 @@ class Alarm
         $h3_status = false; //后3 是 在当前警报期内中过奖 默认false
 
         foreach ($codes as $key=>$m){
-            if($type == 1){
-                $m = $this->get_data1($m);
-            }
-            if($type == 2){
-                $m = $this->get_data2($m);
-            }
-
+            //获取当前彩种 分析数据中的 数据包 N 的分析数据
+            $analysis_data = $m->getAnalysis($this->data_txt_id)->one();
             //当前 N 期内 前3号码 中过奖
-            if($m->front_three_lucky_txt){
+            if($analysis_data->front_three_lucky_txt){
                 $q3_status = true;
             }
             //当前 N 期内 中3号码 中过奖
-            if($m->center_three_lucky_txt){
+            if($analysis_data->center_three_lucky_txt){
                 $z3_status = true;
             }
             //当前 N 期内 后3号码 中过奖
-            if($m->after_three_lucky_txt){
+            if($analysis_data->after_three_lucky_txt){
                 $h3_status = true;
             }
         }
 
+        //当前警报期内 前3 中过 中3 中过 后3中过
         if($q3_status && $z3_status && $h3_status){
-            //当前警报期内 前3 中过 中3 中过 后3中过
             return;
         }
 
@@ -174,83 +175,36 @@ class Alarm
 
         $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
             .'通知类型:'.$this->cp_alias_name.' - 当前 '.$regret_number.' 期 警报<br/>'
-            .'数据包:'.$type .'<br/>'
+            .'数据包别名:'.$this->alias .'<br/>'
             .'前:'.$q3 .'<br/>'
             .'中:'.$z3 .'<br/>'
-            .'后:'.$h3 .'<br/>';
+            .'后:'.$h3 .'<br/><br/>';
 
-        $this->send_mail($mail_contents,2);
+        $this->danger_email_contents .= $mail_contents;
     }
 
-
     /**
-     * 每期开奖都邮件报警
-     * @param $type 1=> 数据报1 2=>数据包2
+     * 每一期开奖通知
      */
-    private function forever_mail($type){
+    private function forever(){
         $newest = $this->model->find()->orderBy('time DESC')->one();
-        if($type == 1){
-            //数据包1分析的结果
-            $data1 = $this->get_data1($newest);
-            $data1->front_three_lucky_txt  ? $q3 = 'Y' : $q3 = 'N' ;
-            $data1->center_three_lucky_txt ? $z3 = 'Y' : $z3 = 'N' ;
-            $data1->after_three_lucky_txt  ? $h3 = 'Y' : $h3 = 'N' ;
-        }
-
-        if($type == 2){
-            //数据包2分析的结果
-            $data2 = $this->get_data2($newest);
-            $data2->front_three_lucky_txt  ? $q3 = 'Y' : $q3 = 'N' ;
-            $data2->center_three_lucky_txt ? $z3 = 'Y' : $z3 = 'N' ;
-            $data2->after_three_lucky_txt  ? $h3 = 'Y' : $h3 = 'N' ;
-        }
+        //获取当前彩种 分析数据中的 数据包 N 的分析数据
+        $analysis_data = $newest->getAnalysis($this->data_txt_id)->one();
+        //数据包N 分析的结果
+        $analysis_data->front_three_lucky_txt  ? $q3 = 'Y' : $q3 = 'N' ;
+        $analysis_data->center_three_lucky_txt ? $z3 = 'Y' : $z3 = 'N' ;
+        $analysis_data->after_three_lucky_txt  ? $h3 = 'Y' : $h3 = 'N' ;
 
         $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
             .'通知类型:'.$this->cp_name.' - [时时彩] 每一期开奖通知<br/>'
             .'当前期号:'.$newest->qishu .'<br/>'
             .'开奖号码:'.$newest->code.'<br/>'
-            .'数据包'.$type.' - 前三中奖:'.$q3 .'<br/>'
-            .'数据包'.$type.' - 中三中奖:'.$z3 .'<br/>'
-            .'数据包'.$type.' - 后三中奖:'.$h3 .'<br/>';
+            .'数据包别名:'.$this->alias.' - 前三中奖:'.$q3 .'<br/>'
+            .'数据包别名:'.$this->alias.' - 中三中奖:'.$z3 .'<br/>'
+            .'数据包别名:'.$this->alias.' - 后三中奖:'.$h3 .'<br/><br/>';
 
-        //每一期开奖 邮件通知
-        $this->send_mail($mail_contents,1);
+        $this->forever_email_contents .= $mail_contents;
     }
-
-    /**
-     * 获取当前开奖号的 数据分析 数据包1
-     * @param $obj   需要查询的对象
-     * @return mixed
-     */
-    private function get_data1($obj){
-        if($this->type == 'cq'){
-            return $obj->analysisCqsscsData1;
-        }
-        if($this->type == 'tj'){
-            return $obj->analysisTjsscsData1;
-        }
-        if($this->type == 'xj'){
-            return $obj->analysisXjsscsData1;
-        }
-    }
-
-    /**
-     * 获取当前开奖号的 数据分析 数据包2
-     * @param $obj   需要查询的对象
-     * @return mixed
-     */
-    private function get_data2($obj){
-        if($this->type == 'cq'){
-            return $obj->analysisCqsscsData2;
-        }
-        if($this->type == 'tj'){
-            return $obj->analysisTjsscsData2;
-        }
-        if($this->type == 'xj'){
-            return $obj->analysisXjsscsData2;
-        }
-    }
-
 
     /**
      * 获取彩票种类名称
@@ -291,18 +245,15 @@ class Alarm
      */
     private function get_config(){
         if($this->type == 'cq'){
-            $this->config_one = Configure::findOne(['type'=>2]);  //重庆时时彩  数据包1 报警设置
-            $this->config_two = Configure::findOne(['type'=>22]);  //重庆时时彩 数据包2 报警设置
+            $config = Cqdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
         }
         if($this->type == 'tj'){
-            $this->config_one = Configure::findOne(['type'=>3]);  //天津时时彩 数据包1 报警设置
-            $this->config_two = Configure::findOne(['type'=>33]); //天津时时彩 数据包2 报警设置
-
+            $config = Tjdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
         }
         if($this->type == 'xj'){
-            $this->config_one = Configure::findOne(['type'=>4]);  //新疆时时彩 数据包1 报警设置
-            $this->config_two = Configure::findOne(['type'=>44]); //新疆时时彩 数据包2 报警设置
+            $config = Xjdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
         }
+        $this->config = $config;
     }
 
     /**

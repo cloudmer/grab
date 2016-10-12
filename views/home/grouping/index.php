@@ -1,7 +1,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
 <?php
+$csrf = Yii::$app->request->getCsrfToken();
+
 $script = <<< JS
 $(document).ready(function(){
+    $('form').submit(function() {
+        if(!$("#cp_type").val()){
+            return false;
+        }
+        if(!$("#type").val()){
+            return false;
+        }
+        if(!$("#cp_unit").val()){
+            return false;
+        }
+        if(!$("#cp_unit_val").val()){
+            return false;
+        }
+    })
+    
+    $("#search").click(function(){
+        $(".search_div").show();
+    })
+    
+    $("._close").click(function() {
+        $(".search_div").hide();
+    })
+    
+    $(".c_type li").click(function(){
+        $(".c_type li").removeClass('on');
+        $(this).addClass('on');
+        var val = $(this).attr('data-val');
+        var url = $('.c_type').attr('data-url');
+        $.post(url,{type:val},function(data) {
+            // console.log(data);
+            if(data){
+                var html = '';
+                for(var i in data){
+                    html += '<li data-id="'+data[i]['id']+'">'+data[i]['alias']+'</li>';
+                }
+                if(html){
+                    $('.data_packet').html(html);
+                }
+                $("#cp_type").val(val);
+            }
+        },'json')
+    })
+    
+    $('body').on('click','.data_packet li',function() {
+        $('.data_packet li').removeClass('on');
+        $(this).addClass('on');
+        var data_id = $(this).attr('data-id');
+        $("#type").val(data_id);
+    })
+    
+    $(".unit li").click(function(){
+        var val = $(this).attr('data-val');
+        $('.unit li').removeClass('on');
+        $(this).addClass('on');
+        $("#cp_unit").val(val);
+    })
+    
+    $(".unit_value li").click(function(){
+        var val = $(this).attr('data-val');
+        $('.unit_value li').removeClass('on');
+        $(this).addClass('on');
+        $("#cp_unit_val").val(val);
+    })
+    
 	$('#scrollUp').click(function (e) {
 		e.preventDefault();
 		$('html,body').animate({ scrollTop:0});
@@ -77,6 +143,11 @@ $this->registerJs($script);
 <!-- E 可根据自己喜好引入样式风格文件 -->
 
 <style>
+    .action-btn{
+        margin-top: 2rem;
+        width: 80%;
+        margin-left: 10%;
+    }
     .bottom_tools {
         position: fixed;
         z-index: 1070;
@@ -92,6 +163,17 @@ $this->registerJs($script);
         background-position: -100px -53px;
         display: none;
     }
+
+    #search{
+        margin-bottom: 10px;
+        border-radius: 100px;
+        width: 45px;
+        height: 45px;
+        background-image: url(/images/backgrounds.32.png);
+        background-position: -238px -46px;
+        display: none;
+    }
+
     .row{
         margin-right:0;
         margin-left:0;
@@ -104,60 +186,75 @@ $this->registerJs($script);
     }
 </style>
 
-<div style="margin: 0 10px 0 10px">
-    <div class="row">
-        <form action="" method="post">
-            <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
-<!--            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">-->
-<!--                <input type="text" class="form-control"  name="date" id="appDate" placeholder="请选择查询时间">-->
-<!--            </div>-->
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <select class="form-control" name="cp_type">
-                    <option value="0" selected="">请选择彩票类型</option>
-                    <option value="1">重庆时时彩</option>
-                    <option value="2">天津时时彩</option>
-                    <option value="3">新疆时时彩</option>
-                </select>
-            </div>
+<style type="text/css">
+    /**{*/
+        /*margin: 0;*/
+        /*padding: 0;*/
+    /*}*/
 
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <select class="form-control" name="type">
-                    <option value="1" <?php if($data_type == 1){ echo 'selected="selected"'; }?> >数据包1</option>
-                    <option value="2" <?php if($data_type == 2){ echo 'selected="selected"'; }?> >数据包2</option>
-                </select>
-            </div>
+    ul,li{
+        list-style: none;
+    }
+    .search_div{
+        display: none;
+        position:absolute;
+        left:0;
+        top:0;
+        z-index:1000000;
+        height:100%;
+        width:100%;
+        /*position: relative;*/
+    }
+    .select_box{
+        width: 100%;
+        height: 100%;
+        min-height: 3rem;
+        background: #333333;
+        opacity: .9;
+        position: fixed;
+        left: 0;
+        top: 4rem;
+    }
+    .select_box ul{
+        width: 90%;
+        margin: .5rem 5%;
+        border-top: 1px solid #ffffff;
+        clear: both;
+    }
+    .select_box ul li{
+        display: block;
+        height: 2rem;
+        color: #ffffff;
+        float: left;
+        min-width: 3rem;
+        line-height: 2rem;
+        text-align: center;
+        font-size: 2rem;
+        margin: 0.6rem 0;
+    }
+    .ul_type{
+        border: none !important;
+    }
+    .ul_type li,.ul_group li,.ul_nuit li{
+        width: 33%;
+    }
+    .select_box ul li.on{
+        color: yellow;
+    }
+    .ul_data{
+        height: 8rem;
+        overflow: auto;
+    }
+    .ul_data li{
+        width: 50%;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        -o-text-overflow:ellipsis;
+        overflow: hidden;
+    }
+</style>
 
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <select class="form-control" name="cp_unit">
-                    <option value="0" selected="">请选择分组单位</option>
-                    <option value="1">万位</option>
-                    <option value="2">千位</option>
-                    <option value="3">百位</option>
-                    <option value="4">十位</option>
-                    <option value="5">个位</option>
-                </select>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <select class="form-control" name="cp_unit_val">
-                    <option value="" selected="">请选择单位值</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                </select>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <button type="submit" class="btn btn-primary btn-lg btn-block">查询</button>
-            </div>
-        </form>
-    </div>
-</div>
+
 
 <?php if($error_msg): ?>
     <div class="alert alert-warning" role="alert" style="margin: 24px"><?php echo '警告：'.$error_msg.'!!! ' ?></div>
@@ -176,7 +273,7 @@ $this->registerJs($script);
             <th class="text-center">后三</th>
         </tr>
 
-        <?= $this->render('_list',['model'=>$model,'type'=>$type,'name'=>$name,'unit'=>$unit,'unit_val'=>$unit_val,'data_type'=>$data_type])?>
+        <?= $this->render('_list',['model'=>$model,'type'=>$type,'name'=>$name,'unit'=>$unit,'unit_val'=>$unit_val,'data_txt_id'=>$data_txt_id])?>
 
         </tbody>
     </table>
@@ -191,6 +288,53 @@ $this->registerJs($script);
 
 
 <div class="bottom_tools" style="bottom: 40px;">
+    <a id="search" href="javascript:;" title="飞回顶部" style="display: block;"></a>
     <a id="scrollUp" href="javascript:;" title="飞回顶部" style="display: block;"></a>
 </div>
 
+
+
+<div class="search_div select_box">
+    <section class="">
+        <ul class="ul_type c_type" data-url="<?= \yii\helpers\Url::to('/home/data-packet')?>" >
+            <li data-val="cq">重庆</li>
+            <li data-val="tj">天津</li>
+            <li data-val="xj">新疆</li>
+        </ul>
+        <ul class="ul_data data_packet"></ul>
+        <ul class="ul_group unit">
+            <li data-val="1">万位</li>
+            <li data-val="2">千位</li>
+            <li data-val="3">百位</li>
+            <li data-val="4">十位</li>
+            <li data-val="5">个位</li>
+        </ul>
+        <ul class="ul_nuit unit_value">
+            <li data-val="0">0</li>
+            <li data-val="1">1</li>
+            <li data-val="2">2</li>
+            <li data-val="3">3</li>
+            <li data-val="4">4</li>
+            <li data-val="5">5</li>
+            <li data-val="6">6</li>
+            <li data-val="7">7</li>
+            <li data-val="8">8</li>
+            <li data-val="09">9</li>
+        </ul>
+    </section>
+
+    <form action="" method="post">
+        <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
+
+        <input type="hidden" id="cp_type" name="cp_type" value="">
+        <input type="hidden" id="type" name="type" value="">
+        <input type="hidden" id="cp_unit" name="cp_unit" value="">
+        <input type="hidden" id="cp_unit_val" name="cp_unit_val" value="">
+
+        <div class="row" style="clear: both">
+            <button type="button" class="action-btn btn btn-primary btn-lg btn-block _close">关闭</button>
+            <button style="margin-top: 2rem;" type="submit" class="action-btn btn btn-primary btn-lg btn-block">查询</button>
+        </div>
+    </form>
+
+</div>
