@@ -238,19 +238,19 @@ class GrabXjSsc
 
             foreach ($val as $k=>$v){
                 //前三中奖状态
-                if($val == $q3){
+                if($v == $q3){
                     $q3_lucky = $v;
                 }else{
                     $q3_regert .= $v."\r\n";
                 }
                 //中三中奖状态
-                if($val == $z3){
+                if($v == $z3){
                     $z3_lucky = $v;
                 }else{
                     $z3_regert .= $v."\r\n";
                 }
                 //后三中奖状态
-                if($val == $h3){
+                if($v == $h3){
                     $h3_lucky = $v;
                 }else{
                     $h3_regert .= $v."\r\n";
