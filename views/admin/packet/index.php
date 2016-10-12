@@ -44,7 +44,7 @@ $this->registerJs($script);
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li class="active"><span>预定号码报警设置</span></li>
+                    <li class="active"><span>数据包与报警设置</span></li>
                 </ol>
             </div>
         </div>
