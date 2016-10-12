@@ -47,7 +47,7 @@ $(document).ready(function(){
         },'json')
     })
     
-    $('body').on('click','.data_packet li',function() {
+    $(document).on('click','.data_packet li',function() {
         $('.data_packet li').removeClass('on');
         $(this).addClass('on');
         var data_id = $(this).attr('data-id');
