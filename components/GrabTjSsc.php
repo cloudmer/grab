@@ -27,6 +27,13 @@ class GrabTjSsc
      */
     const URL = 'http://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php';
 
+    /**
+     * 爱彩乐网
+     * http://pub.icaile.com/tjssckjjg.php
+     */
+//    const URL_ACL = 'http://pub.icaile.com/tjssckjjg.php';
+    const URL_GW = 'http://pub.icaile.com/tjssckjjg.php';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -59,10 +66,52 @@ class GrabTjSsc
         new Alarm('tj');
     }
 
+
+    /**
+     * file_get_contents 抓取开奖数据
+     */
+    private function get_data(){
+        include_once('simplehtmldom_1_5/simple_html_dom.php');
+        $simple_html_dom = new \simple_html_dom();
+
+        //zlib 解压 并转码
+        $data = false;
+        $data = @file_get_contents("compress.zlib://".self::URL_GW);
+        if(!$data){
+            $this->setLog(false,'天津时时彩-开奖数据抓取失败');
+            exit('天津时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //转换成 UTF-8编码
+        $encode = mb_detect_encoding($data, array('ASCII','UTF-8','GB2312',"GBK",'BIG5'));
+        $content = iconv($encode,'UTF-8',$data);
+
+        $simple_html_dom->load($content);
+        //开奖期号
+        $qihao = $simple_html_dom->find('div[class=prepare]',0)->find('td[class=nth-child-1]',0)->plaintext;
+
+        //开奖时间
+        $kjsj = $simple_html_dom->find('div[class=prepare]',0)->find('td[class=nth-child-2]',0)->plaintext;
+
+        //开奖号
+        $code = $simple_html_dom->find('div[class=prepare]',0)->find('td[class=nth-child-3]',0)->plaintext;
+
+        $simple_html_dom->clear();
+
+        //将开奖号中间的空格去掉
+        $code = str_replace(" ", '', $code);
+
+        if(!intval($qihao) || !intval($code)){
+            exit('天津时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
     /**
      * curl 访问 开奖数据
      */
-    private function get_data(){
+    private function get_data2(){
         $post_data = ['lotteryType'=>'tianjinssc']; //天津时时彩
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::URL);
@@ -106,6 +155,9 @@ class GrabTjSsc
         //开奖号码
         $code = $tjCodeArr['kaijiang']['jianghao'];
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+        echo '<pre>';
+        var_dump($this->data);
+        exit;
     }
 
     /**

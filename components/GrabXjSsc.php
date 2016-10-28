@@ -30,6 +30,12 @@ class GrabXjSsc
      */
     const URL = 'http://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php';
 
+    /**
+     * 信息来源网 新疆时时彩官网
+     * http://www.xjflcp.com/game/sscIndex
+     */
+    const URL_GW = 'http://www.xjflcp.com/game/sscIndex';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -63,9 +69,54 @@ class GrabXjSsc
     }
 
     /**
-     * curl 访问 开奖数据
+     * file_get_contents 抓取开奖数据
      */
     private function get_data(){
+        include_once('simplehtmldom_1_5/simple_html_dom.php');
+        $simple_html_dom = new \simple_html_dom();
+
+        //zlib 解压 并转码
+        $data = false;
+        $data = @file_get_contents("compress.zlib://".self::URL_GW);
+        if(!$data){
+            $this->setLog(false,'新疆时时彩-开奖数据抓取失败');
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //转换成 UTF-8编码
+        $encode = mb_detect_encoding($data, array('ASCII','UTF-8','GB2312',"GBK",'BIG5'));
+        $content = iconv($encode,'UTF-8',$data);
+
+        $simple_html_dom->load($content);
+        //开奖期号
+        $qihao = $simple_html_dom->find('div[class=con_left]',1)->find('span',0)->plaintext;
+        $qihao = trim($qihao);
+        //开奖号
+        $code_1 = $simple_html_dom->find('div[class=kj_ball_new]',0)->find('i',0)->plaintext;
+        $code_2 = $simple_html_dom->find('div[class=kj_ball_new]',0)->find('i',1)->plaintext;
+        $code_3 = $simple_html_dom->find('div[class=kj_ball_new]',0)->find('i',2)->plaintext;
+        $code_4 = $simple_html_dom->find('div[class=kj_ball_new]',0)->find('i',3)->plaintext;
+        $code_5 = $simple_html_dom->find('div[class=kj_ball_new]',0)->find('i',4)->plaintext;
+        $code = trim($code_1).trim($code_2).trim($code_3).trim($code_4).trim($code_5);
+
+        if(!$code){
+            exit('新疆时时彩-等待开奖...'."\r\n");
+        }
+
+        $simple_html_dom->clear();
+
+        //将开奖号中间的空格去掉
+        $code = str_replace(" ", '', $code);
+        //开奖时间
+        $kjsj = date('Y-m-d H:i:s');
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * curl 访问 开奖数据
+     */
+    private function get_data2(){
         $post_data = ['lotteryType'=>'xjssc']; //新疆时时彩
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::URL);
