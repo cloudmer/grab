@@ -55,7 +55,7 @@ $this->registerJs($script);
             'method'=>'post'])?>
         <div class="modal-body">
             <?= $form->field($model, 'id')->label(false)->hiddenInput()?>
-            <?= $form->field($model,'cp_type')->dropDownList([1=>'重庆时时彩',2=>'天津时时彩',3=>'新疆时时彩'])?>
+            <?= $form->field($model,'cp_type')->dropDownList([0=>'所有彩种',1=>'重庆时时彩',2=>'天津时时彩',3=>'新疆时时彩'])?>
             <?= $form->field($model,'type')->dropDownList([1=>'所有',2=>'前三',3=>'中三',4=>'后三'])?>
 
             <?= $form->field($model, 'number')->textInput(['placeholder'=>'预定号组','type'=>'number','maxlength'=>1])?>

@@ -45,6 +45,7 @@ class ReserveController extends BaseController
      * */
     public function actionSave(){
         if(\Yii::$app->request->isPost){
+
             $model = new Reserve();
             $reserve = $model->addReserve();
             if($reserve){

@@ -35,6 +35,7 @@ class Reserve extends \yii\db\ActiveRecord
 
     /* 彩票类型 */
     public static $get_cp_type = [
+        0 => '所有时时彩',
         1 => '重庆时时彩',
         2 => '天津时时彩',
         3 => '新疆时时彩',
@@ -78,6 +79,22 @@ class Reserve extends \yii\db\ActiveRecord
     * 添加
     * */
     public function addReserve(){
+        //所有彩种
+        if(\Yii::$app->request->post()['Reserve']['cp_type'] == 0){
+            $cp_type = [1,2,3]; //彩票类型
+            foreach ($cp_type as $key=>$val){
+                $model = new self();
+                $model->type = \Yii::$app->request->post()['Reserve']['type'];
+                $model->cp_type = $val;
+                $model->number = \Yii::$app->request->post()['Reserve']['number'];
+                $model->qishu = \Yii::$app->request->post()['Reserve']['qishu'];
+                $model->status = \Yii::$app->request->post()['Reserve']['status'];
+                $model->time = time();
+                $model->save();
+            }
+            return $model;
+        }
+
         $this->time = time();
         $this->load(Yii::$app->request->post());
         if($this->validate() && $this->save()){
