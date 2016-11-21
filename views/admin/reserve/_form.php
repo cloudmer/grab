@@ -58,7 +58,7 @@ $this->registerJs($script);
             <?= $form->field($model,'cp_type')->dropDownList([0=>'所有彩种',1=>'重庆时时彩',2=>'天津时时彩',3=>'新疆时时彩'])?>
             <?= $form->field($model,'type')->dropDownList([1=>'所有',2=>'前三',3=>'中三',4=>'后三'])?>
 
-            <?= $form->field($model, 'number')->textInput(['placeholder'=>'预定号组','type'=>'number','maxlength'=>1])?>
+            <?= $form->field($model, 'number')->textInput(['placeholder'=>'预定号组','type'=>'number','maxlength'=>3])?>
             <?= $form->field($model, 'qishu')->textInput(['placeholder'=>'报警期数','type'=>'number','maxlength'=>3])?>
             <?= $form->field($model,'status')->dropDownList([0=>'关闭',1=>'开启'])?>
         </div>
