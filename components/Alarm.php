@@ -9,6 +9,8 @@
 namespace app\components;
 
 
+use app\models\Bjdata;
+use app\models\Bjssc;
 use app\models\Configure;
 use app\models\Cqdata;
 use app\models\Cqssc;
@@ -150,6 +152,11 @@ class Alarm
             $db_ssc_table_name = 'xjssc';
             $db_analysis_table_name = 'analysisXjssc';
             $db_foreign_key_id = 'xjssc_id';
+        }
+        if($this->type == 'bj'){
+            $db_ssc_table_name = 'bjssc';
+            $db_analysis_table_name = 'analysisBjssc';
+            $db_foreign_key_id = 'bjssc_id';
         }
 
 
@@ -352,6 +359,10 @@ class Alarm
             $this->cp_name       = '新疆';
             $this->cp_alias_name = '疆';
         }
+        if($this->type == 'bj'){
+            $this->cp_name       = '北京';
+            $this->cp_alias_name = '京';
+        }
     }
 
     /**
@@ -366,6 +377,9 @@ class Alarm
         }
         if($this->type == 'xj'){
             $this->model = new Xjssc();
+        }
+        if($this->type == 'bj'){
+            $this->model = new Bjssc();
         }
     }
 
@@ -382,6 +396,9 @@ class Alarm
         }
         if($this->type == 'xj'){
             $config = Xjdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
+        }
+        if($this->type == 'bj'){
+            $config = Bjdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
         }
         $this->config = $config;
     }

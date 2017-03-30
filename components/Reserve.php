@@ -9,6 +9,7 @@
 namespace app\components;
 
 
+use app\models\Bjssc;
 use app\models\Cqssc;
 use app\models\Tjssc;
 use app\models\Xjssc;
@@ -83,6 +84,11 @@ class Reserve
             $config = \app\models\Reserve::find()->where(['cp_type'=>3])->all();
 //            $this->cp_name = '新疆';
             $this->cp_name = '疆';
+        }
+        if($this->cptype == 'bj'){
+            //北京时时彩
+            $config = \app\models\Reserve::find()->where(['cp_type'=>4])->all();
+            $this->cp_name = '京';
         }
         if(!$config){
             echo '系统还未添加 -['.$this->cp_name.'彩票] 预定报警号码,请先添加'."\r\n";
@@ -425,6 +431,9 @@ class Reserve
         }
         if($this->cptype == 'xj'){
             $this->model = new Xjssc();
+        }
+        if($this->cptype == 'bj'){
+            $this->model = new Bjssc();
         }
     }
 }
