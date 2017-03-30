@@ -39,6 +39,7 @@ class Reserve extends \yii\db\ActiveRecord
         1 => '重庆时时彩',
         2 => '天津时时彩',
         3 => '新疆时时彩',
+        4 => '北京时时彩',
     ];
 
     /* 报警状态 */
