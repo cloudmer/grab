@@ -3,6 +3,7 @@
 namespace app\controllers;
 use app\components\Alarm;
 use app\components\Grab;
+use app\components\GrabBjSsc;
 use app\components\GrabCqSsc;
 use app\components\GrabOld;
 use app\components\GrabTjSsc;
@@ -44,6 +45,13 @@ class GrabController extends \yii\web\Controller
      */
     public function actionXjssc(){
         new GrabXjSsc();
+    }
+
+    /**
+     * 抓取北京时时彩数据
+     */
+    public function actionBjssc(){
+        new GrabBjSsc();
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Bjdata;
+use app\models\Bjssc;
 use app\models\Code;
 use app\models\Codeold;
 use app\models\Cqdata;
@@ -127,6 +129,30 @@ class HomeController extends \yii\web\Controller
         return $this->render('/home/xjssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
     }
 
+    /**
+     * 北京时时彩
+     * @return bool|string
+     */
+    public function actionBjssc(){
+        $type = \Yii::$app->request->get('type');
+
+        list($data_packet,$default) = $this->get_data_packet('bj');
+        !$type ? $type = $default->id : false;
+
+        $data = Bjssc::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/bjssc/_list',['model'=>$model,'type'=>$type]);
+        }
+
+        return $this->render('/home/bjssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
+    }
+
 
     /**
      * 数据分组
@@ -193,22 +219,22 @@ class HomeController extends \yii\web\Controller
 
             //检测 当前查询出来的数据中最后一起是不是最新的开奖期数 如果不是 那么他后面还有开奖数据
             if($cqssc){
-               //获取查询结果的最后一条数据
-               //如果只查询出一条数据
+                //获取查询结果的最后一条数据
+                //如果只查询出一条数据
                 if(count($cqssc) == 1){
-                   $last = $cqssc[0];
+                    $last = $cqssc[0];
                 }else{
-                   $last = $cqssc[count($cqssc)-1];
-                 }
+                    $last = $cqssc[count($cqssc)-1];
+                }
 
-                 //最新一起的开奖数据 的期数
+                //最新一起的开奖数据 的期数
                 $newest_qishu = Cqssc::find()->orderBy('time DESC')->limit(1)->select('qishu')->one();
                 $newest_qishu = $newest_qishu->qishu;
                 //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
                 if($newest_qishu != $last->qishu){
                     $increase = Cqssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
                     array_push($cqssc,$increase);
-               }
+                }
             }
 
             $newCqssc = [];
@@ -383,6 +409,10 @@ class HomeController extends \yii\web\Controller
             $model = Tjdata::find()->select('id,alias')->all();
             $default = Tjdata::find()->select('id,alias')->orderBy('time ASC')->one();
         }
+        if($type == 'bj'){
+            $model = Bjdata::find()->select('id,alias')->all();
+            $default = Bjdata::find()->select('id,alias')->orderBy('time ASC')->one();
+        }
         return [$model,$default];
     }
 
@@ -399,6 +429,9 @@ class HomeController extends \yii\web\Controller
         }
         if($type == 'tj'){
             $model = Tjdata::find()->select('id,alias')->asArray()->all();
+        }
+        if($type == 'bj'){
+            $model = Bjdata::find()->select('id,alias')->asArray()->all();
         }
         echo json_encode($model);
     }

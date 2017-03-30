@@ -8,6 +8,7 @@
 
 namespace app\controllers\admin;
 
+use app\models\Bjdata;
 use app\models\Cqdata;
 use app\models\Tjdata;
 use app\models\Xjdata;
@@ -45,6 +46,11 @@ class PacketController extends BaseController
         return $this->render('index',['type'=>'xj','model'=>$model]);
     }
 
+    public function actionBj(){
+        $model = Bjdata::find()->all();
+        return $this->render('index',['type'=>'bj','model'=>$model]);
+    }
+
     /**
      * 表单视图
      */
@@ -58,6 +64,9 @@ class PacketController extends BaseController
         }
         if($type == 'tj'){
             $model = new Tjdata();
+        }
+        if($type == 'bj'){
+            $model = new Bjdata();
         }
         return $this->render('_form',[
             'model' => $model
@@ -78,6 +87,10 @@ class PacketController extends BaseController
             if($type == 'tj'){
                 $model = new Tjdata();
                 $post_name = 'Tjdata';
+            }
+            if($type == 'bj'){
+                $model = new Bjdata();
+                $post_name = 'Bjdata';
             }
 
             $post = Yii::$app->request->post($post_name);
@@ -110,6 +123,9 @@ class PacketController extends BaseController
         }
         if($type == 'tj'){
             $model = Tjdata::find()->where(['id'=>$id])->one();
+        }
+        if($type == 'bj'){
+            $model = Bjdata::find()->where(['id'=>$id])->one();
         }
         return $this->render('_form',[
             'model' => $model
@@ -199,6 +215,9 @@ class PacketController extends BaseController
         }
         if($type == 'tj'){
             $model = Tjdata::find()->where(['id'=>$id])->one();
+        }
+        if($type == 'bj'){
+            $model = Bjdata::find()->where(['id'=>$id])->one();
         }
         return $this->render('see',['model'=>$model]);
     }
