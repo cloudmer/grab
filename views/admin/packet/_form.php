@@ -38,15 +38,15 @@ $this->registerJs($script);
                 <ol class="breadcrumb">
                     <li><a href="#">
                             <?php
-                                if($_GET['type'] == 'cq'){
-                                    echo '重庆';
-                                }
-                                if($_GET['type'] == 'tj'){
-                                    echo '天津';
-                                }
-                                if($_GET['type'] == 'xj'){
-                                    echo '新疆';
-                                }
+                            if($_GET['type'] == 'cq'){
+                                echo '重庆';
+                            }
+                            if($_GET['type'] == 'tj'){
+                                echo '天津';
+                            }
+                            if($_GET['type'] == 'xj'){
+                                echo '新疆';
+                            }
                             ?>
                             报警设置与数据包管理
                         </a>
@@ -61,7 +61,7 @@ $this->registerJs($script);
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2>新时时彩 报警时间段 [例: 09时 23时  24小时制度 24=0 最好不要设置 24 或者 0]</h2>
+                <h2>时时彩 报警时间段 [例: 09时 23时  24小时制度 24=0 最好不要设置 24 或者 0]</h2>
             </header>
             <div class="main-box-body clearfix">
 
