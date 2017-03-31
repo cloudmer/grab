@@ -363,6 +363,59 @@ class HomeController extends \yii\web\Controller
 
             return $newXjssc;
         }
+        if($type == 'bj'){
+            //北京时时彩
+            //查询选择号码 最新出现的位置
+            $newest = Bjssc::find()->where([$name=>$val])->orderBy('time DESC')->limit(1)->select('time')->one();
+            if(!$newest){
+                //还没有出现过此号码
+                return false;
+            }
+            $end_time = $newest->time;
+            $start_time = $end_time - (86400 * 2); // 比此号码出现的时间 - 2天的时间
+
+            $bjssc = Bjssc::find()->andWhere(['>=','time',$start_time])->andWhere(['<=','time',$end_time])->orderBy('time ASC')->all();
+
+            //检测 当前查询出来的数据中最后一起是不是最新的开奖期数 如果不是 那么他后面还有开奖数据
+            if($bjssc){
+                //获取查询结果的最后一条数据
+                //如果只查询出一条数据
+                if(count($bjssc) == 1){
+                    $last = $bjssc[0];
+                }else{
+                    $last = $bjssc[count($bjssc)-1];
+                }
+
+                //最新一起的开奖数据 的期数
+                $newest_qishu = Bjssc::find()->orderBy('time DESC')->limit(1)->select('qishu')->one();
+                $newest_qishu = $newest_qishu->qishu;
+
+                //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
+                if($newest_qishu != $last->qishu){
+                    $increase = Bjssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
+                    array_push($xjssc,$increase);
+                }
+            }
+
+            $newBjssc = [];
+            $number = 0;
+            foreach ($bjssc as $key=>$m){
+                if($m->$name == $val){
+                    $newBjssc [] = $m;
+                    $number = 1;
+                }else{
+                    if($number>0 && $number<2){
+                        $newBjssc [] = $m;
+                        $number += 1;
+                    }
+                    if($number == 2){
+                        $number = 0;
+                    }
+                }
+            }
+
+            return $newBjssc;
+        }
     }
 
     /**
