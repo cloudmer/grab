@@ -43,7 +43,7 @@ class GrabBjSsc
         $this->get_data();     //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
-        $this->kwarning();      //邮件报警
+        $this->warning();      //邮件报警
     }
 
     /**

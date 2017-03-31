@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS `grab`.`bjssc` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `qishu` CHAR(20) NOT NULL COMMENT '开奖期数',
