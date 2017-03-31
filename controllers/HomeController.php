@@ -393,7 +393,7 @@ class HomeController extends \yii\web\Controller
                 //如果 查询结果的最后一条数据的开奖期数 不等于 当前彩种最新一期的开奖起期号 那么查询结果最后一条数据 后面还有数据
                 if($newest_qishu != $last->qishu){
                     $increase = Bjssc::find()->andWhere(['>','qishu',$last->qishu])->orderBy('time ASC')->one();
-                    array_push($xjssc,$increase);
+                    array_push($bjssc,$increase);
                 }
             }
 
