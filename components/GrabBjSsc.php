@@ -28,6 +28,8 @@ class GrabBjSsc
      */
     const URL = 'http://www.txrflfj.com/shishicai/kaijiang';
 
+    const URL_YL = 'http://www.yulin268.com/Chart.aspx?lotteryType=44&type=wuxing&tn=30';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -64,6 +66,41 @@ class GrabBjSsc
      * curl 访问 开奖数据
      */
     private function get_data(){
+        include_once('simplehtmldom_1_5/simple_html_dom.php');
+        $simple_html_dom = new \simple_html_dom();
+
+        //zlib 解压 并转码
+        $data = false;
+        $data = @file_get_contents("compress.zlib://".self::URL_YL);
+        if(!$data){
+            $this->setLog(false,'北京时时彩-开奖数据抓取失败');
+            exit('北京时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //转换成 UTF-8编码
+        $encode = mb_detect_encoding($data, array('ASCII','UTF-8','GB2312',"GBK",'BIG5'));
+        $content = iconv($encode,'UTF-8',$data);
+
+        $simple_html_dom->load($content);
+        //开奖期号
+        $qihao = $simple_html_dom->find('td[class=issue-numbers]',0)->plaintext;
+        //开奖号
+        $code = $simple_html_dom->find('span[class=lottery-numbers]',0)->plaintext;
+
+        $simple_html_dom->clear();
+
+        //将开奖号中间的空格去掉
+        $code = str_replace(" ", '', $code);
+        //开奖时间
+        $kjsj = date('Y-m-d H:i:s');
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * curl 访问 开奖数据
+     */
+    private function get_data2(){
         $url = self::URL. '?date='.date('Y-m-d');
         $data = file_get_contents($url);
         $codeArr = json_decode($data,true);
