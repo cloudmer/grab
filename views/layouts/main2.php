@@ -57,7 +57,7 @@ AppAsset::register($this);
             ['label' => '重庆时时彩', 'url' => ['/home/cqssc'],'linkOptions'=>['class'=>$action == 'cqssc' ? 'active' : null]],
             ['label' => '天津时时彩', 'url' => ['/home/tjssc'],'linkOptions'=>['class'=>$action == 'tjssc' ? 'active' : null]],
             ['label' => '新疆时时彩', 'url' => ['/home/xjssc'],'linkOptions'=>['class'=>$action == 'xjssc' ? 'active' : null]],
-            ['label' => '北京时时彩', 'url' => ['/home/bjssc'],'linkOptions'=>['class'=>$action == 'bjssc' ? 'active' : null]],
+            ['label' => '台湾五分彩', 'url' => ['/home/bjssc'],'linkOptions'=>['class'=>$action == 'bjssc' ? 'active' : null]],
             ['label' => '数据分组', 'url' => ['/home/grouping'],'linkOptions'=>['class'=>$action == 'grouping' ? 'active' : null]],
             Yii::$app->user->isGuest ?
                 ['label' => '登陆后台', 'linkOptions'=>['class'=>'settled'], 'url' => ['/admin/login']] :
