@@ -302,7 +302,7 @@ $this->registerJs($script);
             <li data-val="cq">重庆</li>
             <li data-val="tj">天津</li>
             <li data-val="xj">新疆</li>
-            <li data-val="bj">北京</li>
+            <li data-val="bj">台湾</li>
         </ul>
         <ul class="ul_data data_packet"></ul>
         <ul class="ul_group unit">
