@@ -150,7 +150,6 @@ class ContainCode
             $this->query_codes();
         }
 
-        echo $this->email_content;exit;
         if(!$this->email_content){
             //不到达报警提示
             return;
