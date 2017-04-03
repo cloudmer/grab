@@ -88,3 +88,19 @@ ADD CONSTRAINT `fk_analysisBjssc_bjssc10`
   ON UPDATE CASCADE;
 
 
+CREATE TABLE IF NOT EXISTS `grab`.`contain` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `contents` INT(11) NOT NULL COMMENT '包含哪几位数字',
+  `number` INT(11) NOT NULL COMMENT '包含内容几位就报警',
+  `valve` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '阀门\n0=>关闭\n1=>开启\n',
+  `cp_type` TINYINT(3) NOT NULL COMMENT '彩票类型\n1=>重庆时时彩\n2=>天津时时彩\n3=>新疆时时彩\n4=>台湾5分彩',
+  `created` INT(11) NOT NULL,
+  PRIMARY KEY (`id`))
+  ENGINE = MyISAM
+  DEFAULT CHARACTER SET = utf8
+  COMMENT = '包含报警';
+
+ALTER TABLE `grab`.`contain`
+  ADD COLUMN `start` CHAR(3) NOT NULL COMMENT '报警开始时间' AFTER `cp_type`,
+  ADD COLUMN `end` CHAR(3) NOT NULL COMMENT '报警结束时间' AFTER `start`;
+

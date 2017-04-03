@@ -5,33 +5,26 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "reserve".
+ * This is the model class for table "contain".
  *
  * @property integer $id
- * @property integer $type
- * @property integer $cp_type
+ * @property integer $contents
  * @property integer $number
- * @property integer $qishu
- * @property integer $status
- * @property integer $time
+ * @property integer $valve
+ * @property integer $cp_type
+ * @property string $start
+ * @property string $end
+ * @property integer $created
  */
-class Reserve extends \yii\db\ActiveRecord
+class Contain extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'reserve';
+        return 'contain';
     }
-
-    /* 报警单位 */
-    public static $get_type = [
-        1 =>'前后中3',
-        2 =>'前3',
-        3 =>'中3',
-        4 =>'后3',
-    ];
 
     /* 彩票类型 */
     public static $get_cp_type = [
@@ -54,8 +47,9 @@ class Reserve extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'cp_type', 'number', 'qishu', 'time'], 'required'],
-            [['type', 'cp_type', 'number', 'qishu', 'status', 'time'], 'integer']
+            [['contents', 'number', 'cp_type', 'start', 'end', 'created'], 'required'],
+            [['contents', 'number', 'valve', 'cp_type', 'created'], 'integer'],
+            [['start', 'end'], 'string', 'max' => 3]
         ];
     }
 
@@ -66,37 +60,38 @@ class Reserve extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type' => '报警单位',
+            'contents' => '包含内容',
+            'number' => '包含几位',
+            'valve' => '报警阀门',
             'cp_type' => '彩票类型',
-            'number' => '预定号码',
-            'qishu' => '报警期数',
-            'status' => '报警状态',
-            'time' => 'Time',
+            'start' => '报警开始时间',
+            'end' => '报警结束时间',
+            'created' => '数据创建时间',
         ];
     }
 
-
     /*
-    * 添加
-    * */
+   * 添加
+   * */
     public function addReserve(){
         //所有彩种
-        if(\Yii::$app->request->post()['Reserve']['cp_type'] == 0){
+        if(\Yii::$app->request->post()['Contain']['cp_type'] == 0){
             $cp_type = [1,2,3,4]; //彩票类型
             foreach ($cp_type as $key=>$val){
                 $model = new self();
-                $model->type = \Yii::$app->request->post()['Reserve']['type'];
-                $model->cp_type = $val;
-                $model->number = \Yii::$app->request->post()['Reserve']['number'];
-                $model->qishu = \Yii::$app->request->post()['Reserve']['qishu'];
-                $model->status = \Yii::$app->request->post()['Reserve']['status'];
-                $model->time = time();
+                $model->contents = \Yii::$app->request->post()['Contain']['contents'];
+                $model->number   = \Yii::$app->request->post()['Contain']['number'];
+                $model->valve    = \Yii::$app->request->post()['Contain']['valve'];
+                $model->cp_type  = $val;
+                $model->start    = \Yii::$app->request->post()['Contain']['start'];
+                $model->end      = \Yii::$app->request->post()['Contain']['end'];
+                $model->created  = time();
                 $model->save();
             }
             return $model;
         }
 
-        $this->time = time();
+        $this->created = time();
         $this->load(Yii::$app->request->post());
         if($this->validate() && $this->save()){
             return $this;
