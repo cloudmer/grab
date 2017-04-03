@@ -150,6 +150,7 @@ class ContainCode
             $this->query_codes();
         }
 
+        echo $this->email_content;exit;
         if(!$this->email_content){
             //不到达报警提示
             return;
@@ -168,13 +169,64 @@ class ContainCode
             echo $this->cp_name.' 包含组: '. $this->contents . " - 报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
-        $this->isContain();
+//        $this->isContain();
+        $this->q3();
+        $this->z3();
+        $this->h3();
+    }
+
+    /**
+     * 前三
+     */
+    private function q3(){
+        $code = $this->newest->one.$this->newest->two.$this->newest->three;
+        $this->isContain($code, '前');
+    }
+
+    /**
+     * 中3
+     */
+    private function z3(){
+        $code = $this->newest->two.$this->newest->three.$this->newest->four;
+        $this->isContain($code, '中');
+    }
+
+    /**
+     * 后3
+     */
+    private function h3(){
+        $code = $this->newest->three.$this->newest->four.$this->newest->five;
+        $this->isContain($code, '后');
     }
 
     /**
      * 是否包含
+     * @param $code
+     * @param $name
      */
-    private function isContain(){
+    private function isContain($code, $name){
+        //开奖号
+        $kjcode = (string)$this->newest->one.$this->newest->two.$this->newest->three.$this->newest->four.$this->newest->five;
+
+        $qishu = $this->newest->qishu;
+        $code = (string)$code;
+        $contents = (string)$this->contents;
+        $num = 0; //计数器
+
+        $len = strlen($contents);
+        for ($i=0; $i<$len; $i++){
+            $status = strstr($code, $contents[$i]);
+            if($status == true){
+                //包含
+                $num+=1;
+            }
+        }
+
+        if($num >= $this->number){
+            $this->email_content .= $this->cp_alias_name. ' - 期:' . $qishu . " - $name" . ' - 数:'. $kjcode. ' - 含:'. $contents . ' - 出现:'.$num . "<br/>";
+        }
+
+        /*
         $qishu = $this->newest->qishu;
         $code = (string)$this->newest->one.$this->newest->two.$this->newest->three.$this->newest->four.$this->newest->five;
         $contents = (string)$this->contents;
@@ -193,6 +245,7 @@ class ContainCode
         if($num >= $this->number){
             $this->email_content .= $this->cp_alias_name. ' - 期:' . $qishu . ' - 数:'. $code. ' - 含:'. $contents . ' - 出现:'.$num . "<br/>";
         }
+        */
     }
 
     /**
