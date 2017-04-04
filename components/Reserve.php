@@ -223,6 +223,9 @@ class Reserve
 
         list($is_show,$danger_num) = $this->get_analysis_danger_number($codeArr);
 
+        $this->mail_contents($position,$danger_num); //报警内容
+        return;
+        /*
         if($is_show){
             //此组号码中 危险警报解除过 已经找到最新一期的 清0状态
 //            echo "此组号码中 危险警报解除过 已经找到最新一期的 清0状态<br/>";
@@ -240,6 +243,7 @@ class Reserve
         //当前还没查询出清0位置 继续往前查询数据 翻1倍的数据查询再解析
 //        echo '当前还没查询出清0位置 继续往前查询数据'.($limit+$limit).'<br/>';
         $this->recursionCodes($position,($limit + $limit));
+        */
     }
 
     /**
@@ -306,6 +310,128 @@ class Reserve
      * @return array
      */
     private function get_analysis_danger_number($codes){
+        /*
+        $codes = [
+            '390',
+            '489',
+            '473',
+            '018',
+            '542',
+            '423',
+            '091',
+            '761',
+            '009',
+            '600',
+            '501',
+            '250',
+            '419',
+            '663',
+            '177',
+            '741',
+            '837',
+            '041',
+            '775',
+            '877',
+            '576',
+            '521',
+            '283',
+            '886',
+            '300',
+            '606',
+            '281',
+            '526',
+            '413',
+            '554',
+            '350',
+            '641',
+            '635',
+            '739',
+            '621',
+            '389',
+            '234',
+        ];
+        */
+        $zero = false; //是否请过0
+        $is_show = false; //此状态为在当前号组中 出现过全部包含预定号码上的所有位数的数字 并检查下一期 是否要解除警报
+        $danger_num = 0; //未出现的次数 初始化为0
+        foreach ($codes as $key => $val){
+            //当前号码中是否包含当前预定组合
+            $in_reserve_number = $this->in_reserve_number($val);
+            //是否同时包含 预定号码全部位 比如389开奖号 预定号码89 同时包含8和9 就返回true 否则返回 false
+            $includeAll = $this->includeAll($val);
+            //是否是组6行态
+            $is_six = $this->is_six($val);
+
+            //这里是 上次跳出循环的判断
+            //出现过预定号码的全部数字 并且 是组六 并且 包含预定号码一位 or 包含预定号码的全部数字
+            if( $is_show == true && $is_six && ($in_reserve_number || $includeAll) ){
+                $is_show = false;
+                $danger_num = 0;
+                $zero = true;
+            }
+
+            //这里是 上次跳出循环的判断
+            //出现过预定号码的全部数字 并且 是组六 并且 不包含预定号码一位 or 不包含预定号码的全部数字
+            if( $is_show == true && $is_show && !$in_reserve_number && !$includeAll ){
+                $is_show = false;
+            }
+
+            //包含预定号码但不是全部包含 并且为组6形态
+            if($in_reserve_number && $is_six && !$includeAll){
+                $danger_num +=1;
+            }
+            //包含预定号码的所有位数上的数字 并检查下一期是否是组6形态 只包含预定号码的一位或者是全部位数上的数组就解除警报 归0重新计算
+            if($includeAll){
+                $danger_num +=1;
+                $is_show = true;
+                continue; //跳出本次循环进行下次循环
+            }
+        }
+
+        return [$zero, $danger_num];
+
+
+        /* 中间忽略组三不管包含不包含 */
+        /*
+        $is_show = false; //此状态为在当前号组中 已经清0 解除过报警状态
+        $referent = false; //当前期是否作为下一期 参考对象
+        //举例说明 898 包含89组合 作为下一期的参考对象 898 或者 897 不论是组3还是组6都将作为下一期参考对象也不论当前是否清0不清0
+        $danger_num = 0; //未出现的次数 初始化为0
+        foreach ($codes as $key=>$val){
+            //当前号码中是否包含当前预定组合
+            $in_reserve_number = $this->in_reserve_number($val);
+            //是否是组6行态
+            $is_six = $this->is_six($val);
+
+            //只要当前号码 包含组合号码
+            if($in_reserve_number){
+                //当前期 为出现的包含组合 并且 为组6形态 并且有参考对象
+                if($is_six && $referent){
+                    //是组6组合 并且 包含当前预定号码 报警解除
+                    $danger_num = 0;
+                    $is_show = true; //此状态为在当前号组中 已经清0 解除过报警状态
+                }
+
+                //是组六形态, 并且包含当前号码就将此期号码作为下期参考对象
+                if($is_six){
+                    $referent = true;
+                }
+            }
+
+            //当前号码不包含预定号码 并且 有上期参考对象 并且是组六形态
+            if(!$in_reserve_number && $referent && $is_six){
+                //不是组6组合 并且 不包含当前预定号码 报警提高一级
+                $danger_num +=1;
+//                echo $val.' +1='.$danger_num."<br>";
+                // 本期号码不包含当前组合 也未包含预定号码 解除此期号码为参考对象
+                $referent = false;
+            }
+        }
+
+        return [$is_show,$danger_num];
+        */
+
+        /*
         $is_show = false; //此状态为在当前号组中 已经清0 解除过报警状态
         $referent = false; //当前期是否作为下一期 参考对象
         //举例说明 898 包含89组合 作为下一期的参考对象 898 或者 897 不论是组3还是组6都将作为下一期参考对象也不论当前是否清0不清0
@@ -345,6 +471,7 @@ class Reserve
         }
 
         return [$is_show,$danger_num];
+        */
 
         /*
         $testArr =['390','489','473','018','542','423','091','761','009','600','501','250','419','663','177','741','837','041','775','877','576','521','283','886','300','606','281','526','413','554','350','641','635','739','621'];
@@ -397,6 +524,7 @@ class Reserve
     private function in_reserve_number($num){
         $status = false;
         $num_arr = str_split($num); //检测的号码
+        $this->reserve_number = '89';
         $numberArr = str_split($this->reserve_number); // 当前预定号组
         foreach ($numberArr as $key=>$val){
             if(in_array($val,$num_arr)){
@@ -404,6 +532,28 @@ class Reserve
             }
         }
         return $status;
+    }
+
+    /**
+     * 是否同时包含预定号码
+     * 举例说明 389开奖号 89预定号 同时包含89 同时包含就返回true 否则返回false
+     * @param $num
+     * @return bool
+     */
+    private function includeAll($num){
+        $number = 0; //初始化包含的次数为0
+        $num_arr = str_split($num); //检测的号码
+        $this->reserve_number = '89';
+        $numberArr = str_split($this->reserve_number); // 当前预定号组
+        foreach ($numberArr as $key=>$val){
+            if(in_array($val,$num_arr)){
+                $number+=1;
+            }
+        }
+        if(strlen($this->reserve_number) == $number){
+            return true;
+        }
+        return false;
     }
 
     /**
