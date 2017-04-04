@@ -524,7 +524,6 @@ class Reserve
     private function in_reserve_number($num){
         $status = false;
         $num_arr = str_split($num); //检测的号码
-        $this->reserve_number = '89';
         $numberArr = str_split($this->reserve_number); // 当前预定号组
         foreach ($numberArr as $key=>$val){
             if(in_array($val,$num_arr)){
@@ -543,7 +542,6 @@ class Reserve
     private function includeAll($num){
         $number = 0; //初始化包含的次数为0
         $num_arr = str_split($num); //检测的号码
-        $this->reserve_number = '89';
         $numberArr = str_split($this->reserve_number); // 当前预定号组
         foreach ($numberArr as $key=>$val){
             if(in_array($val,$num_arr)){
