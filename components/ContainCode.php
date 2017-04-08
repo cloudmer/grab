@@ -430,9 +430,9 @@ class ContainCode
             $mail->setHtmlBody($content);    //发布可以带html标签的文本
 
             if($mail->send()){
-                echo $this->cp_name."预定号码报警 邮件发送成功 时间:".date('Y-m-d H:i:s')."\r\n";
+                echo $this->cp_name."包含号码报警 邮件发送成功 时间:".date('Y-m-d H:i:s')."\r\n";
             }else{
-                echo $this->cp_name."预定号码报警 邮件通知发送失败,请尽快与管理员联系 时间:".date('Y-m-d H:i:s')."\r\n";
+                echo $this->cp_name."包含号码报警 邮件通知发送失败,请尽快与管理员联系 时间:".date('Y-m-d H:i:s')."\r\n";
             }
         }
     }
