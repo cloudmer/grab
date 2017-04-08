@@ -205,6 +205,11 @@ class ContainCode
         if($danger_num >= $this->number){
             $this->email_content .= $this->cp_alias_name. ' - 期:' . $this->qishu . ' - 数:'. $this->kjcode. ' - 含:'. $this->contents . ' - 出现:'.$danger_num . "<br/>";
         }
+
+        //只有出现包含2位的才报警
+        if($this->q3_repeat_number < 2 || $this->z3_repeat_number < 2 || $this->h3_repeat_number <2){
+            $this->email_content = null;
+        }
     }
 
     /**
