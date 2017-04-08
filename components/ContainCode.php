@@ -37,7 +37,7 @@ class ContainCode
     /* 包含号码 */
     protected $contents;
 
-    /* 包含几位 */
+    /* 报警期数 */
     protected $number;
 
     /* 报警开始时间 */
@@ -46,11 +46,49 @@ class ContainCode
     /* 报警结束时间 */
     protected $end;
 
-    /* 最新的开奖数据 */
-    protected $newest;
-
     /* 邮件报警内容 */
     protected $email_content;
+
+    /* 当前期 前三 与包含号码的 重复次数 */
+    protected $q3_repeat_number;
+
+    /* 当前期 中三 与包含号码的 重复次数 */
+    protected $z3_repeat_number;
+
+    /* 当前期 后三 与包含号码的 重复次数 */
+    protected $h3_repeat_number;
+
+    /* 当前期 前三 是否是组六形态 */
+    protected $q3_is_six;
+
+    /* 当前期 中三 是否是组六形态 */
+    protected $z3_is_six;
+
+    /* 当前期 后三 是否是组六形态 */
+    protected $h3_is_six;
+
+    /* 参考对象， 只要有一组开奖号码包含了 大白话 需要递归吗 默认需要*/
+    protected $referent = true;
+
+    /* 期数 */
+    protected $qishu;
+
+    /* 开奖号码 */
+    protected $kjcode;
+
+    /* 基准 */
+    /**
+     * 基准规则
+     * 如果 只有 前三 or 中三 or 后三 单一组的开奖号码 包含了号码的2位数 >=2位数, 那么下一期就只检查 前3 or 中3 or 后3开奖号 对应这期是哪个位置包含了2位
+     * 如果是 前三 and 中三 都同时包含了2位数字，那么下一期就检查 中三
+     * 如果是 中三 and 后三 都同时包含了2位数字，那么下一期就检查 后三
+     * 如果是 前三 and 中三 and 后三 都同时包含了2位数字，那么下一期就以后三位基准
+     * 默认没有基准 == false
+     * == q3 下一期以前三位基准 检查
+     * == z3 下一期以中三为基准 检查
+     * == h3 下一期以后三位基准 检查
+     */
+    protected $benchmark = false;
 
     public function __construct($type)
     {
@@ -132,22 +170,24 @@ class ContainCode
      * 分析数据
      */
     private function analysis(){
-        //最新的开奖数据
-        $this->recent();
-
-        if(!$this->newest){
-            echo $this->cp_name.' 还没有开奖数据 '."\r\n";
-            return;
-        }
-
         //获取报警配置项内的警报期数
         foreach ($this->config as $key=>$val){
             $this->contents      = $val['contents'];      //包含号码
-            $this->number        = $val['number'];        //包含几位
+            $this->number        = $val['number'];        //报警期数
             $this->start         = $val['start'];         //报警开始时间
             $this->end           = $val['end'];           //报警结束时间
-            //查询报警期数内的
-            $this->query_codes();
+
+            //检查是否在报警时段
+            if( ($this->start && $this->end) && (date('H') < $this->start || date('H') > $this->end) ){
+                //当前非报警时段
+                echo $this->cp_name.' 包含组: '. $this->contents . " - 报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
+                return;
+            }
+
+            //准备递归查询 近期的数据 并检查第一个参考对象处于什么位置
+            $danger_num = $this->recursionCodes();
+
+            $this->setEmailContent($danger_num);
         }
 
         if(!$this->email_content){
@@ -157,94 +197,196 @@ class ContainCode
         $this->send_mail($this->email_content);
     }
 
-    private function recent(){
-        $this->newest = $this->model->find()->orderBy('time DESC')->limit(1)->one();
-    }
-
-    private function query_codes(){
-        //检查是否在报警时段
-        if( ($this->start && $this->end) && (date('H') < $this->start || date('H') > $this->end) ){
-            //当前非报警时段
-            echo $this->cp_name.' 包含组: '. $this->contents . " - 报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
-            return;
+    /**
+     * 设置邮件内容
+     * @param $danger_num
+     */
+    private function setEmailContent($danger_num){
+        if($danger_num >= $this->number){
+            $this->email_content .= $this->cp_alias_name. ' - 期:' . $this->qishu . ' - 数:'. $this->kjcode. ' - 含:'. $this->contents . ' - 出现:'.$danger_num . "<br/>";
         }
-//        $this->isContain();
-        $this->q3();
-        $this->z3();
-        $this->h3();
     }
 
     /**
-     * 前三
+     * 递归开奖数据
+     * @param int $limit 默认查询当前 最新的100期内容
      */
-    private function q3(){
-        $code = $this->newest->one.$this->newest->two.$this->newest->three;
-        $this->isContain($code, '前');
+    /**
+     * @param int $limit
+     * @return mixed
+     */
+    private function recursionCodes($limit = 100){
+        $count = $this->model->find()->count();
+        $codes = $this->model->find()->orderBy('time DESC')->limit($limit)->all();
+
+        //倒序排列 按开奖号 递增方式排列
+        $codes = array_reverse($codes);
+        $danger_num = $this->get_analysis_danger_number($codes);
+
+        //出现过基准 不需要递归
+        if($this->referent == false){
+            //echo '出现过基准';
+            return $danger_num;
+        }
+
+        if(count($codes) == $count){
+            //echo "还是没有找到清零的位置,数据库中所有的条数 等于 当前查询的数据 证明已经查询了所有数据<br/>";exit;
+            return $danger_num;
+        }
+
+        //当前还没出现个基准 继续往前查询数据 翻1倍的数据查询再解析
+        return $this->recursionCodes($limit + $limit);
     }
 
     /**
-     * 中3
+     * 按照算法 分析开奖号后的 危险警报次数
+     * @param $codes 开奖号码;
+     * @return array
      */
-    private function z3(){
-        $code = $this->newest->two.$this->newest->three.$this->newest->four;
-        $this->isContain($code, '中');
+    private function get_analysis_danger_number($codes){
+        $danger_num = 0; //初始化警报次数
+        foreach ($codes as $key=>$val){
+            $this->qishu = $val->qishu;
+            $this->kjcode = $val->one.$val->two.$val->three.$val->four.$val->five;
+            $q3 = $val->one.$val->two.$val->three; //前三号码
+            $z3 = $val->two.$val->three.$val->four; //中三号码
+            $h3 = $val->three.$val->four.$val->five;//后三号码
+
+            //前三与 包含号码 重复位数
+            $this->q3_repeat_number = $this->getRepeatDigitNumber($q3);
+            //中三与 包含号码 重复位数
+            $this->z3_repeat_number = $this->getRepeatDigitNumber($z3);
+            //后三与 包含号码 重复位数
+            $this->h3_repeat_number = $this->getRepeatDigitNumber($h3);
+
+            //前三是否是组六形态
+            $this->q3_is_six = $this->is_six($q3);
+            //中三是否是组六形态
+            $this->z3_is_six = $this->is_six($z3);
+            //后三是否是组六形态
+            $this->h3_is_six = $this->is_six($h3);
+
+            //警报是否需要升级
+            $danger_num = $this->alarmUpgrade($danger_num);
+
+            //获取下期的基准 参考
+            $this->getBenchmark();
+        }
+        return $danger_num;
     }
 
     /**
-     * 后3
+     * 开奖号获取与包含号码 重复次数
+     * @param $code 开奖号
+     * @return int 开奖号与包含号重复 位数
      */
-    private function h3(){
-        $code = $this->newest->three.$this->newest->four.$this->newest->five;
-        $this->isContain($code, '后');
+    private function getRepeatDigitNumber($code){
+        //开奖号 字符串转数组
+        $code = str_split($code);
+        //包含号 字符串转数组
+        $contents = str_split($this->contents);
+        //求两个数组的交集
+        $intersection = array_intersect($code, $contents);
+        return count($intersection);
     }
 
     /**
-     * 是否包含
-     * @param $code
-     * @param $name
+     * 是否是组6形态
+     * @param $number 开奖号
+     * @return bool
      */
-    private function isContain($code, $name){
-        //开奖号
-        $kjcode = (string)$this->newest->one.$this->newest->two.$this->newest->three.$this->newest->four.$this->newest->five;
+    private function is_six($number){
+        $codeArr = str_split($number);
+        //是组6
+        if(count($codeArr) == count(array_unique($codeArr))){
+            return true;
+        }
+        //是组3
+        return false;
+    }
 
-        $qishu = $this->newest->qishu;
-        $code = (string)$code;
-        $contents = (string)$this->contents;
-        $num = 0; //计数器
+    /**
+     * 获取下期的基准 参考
+     */
+    private function getBenchmark(){
+        //前三 and 中三 and 后三 都不包含2位 下期则没有基准
+        if($this->q3_repeat_number <2 && $this->z3_repeat_number <2 && $this->h3_repeat_number <2){
+            return $this->benchmark = false;
+        }
 
-        $len = strlen($contents);
-        for ($i=0; $i<$len; $i++){
-            $status = strstr($code, $contents[$i]);
-            if($status == true){
-                //包含
-                $num+=1;
+        //前三 and 中三 and 后三 都包含2位 下期则以后三为基准
+        if($this->q3_repeat_number >=2 && $this->z3_repeat_number >=2 && $this->h3_repeat_number >=2){
+            return $this->benchmark = 'h3';
+        }
+
+        //前三 and 中三 都包含2位 下期则以中三为基准
+        if($this->q3_repeat_number >=2 && $this->z3_repeat_number >=2){
+            return $this->benchmark = 'z3';
+        }
+
+        //中三 and 后三 都包含2位 下期则以后三为基准
+        if($this->z3_repeat_number >=2 && $this->h3_repeat_number >=2){
+            return $this->benchmark = 'h3';
+        }
+
+        //前三 包含2位 下期则以前三为基准
+        if($this->q3_repeat_number >= 2){
+            return $this->benchmark = 'q3';
+        }
+
+        //中三 包含2位 下期则以中三为基准
+        if($this->z3_repeat_number >= 2){
+            return $this->benchmark = 'z3';
+        }
+
+        //后三 包含2位 下期则以后三为基准
+        if($this->h3_repeat_number >= 2){
+            return $this->benchmark = 'h3';
+        }
+    }
+
+    /**
+     * 警报是否提升
+     * 规则就是 有基准的情况下，就当前期要是开的是组6形态，并且，只包含1位就清零，
+     * 没有基准的情况下 如果是 包含2位就该+1 下一期就有基准了， 如果是包含1位组6 组3 就不+，只要没有基准 不是包含2位就不+
+     * @param $danger_num 当前警报数
+     * @return mixed
+     */
+    private function alarmUpgrade($danger_num){
+        //前三 or 中三 or 后三 有一个位置包含了2位, 警报提高一级
+        if($this->q3_repeat_number >= 2 || $this->z3_repeat_number >= 2 || $this->h3_repeat_number >= 2){
+            $danger_num = $danger_num + 1;
+            return $danger_num;
+        }
+
+        //有基准的情况
+        if($this->benchmark){
+            //基准是 前三 and 前三包含1位 and 前三是组6 清零
+            if($this->benchmark == 'q3' && $this->q3_repeat_number == 1 && $this->q3_is_six == true){
+                $danger_num = 0;
+                //不递归了 已经找到清零的地方了
+                $this->referent = false;
+                return $danger_num;
+            }
+
+            //基准是 中三 and 中三包含1位 and 中三是组6 清零
+            if($this->benchmark == 'z3' && $this->z3_repeat_number == 1 && $this->z3_is_six == true){
+                $danger_num = 0;
+                //不递归了 已经找到清零的地方了
+                $this->referent = false;
+                return $danger_num;
+            }
+
+            //基准是 后3 and 后三包含1位 and 后三是组6 清零
+            if($this->benchmark == 'h3' && $this->h3_repeat_number == 1 && $this->h3_is_six == true){
+                $danger_num = 0;
+                //不递归了 已经找到清零的地方了
+                $this->referent = false;
+                return $danger_num;
             }
         }
 
-        if($num >= $this->number){
-            $this->email_content .= $this->cp_alias_name. ' - 期:' . $qishu . " - $name" . ' - 数:'. $kjcode. ' - 含:'. $contents . ' - 出现:'.$num . "<br/>";
-        }
-
-        /*
-        $qishu = $this->newest->qishu;
-        $code = (string)$this->newest->one.$this->newest->two.$this->newest->three.$this->newest->four.$this->newest->five;
-        $contents = (string)$this->contents;
-
-        $num = 0; //计数器
-
-        $len = strlen($contents);
-        for ($i=0; $i<$len; $i++){
-            $status = strstr($code, $contents[$i]);
-            if($status == true){
-                //包含
-                $num+=1;
-            }
-        }
-
-        if($num >= $this->number){
-            $this->email_content .= $this->cp_alias_name. ' - 期:' . $qishu . ' - 数:'. $code. ' - 含:'. $contents . ' - 出现:'.$num . "<br/>";
-        }
-        */
+        return $danger_num;
     }
 
     /**

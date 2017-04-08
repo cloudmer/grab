@@ -61,7 +61,7 @@ class Contain extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'contents' => '包含内容',
-            'number' => '包含几位',
+            'number' => '报警期数',
             'valve' => '报警阀门',
             'cp_type' => '彩票类型',
             'start' => '报警开始时间',

@@ -57,7 +57,7 @@ $this->registerJs($script);
             <?= $form->field($model, 'id')->label(false)->hiddenInput()?>
             <?= $form->field($model,'cp_type')->dropDownList([0=>'所有彩种',1=>'重庆时时彩',2=>'天津时时彩',3=>'新疆时时彩',4=>'台湾五分彩'])?>
             <?= $form->field($model, 'contents')->textInput(['placeholder'=>'包含号码','type'=>'number','maxlength'=>5])?>
-            <?= $form->field($model, 'number')->textInput(['placeholder'=>'包含几位','type'=>'number','maxlength'=>5])?>
+            <?= $form->field($model, 'number')->textInput(['placeholder'=>'报警期数','type'=>'number','maxlength'=>5])?>
             <?= $form->field($model, 'start')->label('开始时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
             <?= $form->field($model, 'end')->label('结束时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警结束时间'])?>
             <?= $form->field($model,'valve')->dropDownList([0=>'关闭',1=>'开启'])?>
