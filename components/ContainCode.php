@@ -207,7 +207,7 @@ class ContainCode
         }
 
         //只有出现包含2位的才报警
-        if($this->q3_repeat_number < 2 || $this->z3_repeat_number < 2 || $this->h3_repeat_number <2){
+        if($this->q3_repeat_number < 2 && $this->z3_repeat_number < 2 && $this->h3_repeat_number <2){
             $this->email_content = null;
         }
     }
