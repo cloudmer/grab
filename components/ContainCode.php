@@ -286,8 +286,13 @@ class ContainCode
     private function getRepeatDigitNumber($code){
         //开奖号 字符串转数组
         $code = str_split($code);
+        //去重
+        $code = array_unique($code);
         //包含号 字符串转数组
         $contents = str_split($this->contents);
+        //去重
+        $contents = array_unique($contents);
+
         //求两个数组的交集
         $intersection = array_intersect($code, $contents);
         return count($intersection);
