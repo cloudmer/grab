@@ -76,6 +76,9 @@ class ContainCode
     /* 开奖号码 */
     protected $kjcode;
 
+    /* 是否需要报警 */
+    protected $alarm_status = true;
+
     /* 基准 */
     /**
      * 基准规则
@@ -202,7 +205,7 @@ class ContainCode
      * @param $danger_num
      */
     private function setEmailContent($danger_num){
-        if($danger_num >= $this->number){
+        if($danger_num >= $this->number && $this->alarm_status == true){
             $this->email_content .= $this->cp_alias_name. ' - 期:' . $this->qishu . ' - 数:'. $this->kjcode. ' - 含:'. $this->contents . ' - 出现:'.$danger_num . "<br/>";
         }
     }
@@ -355,6 +358,8 @@ class ContainCode
     private function alarmUpgrade($danger_num){
         //前三 or 中三 or 后三 有一个位置包含了2位, 警报提高一级
         if($this->q3_repeat_number >= 2 || $this->z3_repeat_number >= 2 || $this->h3_repeat_number >= 2){
+            // 需要报警
+            $this->alarm_status = true;
             $danger_num = $danger_num + 1;
             return $danger_num;
         }
@@ -363,6 +368,8 @@ class ContainCode
         if($this->benchmark){
             //基准是 前三 and 前三包含1位 and 前三是组6 清零
             if($this->benchmark == 'q3' && $this->q3_repeat_number == 1 && $this->q3_is_six == true){
+                // 需要报警
+                $this->alarm_status = true;
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
@@ -371,6 +378,8 @@ class ContainCode
 
             //基准是 中三 and 中三包含1位 and 中三是组6 清零
             if($this->benchmark == 'z3' && $this->z3_repeat_number == 1 && $this->z3_is_six == true){
+                // 需要报警
+                $this->alarm_status = true;
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
@@ -379,6 +388,8 @@ class ContainCode
 
             //基准是 后3 and 后三包含1位 and 后三是组6 清零
             if($this->benchmark == 'h3' && $this->h3_repeat_number == 1 && $this->h3_is_six == true){
+                // 需要报警
+                $this->alarm_status = true;
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
@@ -386,6 +397,9 @@ class ContainCode
             }
         }
 
+        //本次没有提升报警级别 所以不需要报警
+        //至于本次计算 不+级别的 才不需要报警
+        $this->alarm_status = false;
         return $danger_num;
     }
 
