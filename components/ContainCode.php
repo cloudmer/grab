@@ -332,6 +332,11 @@ class ContainCode
             return $this->benchmark = 'h3';
         }
 
+        //前三 and 后三 都包含2位 下期则以后三为基准 以右位基准
+        if($this->q3_repeat_number >=2 && $this->h3_repeat_number >=2){
+            return $this->benchmark = 'h3';
+        }
+
         //前三 包含2位 下期则以前三为基准
         if($this->q3_repeat_number >= 2){
             return $this->benchmark = 'q3';
