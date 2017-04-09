@@ -30,6 +30,8 @@ class GrabBjSsc
 
     const URL_YL = 'http://www.yulin268.com/Chart.aspx?lotteryType=44&type=wuxing&tn=30';
 
+    const URL_TW = 'http://www.taiwanlottery.com.tw/lotto/BingoBingo/drawing.aspx';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -79,7 +81,7 @@ class GrabBjSsc
 
         //zlib 解压 并转码
         $data = false;
-        $data = @file_get_contents("compress.zlib://".self::URL_YL);
+        $data = @file_get_contents("compress.zlib://".self::URL_TW);
         if(!$data){
             $this->setLog(false,'北京时时彩-开奖数据抓取失败');
             exit('北京时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
@@ -91,14 +93,60 @@ class GrabBjSsc
 
         $simple_html_dom->load($content);
         //开奖期号
-        $qihao = $simple_html_dom->find('td[class=issue-numbers]',0)->plaintext;
+        $qihao = $simple_html_dom->find('span[id=lblBBDrawTerm]',0)->plaintext;
+
         //开奖号
-        $code = $simple_html_dom->find('span[class=lottery-numbers]',0)->plaintext;
+        $code1 = $simple_html_dom->find('div[class=ball_tx]',0)->plaintext;
+        $code2 = $simple_html_dom->find('div[class=ball_tx]',1)->plaintext;
+        $code3 = $simple_html_dom->find('div[class=ball_tx]',2)->plaintext;
+        $code4 = $simple_html_dom->find('div[class=ball_tx]',3)->plaintext;
+        $code5 = $simple_html_dom->find('div[class=ball_tx]',4)->plaintext;
+        $code6 = $simple_html_dom->find('div[class=ball_tx]',5)->plaintext;
+        $code7 = $simple_html_dom->find('div[class=ball_tx]',6)->plaintext;
+        $code8 = $simple_html_dom->find('div[class=ball_tx]',7)->plaintext;
+        $code9 = $simple_html_dom->find('div[class=ball_tx]',8)->plaintext;
+        $code10 = $simple_html_dom->find('div[class=ball_tx]',9)->plaintext;
+        $code11 = $simple_html_dom->find('div[class=ball_tx]',10)->plaintext;
+        $code12 = $simple_html_dom->find('div[class=ball_tx]',11)->plaintext;
+        $code13 = $simple_html_dom->find('div[class=ball_tx]',12)->plaintext;
+        $code14 = $simple_html_dom->find('div[class=ball_tx]',13)->plaintext;
+        $code15 = $simple_html_dom->find('div[class=ball_tx]',14)->plaintext;
+        $code16 = $simple_html_dom->find('div[class=ball_tx]',15)->plaintext;
+        $code17 = $simple_html_dom->find('div[class=ball_tx]',16)->plaintext;
+        $code18 = $simple_html_dom->find('div[class=ball_tx]',17)->plaintext;
+        $code19 = $simple_html_dom->find('div[class=ball_tx]',18)->plaintext;
+        $code20 = $simple_html_dom->find('div[class=ball_tx]',19)->plaintext;
+
+        $code_1 = (int)$code1 + (int)$code2 + (int)$code3 + (int)$code4;
+        $code_1 = (string)$code_1;
+        $code_1 = $code_1[strlen($code_1) - 1];
+
+        $code_2 = (int)$code5 + (int)$code6 + (int)$code7 + (int)$code8;
+        $code_2 = (string)$code_2;
+        $code_2 = $code_2[strlen($code_2) - 1];
+
+        $code_3 = (int)$code9 + (int)$code10 + (int)$code11 + (int)$code12;
+        $code_3 = (string)$code_3;
+        $code_3 = $code_3[strlen($code_3) - 1];
+
+        $code_4 = (int)$code13 + (int)$code14 + (int)$code15 + (int)$code16;
+        $code_4 = (string)$code_4;
+        $code_4 = $code_4[strlen($code_4) - 1];
+
+        $code_5 = (int)$code17 + (int)$code18 + (int)$code19 + (int)$code20;
+        $code_5 = (string)$code_5;
+        $code_5 = $code_5[strlen($code_5) - 1];
 
         $simple_html_dom->clear();
 
+        $code = $code_1.$code_2.$code_3.$code_4.$code_5;
+
         //将开奖号中间的空格去掉
         $code = str_replace(" ", '', $code);
+
+        //将开奖期号中间的空格去掉
+        $qihao = str_replace(" ", '', $qihao);
+
         //开奖时间
         $kjsj = date('Y-m-d H:i:s');
 
