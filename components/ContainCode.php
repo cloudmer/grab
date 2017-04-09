@@ -272,6 +272,11 @@ class ContainCode
             //警报是否需要升级
             $danger_num = $this->alarmUpgrade($danger_num);
 
+            //如果清零了警报 and 发现其他位置上有包含2位的 则需要在清0的这组上在 +1 就是 0+1=1
+            if($danger_num == 0 && $this->benchmark != false){
+                $danger_num = $danger_num +1;
+            }
+
             //获取下期的基准 参考
             $this->getBenchmark();
         }
@@ -366,8 +371,8 @@ class ContainCode
      * @return mixed
      */
     private function alarmUpgrade($danger_num){
-        //前三 or 中三 or 后三 有一个位置包含了2位, 警报提高一级
-        if($this->q3_repeat_number >= 2 || $this->z3_repeat_number >= 2 || $this->h3_repeat_number >= 2){
+        //没有基准的情况 and 前三 or 中三 or 后三 有一个位置包含了2位, 警报提高一级
+        if($this->benchmark == false && ($this->q3_repeat_number >= 2 || $this->z3_repeat_number >= 2 || $this->h3_repeat_number >= 2) ){
             // 需要报警
             $this->alarm_status = true;
             $danger_num = $danger_num + 1;
