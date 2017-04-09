@@ -247,6 +247,58 @@ class ContainCode
      * @return array
      */
     private function get_analysis_danger_number($codes){
+        /* 测试专用
+        $codes = [
+            '12271',
+            '12019',
+            '63935',
+            '34141',
+            '92320',
+            '68368',
+        ];
+        $danger_num = 0; //初始化警报次数
+        foreach ($codes as $key=>$val){
+            $q3 = $val[0].$val[1].$val[2]; //前三号码
+            $z3 = $val[1].$val[2].$val[3]; //中三号码
+            $h3 = $val[2].$val[3].$val[4];//后三号码
+
+            //前三与 包含号码 重复位数
+            $this->q3_repeat_number = $this->getRepeatDigitNumber($q3);
+            //中三与 包含号码 重复位数
+            $this->z3_repeat_number = $this->getRepeatDigitNumber($z3);
+            //后三与 包含号码 重复位数
+            $this->h3_repeat_number = $this->getRepeatDigitNumber($h3);
+
+            //前三是否是组六形态
+            $this->q3_is_six = $this->is_six($q3);
+            //中三是否是组六形态
+            $this->z3_is_six = $this->is_six($z3);
+            //后三是否是组六形态
+            $this->h3_is_six = $this->is_six($h3);
+
+            //警报是否需要升级
+            $danger_num = $this->alarmUpgrade($danger_num);
+
+            //如果清零了警报 and 发现其他位置上有包含2位的 则需要在清0的这组上在 +1 就是 0+1=1
+            if($danger_num == 0 && $this->benchmark != false){
+//                $danger_num = $danger_num +1;
+            }
+
+            echo '当前开奖号:'.$val .'<br/>';
+            echo '当前以 基准:'.$this->benchmark .'<br/>';
+            echo '前三包含几位 :'.$this->q3_repeat_number .'<br/>';
+            echo '中三包含几位 :'.$this->z3_repeat_number .'<br/>';
+            echo '后三包含几位 :'.$this->h3_repeat_number .'<br/>';
+            echo '当前危险系数'.$danger_num .'<br/>';
+            echo '<br/><br/>--------------<br/><br/>';
+
+            //获取下期的基准 参考
+            $this->getBenchmark();
+        }
+        exit;
+        return $danger_num;
+        */
+
         $danger_num = 0; //初始化警报次数
         foreach ($codes as $key=>$val){
             $this->qishu = $val->qishu;
@@ -271,11 +323,6 @@ class ContainCode
 
             //警报是否需要升级
             $danger_num = $this->alarmUpgrade($danger_num);
-
-            //如果清零了警报 and 发现其他位置上有包含2位的 则需要在清0的这组上在 +1 就是 0+1=1
-            if($danger_num == 0 && $this->benchmark != false){
-                $danger_num = $danger_num +1;
-            }
 
             //获取下期的基准 参考
             $this->getBenchmark();
@@ -381,6 +428,7 @@ class ContainCode
 
         //有基准的情况
         if($this->benchmark){
+            //-------------------- 前三 判断 Start --------------------
             //基准是 前三 and 前三包含1位 and 前三是组6 清零
             if($this->benchmark == 'q3' && $this->q3_repeat_number == 1 && $this->q3_is_six == true){
                 // 需要报警
@@ -388,9 +436,25 @@ class ContainCode
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
+
+                //这里清零了 同时判断 其他位置上 是否有包含了2位的 如果有 警报从0 累加
+                if($this->z3_repeat_number >=2 || $this->h3_repeat_number >=2){
+                    $danger_num = $danger_num + 1; // 0+1=1
+                }
+
                 return $danger_num;
             }
 
+            //基准是 前三 and 前三包含2位 +1
+            if($this->benchmark == 'q3' && $this->q3_repeat_number >=2){
+                // 需要报警
+                $this->alarm_status = true;
+                $danger_num = $danger_num + 1; //警报提升一级
+                return $danger_num;
+            }
+            //-------------------- 前三 判断 End --------------------
+
+            //-------------------- 中三 判断 Start --------------------
             //基准是 中三 and 中三包含1位 and 中三是组6 清零
             if($this->benchmark == 'z3' && $this->z3_repeat_number == 1 && $this->z3_is_six == true){
                 // 需要报警
@@ -398,9 +462,25 @@ class ContainCode
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
+
+                //这里清零了 同时判断 其他位置上 是否有包含了2位的 如果有 警报从0 累加
+                if($this->q3_repeat_number >=2 || $this->h3_repeat_number >=2){
+                    $danger_num = $danger_num + 1; // 0+1=1
+                }
+
                 return $danger_num;
             }
 
+            //基准是 中三 and 中三包含2位 +1
+            if($this->benchmark == 'z3' && $this->z3_repeat_number >=2){
+                // 需要报警
+                $this->alarm_status = true;
+                $danger_num = $danger_num + 1; //警报提升一级
+                return $danger_num;
+            }
+            //-------------------- 中三 判断 End --------------------
+
+            //-------------------- 后三 判断 Start --------------------
             //基准是 后3 and 后三包含1位 and 后三是组6 清零
             if($this->benchmark == 'h3' && $this->h3_repeat_number == 1 && $this->h3_is_six == true){
                 // 需要报警
@@ -408,8 +488,23 @@ class ContainCode
                 $danger_num = 0;
                 //不递归了 已经找到清零的地方了
                 $this->referent = false;
+
+                //这里清零了 同时判断 其他位置上 是否有包含了2位的 如果有 警报从0 累加
+                if($this->q3_repeat_number >=2 || $this->z3_repeat_number >=2){
+                    $danger_num = $danger_num + 1; // 0+1=1
+                }
+
                 return $danger_num;
             }
+
+            //基准是 后三 and 后三包含2位 +1
+            if($this->benchmark == 'h3' && $this->h3_repeat_number >=2){
+                // 需要报警
+                $this->alarm_status = true;
+                $danger_num = $danger_num + 1; //警报提升一级
+                return $danger_num;
+            }
+            //-------------------- 后三 判断 End --------------------
         }
 
         //本次没有提升报警级别 所以不需要报警
