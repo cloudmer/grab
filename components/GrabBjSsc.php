@@ -240,7 +240,8 @@ class GrabBjSsc
                 $analysisBjsscModel->center_three_regret_txt = $val['z3_regert'];
                 $analysisBjsscModel->after_three_lucky_txt   = $val['h3_lucky'];
                 $analysisBjsscModel->after_three_regret_txt  = $val['h3_regert'];
-                $analysisBjsscModel->data_txt                = $this->data_packet_txt[$key]; //当前数据包文本内容
+                //$analysisBjsscModel->data_txt                = $this->data_packet_txt[$key]; //当前数据包文本内容
+                $analysisBjsscModel->data_txt                = null; //当前数据包文本内容
                 $analysisBjsscModel->type                    = $key; //数据包的id
                 $analysisBjsscModel->time                    = time();
                 $analysisBjsscModel->save();
@@ -313,12 +314,12 @@ class GrabBjSsc
                     $h3_regert .= $v."\r\n";
                 }
                 $arr[$key] = [
-                    'q3_lucky'=>$q3_lucky,
-                    'q3_regert'=>$q3_regert,
-                    'z3_lucky'=>$z3_lucky,
-                    'z3_regert'=>$z3_regert,
-                    'h3_lucky'=>$h3_lucky,
-                    'h3_regert'=>$h3_regert,
+                    'q3_lucky'  => $q3_lucky  ? '1' : null,
+                    'q3_regert' => $q3_regert ? '1' : null,
+                    'z3_lucky'  => $z3_lucky  ? '1' : null,
+                    'z3_regert' => $z3_regert ? '1' : null,
+                    'h3_lucky'  => $h3_lucky  ? '1' : null,
+                    'h3_regert' => $h3_regert ? '1' : null,
                 ];
             }
         }
