@@ -128,6 +128,7 @@ class Reserve
                 $this->recursionCodes('q3');
                 $this->recursionCodes('z3');
                 $this->recursionCodes('h3');
+                continue;
             }
 
             //前3 报警
