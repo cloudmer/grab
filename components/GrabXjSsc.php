@@ -53,6 +53,7 @@ class GrabXjSsc
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
         $this->containCode();  //包含报警
+        $this->packet();      //包含数据包
     }
 
     /**
@@ -74,6 +75,13 @@ class GrabXjSsc
      */
     private function containCode(){
         new ContainCode('xj');
+    }
+
+    /**
+     * 包含数据包
+     */
+    private function packet(){
+        new Packet('xj');
     }
 
     /**
