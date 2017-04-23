@@ -41,6 +41,7 @@ $this->registerJs($script);
                     'method'=>'post'])?>
                 <div class="modal-body">
 
+                    <?= $form->field($model, 'time')->label('')->hiddenInput(['value'=>$model->time])?>
                     <?= $form->field($model, 'id')->label('')->hiddenInput(['value'=>$model->id])?>
                     <?= $form->field($model, 'zero')->label('0对应下期开奖号码')->textInput(['placeholder'=>'0对应下期开奖号码'])?>
                     <?= $form->field($model, 'one')->label('1对应下期开奖号码')->textInput(['placeholder'=>'1对应下期开奖号码'])?>
