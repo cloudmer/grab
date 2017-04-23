@@ -43,7 +43,7 @@ class Tail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'continuity', 'discontinuous', 'start', 'end', 'status', 'time'], 'required'],
+            [['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'continuity', 'discontinuous', 'start', 'end', 'status'], 'required'],
             [['continuity', 'discontinuous', 'status', 'time'], 'integer'],
             [['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'start', 'end'], 'string', 'max' => 3]
         ];
