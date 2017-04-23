@@ -13,6 +13,7 @@ use app\models\Bjssc;
 use app\models\Cqssc;
 use app\models\Tjssc;
 use app\models\Xjssc;
+use app\models\Mailbox;
 use Yii;
 
 class TailCode
