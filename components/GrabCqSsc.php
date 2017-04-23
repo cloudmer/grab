@@ -45,6 +45,7 @@ class GrabCqSsc
         $this->warning();      //邮件报警
         $this->containCode();  //包含报警
         $this->packet();      //包含数据包
+        $this->tailCode();     //尾号玩法
     }
 
     /**
@@ -73,6 +74,13 @@ class GrabCqSsc
      */
     private function packet(){
         new Packet('cq');
+    }
+
+    /**
+     * 尾号玩法
+     */
+    private function tailCode(){
+        new TailCode('cq');
     }
 
     /**

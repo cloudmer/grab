@@ -1,0 +1,96 @@
+<?php
+use yii\helpers\Url;
+
+$csrf = Yii::$app->request->getCsrfToken();
+$script = <<< JS
+$(document).ready(function(){
+    $('body').on('click','.add-reserve',function(){
+        var _this = $(this);
+        window.location.href=_this.attr('data-url'); 
+    });
+
+    $('body').on('click','.menu-delete',function(){
+        var _this = $(this);
+        var content = _this.attr('data-info');
+        var id = _this.attr('data-id');
+        dialog({
+            fixed: true,
+            title: '您确定要删除吗?',
+            content: content,
+            ok: function () {
+                var that = this;
+                this.title('正在提交..');
+                $.post(_this.attr('data-url'),{_csrf:"$csrf",id:id},function(data){
+                    that.close().remove();
+                    if(data.state == true){
+                        $("#menu-"+id).remove();
+                        toastr.success('删除成功');
+                    }
+                },'json');
+                return false;
+            },
+            cancel: function () {
+                return true;
+            }
+        }).show();
+    })
+    
+});
+JS;
+$this->registerJs($script);
+?>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="active"><span>尾号玩法</span></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2>尾号玩法</h2>
+
+            </header>
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <table id="table-example-fixed" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>彩种类型</th>
+                            <th>0开奖号码</th>
+                            <th>1开奖号码</th>
+                            <th>2开奖号码</th>
+                            <th>3开奖号码</th>
+                            <th>4开奖号码</th>
+                            <th>5开奖号码</th>
+                            <th>6开奖号码</th>
+                            <th>7开奖号码</th>
+                            <th>8开奖号码</th>
+                            <th>9开奖号码</th>
+                            <th>连续报警期数</th>
+                            <th>未连续报警期数</th>
+                            <th>报警开始时间</th>
+                            <th>报警结束时间</th>
+                            <th>报警状态</th>
+                            <th>管理操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?= $this->render('/admin/tail/_list',['model'=>$model]) ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
