@@ -32,9 +32,9 @@ class TailController extends BaseController
         if(Yii::$app->request->post()){
             $post = Yii::$app->request->post('Tail');
             if($post['id']){
-                $model = Tail::find()->where(['id'=>$post['id']])->one();
+                $model = Tail::findOne(['id'=>$post['id']]);
                 $model->load(Yii::$app->request->post());
-                if($model->validate() && $model->save()){
+                if($model->save()){
                     //编辑
                     $this->redirect('/admin/tail/index');
                 }
