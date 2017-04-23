@@ -214,14 +214,48 @@ class Packet
         $q3_number = 0;
         $z3_number = 0;
         $h3_number = 0;
+        $q3_reference = false;
+        $z3_reference = false;
+        $h3_reference = false;
         foreach ($codes as $key=>$val){
             $q3 = $val->one.$val->two.$val->three; //前三号码
             $z3 = $val->two.$val->three.$val->four; //中三号码
             $h3 = $val->three.$val->four.$val->five;//后三号码
 
-            in_array($q3, $this->data_txt) ? $q3_number = 0 : $q3_number = $q3_number + 1;
-            in_array($z3, $this->data_txt) ? $z3_number = 0 : $z3_number = $z3_number + 1;
-            in_array($h3, $this->data_txt) ? $h3_number = 0 : $h3_number = $h3_number + 1;
+            $q3_in = in_array($q3, $this->data_txt);
+            $z3_in = in_array($z3, $this->data_txt);
+            $h3_in = in_array($h3, $this->data_txt);
+
+            //前三没有上一期 开奖数据 参考对象 and 前三出现在数据包里
+            if(!$q3_reference && $q3_in){
+                $q3_number = $q3_number + 1;
+            }else if($q3_reference && $q3_in){
+                //前三有上一期 开奖数据 参考对象 and 前三出现在数据包里
+                $q3_number = 0;
+                $q3_number = $q3_number + 1;
+            }
+
+            //中三没有上一期 开奖数据 参考对象 and 中三出现在数据包里
+            if(!$z3_reference && $z3_in){
+                $z3_number = $z3_number + 1;
+            }else if($z3_reference && $z3_in){
+                //中三有上一期 开奖数据 参考对象 and 中三出现在数据包里
+                $z3_number = 0;
+                $z3_number = $z3_number + 1;
+            }
+
+            //后三没有上一期 开奖数据 参考对象 and 后三出现在数据包里
+            if(!$h3_reference && $h3_in){
+                $h3_number = $h3_number + 1;
+            }else if($h3_reference && $h3_in){
+                //后三有上一期 开奖数据 参考对象 and 后三出现在数据包里
+                $h3_number = 0;
+                $h3_number = $h3_number + 1;
+            }
+
+            $q3_in ? $q3_reference = true : $q3_reference = false;
+            $z3_in ? $z3_reference = true : $z3_reference = false;
+            $h3_in ? $h3_reference = true : $h3_reference = false;
         }
 
         $this->set_contents($q3_number, $z3_number, $h3_number);
