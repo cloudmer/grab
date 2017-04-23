@@ -11,6 +11,7 @@ use app\models\Bjssc;
 use app\models\Cqssc;
 use app\models\Tjssc;
 use app\models\Xjssc;
+use Yii;
 
 /**
  * 数据包 玩法
