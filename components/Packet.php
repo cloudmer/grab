@@ -258,6 +258,11 @@ class Packet
             $h3_in ? $h3_reference = true : $h3_reference = false;
         }
 
+        //最近的一期有数据包里的数据 才报警
+        !$q3_reference ? $q3_number = 0 : false;
+        !$z3_reference ? $z3_number = 0 : false;
+        !$h3_reference ? $h3_number = 0 : false;
+
         $this->set_contents($q3_number, $z3_number, $h3_number);
     }
 
