@@ -34,6 +34,7 @@ class TailController extends BaseController
             if($post['id']){
                 $model = Tail::findOne(['id'=>$post['id']]);
                 $model->load(Yii::$app->request->post());
+                $model->time = time();
                 if($model->save()){
                     //编辑
                     $this->redirect('/admin/tail/index');
