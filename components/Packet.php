@@ -194,15 +194,15 @@ class Packet
         $mail_contents = null; //初始化邮件内容
 
         if($q3_number >= $this->regret_number){
-            $mail_contents .= '前:'.$q3_number .' N <br/>';
+            $mail_contents .= '前:'.$q3_number .' <br/>';
         }
 
         if($z3_number >= $this->regret_number){
-            $mail_contents .= '中:'.$q3_number .' N <br/>';
+            $mail_contents .= '中:'.$q3_number .' <br/>';
         }
 
         if($h3_number >= $this->regret_number){
-            $mail_contents .= '后:'.$q3_number .' N <br/>';
+            $mail_contents .= '后:'.$q3_number .' <br/>';
         }
 
         $title = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
