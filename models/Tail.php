@@ -27,6 +27,8 @@ use Yii;
  */
 class Tail extends \yii\db\ActiveRecord
 {
+
+    public $time;
     /**
      * @inheritdoc
      */
