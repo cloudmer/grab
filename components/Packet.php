@@ -164,6 +164,49 @@ class Packet
     }
 
     private function inspect_alarm(){
+        /*
+        $codes = [
+            '20448',
+            '29375',
+            '75604',
+            '00774',
+            '27120',
+            '88603',
+            '67144',
+            '88494',
+            '35945',
+            '39553',
+            '71423',
+            '17809',
+            '75975',
+            '94260',
+            '79299',
+            '94247',
+            '15682',
+            '98703',
+            '72411',
+            '33603',
+            '95223',
+            '60326',
+        ];
+        sort($codes);
+
+        $q3_number = 0;
+        $z3_number = 0;
+        $h3_number = 0;
+
+        foreach ($codes as $key=>$val){
+            $q3 = $val[0].$val[1].$val[2]; //前三号码
+            $z3 = $val[1].$val[2].$val[3]; //中三号码
+            $h3 = $val[2].$val[3].$val[4];//后三号码
+
+            in_array($q3, $this->data_txt) ? $q3_number = 0 : $q3_number = $q3_number + 1;
+            in_array($z3, $this->data_txt) ? $z3_number = 0 : $z3_number = $z3_number + 1;
+            in_array($h3, $this->data_txt) ? $h3_number = 0 : $h3_number = $h3_number + 1;
+        }
+        $this->set_contents($q3_number, $z3_number, $h3_number);
+        */
+
         $codes = $this->model->find()->orderBy('time DESC')->limit('100')->all();
         //数组倒叙
         sort($codes);
@@ -194,15 +237,15 @@ class Packet
         $mail_contents = null; //初始化邮件内容
 
         if($q3_number >= $this->regret_number){
-            $mail_contents .= '前:'.$q3_number .' <br/>';
+            $mail_contents .= '前:'. $q3_number .' <br/>';
         }
 
         if($z3_number >= $this->regret_number){
-            $mail_contents .= '中:'.$q3_number .' <br/>';
+            $mail_contents .= '中:'. $z3_number .' <br/>';
         }
 
         if($h3_number >= $this->regret_number){
-            $mail_contents .= '后:'.$q3_number .' <br/>';
+            $mail_contents .= '后:'. $h3_number .' <br/>';
         }
 
         $title = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
