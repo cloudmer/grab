@@ -143,34 +143,61 @@ class intervalCode
 
         /*
         $codes = [
-            '12466',
-            '12369',
-            '12858',
-            '13566',
-            '13789',
-            '16980',
-            '13666',
-            '12456',
-            '12466',
-            '12369',
-            '12858',
-            '13659',
-            '12466',
-            '12369',
-            '12858',
-            '13566',
-            '13789',
-            '16980',
-            '13666',
-            '12456',
-            '12466',
-            '12369',
-            '12858',
-            '13566',
-            '13789',
-            '16980',
-            '13666',
-            '12456',
+            '89702',
+            '02838',
+            '95532',
+            '41387',
+            '82650',
+            '63830',
+            '04375',
+            '38247',
+            '05865',
+            '30534',
+            '49035',
+            '32876',
+            '17251',
+            '62175',
+            '31611',
+            '05221',
+            '96759',
+            '17428',
+            '72123',
+            '06457',
+            '37494',
+            '37574',
+            '35125',
+            '03685',
+            '41259',
+            '09613',
+            '47236',
+            '79896',
+            '94247',
+            '49767',
+            '01907',
+            '30392',
+            '64476',
+            '83699',
+            '09064',
+            '83910',
+            '57438',
+            '13415',
+            '70037',
+            '69221',
+            '82001',
+            '59471',
+            '25237',
+            '26219',
+            '85972',
+            '47132',
+            '08353',
+            '65429',
+            '80604',
+            '71292',
+            '44814',
+            '18267',
+            '87902',
+            '75150',
+            '89875',
         ];
 
         $q3s = [];
@@ -186,7 +213,7 @@ class intervalCode
             $h3s[] = $h3;
         }
 
-        $this->analysis($h3s, 'h3');
+        $this->analysis($q3s, 'q3');
         */
 
 
@@ -221,8 +248,11 @@ class intervalCode
         $tail = false;
         $number = 0;
         foreach ($codes as $key=>$val){
+
+            $in_number = $this->getRepeatDigitNumber($val);
+
             //尾巴
-            if(strstr($val,$this->interval_number)){
+            if($in_number == strlen($this->interval_number) ){
                 //echo $val . ' - ' . $this->interval_number . ' true<br/>';
                 $tail = true;
             }else{
@@ -231,38 +261,33 @@ class intervalCode
             }
 
             //没有头的情况下  找到了头
-            if($reference == false && strstr($val,$this->interval_number)){
+            if($reference == false && ( $in_number == strlen($this->interval_number) ) ){
                 $reference = true;
                 continue;
             }
 
             $is_six = $this->is_six($val);
 
-            $len = strlen($this->interval_number);
-            $in_number = 0;
-            for($i=0; $i<$len; $i++){
-                if(strstr($val,$this->interval_number[$i])){
-                    $in_number = $in_number + 1;
-                }
-            }
-
             //有头 的情况下 是组6 and 包含1位 清零 并清除头 再找下一个头
             if($reference && $is_six && $in_number == 1){
                 //清零
                 $number = 0;
                 $reference = false;
+                echo '当前开奖号 '. $val . ' 是组6 并且 包含1位 清零 = 0<br/>';
                 continue;
             }
 
             //有头的情况下 还出现了头 不管这一组
             if($reference && $in_number >=2){
                 //直接跳过不用管
+                echo '当前开奖号 '. $val . ' 包含2位 有头了 这期忽略<br/>';
                 continue;
             }
 
             //有头的情况下 排除以上情况 就可以+
             if($reference == true){
                 $number = $number + 1;
+                echo '当前开奖号 '. $val . ' +1 = '. $number .'<br/>';
             }
         }
 
@@ -289,6 +314,26 @@ class intervalCode
         }
         //是组3
         return false;
+    }
+
+    /**
+     * 开奖号获取与包含号码 重复次数
+     * @param $code 开奖号
+     * @return int 开奖号与包含号重复 位数
+     */
+    private function getRepeatDigitNumber($code){
+        //开奖号 字符串转数组
+        $code = str_split($code);
+        //去重
+        $code = array_unique($code);
+        //包含号 字符串转数组
+        $interval_number = str_split($this->interval_number);
+        //去重
+        $interval_number = array_unique($interval_number);
+
+        //求两个数组的交集
+        $intersection = array_intersect($code, $interval_number);
+        return count($intersection);
     }
 
 
