@@ -51,6 +51,7 @@ class GrabBjSsc
         $this->containCode();  //包含报警
         $this->packet();      //包含数据包
         $this->tailCode();     //尾号玩法
+        $this->intervalCode(); //间隔玩法
     }
 
     /**
@@ -86,6 +87,13 @@ class GrabBjSsc
      */
     private function tailCode(){
         new TailCode('bj');
+    }
+
+    /**
+     * 间隔玩法
+     */
+    private function intervalCode(){
+        new intervalCode('bj');
     }
 
     /**

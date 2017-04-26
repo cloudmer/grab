@@ -46,6 +46,7 @@ class GrabCqSsc
         $this->containCode();  //包含报警
         $this->packet();      //包含数据包
         $this->tailCode();     //尾号玩法
+        $this->intervalCode(); //间隔玩法
     }
 
     /**
@@ -81,6 +82,13 @@ class GrabCqSsc
      */
     private function tailCode(){
         new TailCode('cq');
+    }
+
+    /**
+     * 间隔玩法
+     */
+    private function intervalCode(){
+        new intervalCode('cq');
     }
 
     /**
