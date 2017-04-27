@@ -158,13 +158,13 @@ class TailCode
     private function query_codes(){
         if(!$this->status){
             //报警关闭
-            echo $this->cp_name.' 数据包别名: '.$this->alias. " - 时时彩报警 报警状态关闭 时间:".date('Y-m-d H:i:s')."\r\n";
+            echo $this->cp_name.' 数据包别名: '.$this->cp_alias_name. " - 时时彩报警 报警状态关闭 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
         //检查是否在报警时段
         if( ($this->start && $this->end) && (date('H') < $this->start || date('H') > $this->end) ){
             //当前非报警时段
-            echo $this->cp_name.' 数据包别名: '.$this->alias. " - 时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
+            echo $this->cp_name.' 数据包别名: '.$this->cp_alias_name. " - 时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
 
