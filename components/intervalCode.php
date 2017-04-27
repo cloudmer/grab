@@ -34,9 +34,6 @@ class intervalCode
     /* 报警期数 >= 当前 */
     public $danger_number;
 
-    /* 预定的报警号码 */
-    public $reserve_number;
-
     /* 邮件报警内容 */
     public $content;
 
@@ -140,7 +137,6 @@ class intervalCode
             echo $this->cp_name. " - 间隔 时时彩报警通知非接受时段 时间:".date('Y-m-d H:i:s')."\r\n";
             return;
         }
-
         /*
         $codes = [
             '89702',
@@ -200,6 +196,40 @@ class intervalCode
             '89875',
         ];
 
+        $codes = [
+            '81364',
+            '15390',
+            '21955',
+            '46616',
+            '44075',
+            '42864',
+            '70844',
+            '03959',
+            '03002',
+            '77826',
+            '02157',
+            '86477',
+            '40469',
+            '85161',
+            '18402',
+            '23391',
+            '38276',
+            '85053',
+            '79293',
+            '59328',
+            '66130',
+            '42012',
+            '27037',
+            '95928',
+            '76726',
+            '77352',
+            '79500',
+            '31900',
+            '48116',
+            '85413',
+            '85413',
+        ];
+
         $q3s = [];
         $z3s = [];
         $h3s = [];
@@ -215,7 +245,6 @@ class intervalCode
 
         $this->analysis($q3s, 'q3');
         */
-
 
         $codes = $this->model->find()->orderBy('time desc')->limit('100')->all();
         sort($codes);
@@ -273,26 +302,26 @@ class intervalCode
                 //清零
                 $number = 0;
                 $reference = false;
-                echo '当前开奖号 '. $val . ' 是组6 并且 包含1位 清零 = 0<br/>';
+                //echo '当前开奖号 '. $val . ' 是组6 并且 包含1位 清零 = 0<br/>';
                 continue;
             }
 
             //有头的情况下 还出现了头 不管这一组
             if($reference && $in_number >=2){
                 //直接跳过不用管
-                echo '当前开奖号 '. $val . ' 包含2位 有头了 这期忽略<br/>';
+                //echo '当前开奖号 '. $val . ' 包含2位 有头了 这期忽略<br/>';
                 continue;
             }
 
             //有头的情况下 排除以上情况 就可以+
             if($reference == true){
                 $number = $number + 1;
-                echo '当前开奖号 '. $val . ' +1 = '. $number .'<br/>';
+                //echo '当前开奖号 '. $val . ' +1 = '. $number .'<br/>';
             }
         }
 
         //有头 有尾 and 报警期数达到了就报警
-        if($reference && $tail && ( $number >= $this->reserve_number ) ){
+        if($reference && $tail && ( $number >= $this->danger_number ) ){
             $position == 'q3' ? $p_name = '前' : false;
             $position == 'z3' ? $p_name = '中' : false;
             $position == 'h3' ? $p_name = '后' : false;
