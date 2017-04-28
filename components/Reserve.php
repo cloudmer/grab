@@ -119,8 +119,8 @@ class Reserve
             $status = $m->status; //报警状态 1=>开启 0=>关闭
             //当前关闭报警,跳过
             if($status == 0){
-                echo $this->cp_name.'时时彩,当前关闭预定号码报警阀门'."\r\n";
-                return;
+                echo $this->cp_name.'时时彩,'.$this->reserve_number.'当前关闭预定号码报警阀门'."\r\n";
+                continue;
             }
 
             //前3 中3 后3 都要报警
