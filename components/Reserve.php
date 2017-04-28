@@ -275,7 +275,7 @@ class Reserve
 //            $this->content .= '警告: '.$this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了<br/>';
             $this->content .= $this->cp_name.' - '.$position_name.' - 组合:'.$this->reserve_number.' 已经有'.$danger_num.'  N<br/>';
         }
-        echo $this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
+        //echo $this->cp_name.' - '.$position_name.' - 预定号码:'.$this->reserve_number.' 已经有'.$danger_num.' 期未开奖了'."\r\n";
     }
 
     /**
