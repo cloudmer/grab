@@ -184,14 +184,25 @@ class TailCode
         }
 
         $contents = null;
-        $contents .= $this->analysis_continuity($q3s, 'q3');
-        $contents .= $this->analysis_discontinuous($q3s, 'q3');
+        //尾
+        $contents .= $this->analysis_continuity($q3s, 'q3', 2);
+        $contents .= $this->analysis_discontinuous($q3s, 'q3', 2);
 
-        $contents .= $this->analysis_continuity($z3s, 'z3');
-        $contents .= $this->analysis_discontinuous($z3s, 'z3');
+        $contents .= $this->analysis_continuity($z3s, 'z3', 2);
+        $contents .= $this->analysis_discontinuous($z3s, 'z3', 2);
 
-        $contents .= $this->analysis_continuity($h3s, 'h3');
-        $contents .= $this->analysis_discontinuous($h3s, 'h3');
+        $contents .= $this->analysis_continuity($h3s, 'h3', 2);
+        $contents .= $this->analysis_discontinuous($h3s, 'h3', 2);
+
+        //前
+        $contents .= $this->analysis_continuity($q3s, 'q3', 0);
+        $contents .= $this->analysis_discontinuous($q3s, 'q3', 0);
+
+        $contents .= $this->analysis_continuity($z3s, 'z3', 0);
+        $contents .= $this->analysis_discontinuous($z3s, 'z3', 0);
+
+        $contents .= $this->analysis_continuity($h3s, 'h3', 0);
+        $contents .= $this->analysis_discontinuous($h3s, 'h3', 0);
 
 
         $this->email_contents = $contents;
@@ -201,9 +212,13 @@ class TailCode
      * 数据分析 未连续开奖
      * @param $code     开奖号码
      * @param $position 位置
+     * @param $location 位置 第一位 or 第二位 or 第三位
      * @return string
      */
-    private function analysis_discontinuous($code, $position){
+    private function analysis_discontinuous($code, $position, $location){
+        $location == 0 ? $p_name = '前' : false;
+        $location == 1 ? $p_name = '中' : false;
+        $location == 2 ? $p_name = '后' : false;
         $referent = null;
         $number = 0;
         foreach ($code as $key=>$val){
@@ -211,7 +226,7 @@ class TailCode
             if($referent == null){
                 $number = $number + 1;
 
-                $referent = $this->getTailCode($val[2]);
+                $referent = $this->getTailCode($val[$location]);
                 continue;
             }
 
@@ -225,14 +240,14 @@ class TailCode
                 $number = $number +1;
             }
 
-            $referent = $this->getTailCode($val[2]);
+            $referent = $this->getTailCode($val[$location]);
         }
 
         if($number >= $this->discontinuous){
             $position == 'q3' ? $position = '前' : false;
             $position == 'z3' ? $position = '中' : false;
             $position == 'h3' ? $position = '后' : false;
-            return $this->cp_alias_name . ' ' . $position . ' 尾 ' . ' 未连续 ' . $number . '<br/>';
+            return $this->cp_alias_name . ' ' . $position . ' ('. $p_name . ')' . ' 未连续 ' . $number . '<br/>';
         }
         return false;
     }
@@ -241,16 +256,20 @@ class TailCode
      * 数据分析 连续开奖
      * @param $code     开奖号码
      * @param $position 位置
+     * @param $location 位置 第一位 or 第二位 or 第三位
      * @return string
      */
-    private function analysis_continuity($code, $position){
+    private function analysis_continuity($code, $position, $location){
+        $location == 0 ? $p_name = '前' : false;
+        $location == 1 ? $p_name = '中' : false;
+        $location == 2 ? $p_name = '后' : false;
         $referent = null;
         $number = 0;
         foreach ($code as $key=>$val){
             //第一次 不作计算 直接累加
             if($referent == null){
                 $number = 0;
-                $referent = $this->getTailCode($val[2]);
+                $referent = $this->getTailCode($val[$location]);
                 continue;
             }
 
@@ -263,14 +282,14 @@ class TailCode
             }else{
                 $number = 0;
             }
-            $referent = $this->getTailCode($val[2]);
+            $referent = $this->getTailCode($val[$location]);
         }
 
         if($number >= $this->continuity){
             $position == 'q3' ? $position = '前' : false;
             $position == 'z3' ? $position = '中' : false;
             $position == 'h3' ? $position = '后' : false;
-            return $this->cp_alias_name . ' ' . $position . ' 尾 ' . ' 连续 ' . $number . '<br/>';
+            return $this->cp_alias_name . ' ' . $position . ' ('. $p_name . ')' . ' 连续 ' . $number . '<br/>';
         }
         return false;
     }
