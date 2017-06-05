@@ -161,6 +161,7 @@ class DoublePackage
         $codes = $this->model->find()->orderBy('time desc')->limit('100')->all();
         sort($codes);
         $this->analysisCode($codes);
+        $this->intervalAnalysisCode($codes);
     }
 
     /**
@@ -200,6 +201,37 @@ class DoublePackage
         //报警期数达到了就报警
         if ($number >= $this->number ) {
             $this->content .= $this->cp_name . ' - ' . ' 双包玩法 '. ' 别名: ' . $this->alias . ' 期数: '. $number . ' 未开<br/>';
+        }
+    }
+
+    /**
+     * 间隔
+     * @param $codes
+     */
+    private function intervalAnalysisCode($codes){
+        $status = false;
+        $number = 0;
+        foreach ($codes as $key=>$val){
+            $benchmark = $this->getBenchmark($val);
+            if ($benchmark){
+                $number = $number + 1;
+                $status = true;
+                continue;
+            }
+
+            $bool = $this->inPackageB($val, $benchmark);
+            if ($bool){
+                $number = 0;
+                $status = false;
+                continue;
+            }
+
+            $status = false;
+        }
+
+        //报警期数达到了就报警
+        if ($number >= $this->number && $status ) {
+            $this->content .= $this->cp_name . ' - ' . ' 双包玩法 - 【间隔】 '. ' 别名: ' . $this->alias . ' 期数: '. $number . ' 未开<br/>';
         }
     }
 
