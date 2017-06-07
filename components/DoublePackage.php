@@ -161,7 +161,55 @@ class DoublePackage
         $codes = $this->model->find()->orderBy('time desc')->limit('100')->all();
         sort($codes);
 //        $this->analysisCode($codes);
-        $this->intervalAnalysisCode($codes);
+//        $this->intervalAnalysisCode($codes);
+
+        $q3s = [];
+        $z3s = [];
+        $h3s = [];
+        foreach ($codes as $key=>$val) {
+            $q3 = $val->one.$val->two.$val->three; //前三号码
+            $z3 = $val->two.$val->three.$val->four; //中三号码
+            $h3 = $val->three.$val->four.$val->five;//
+            $q3s[] = $q3;
+            $z3s[] = $z3;
+            $h3s[] = $h3;
+        }
+        $this->analysisCodes($q3s, 'q3');
+        $this->analysisCodes($z3s, 'z3');
+        $this->analysisCodes($h3s, 'h3');
+    }
+
+    /**
+     * @param $code
+     * @param $position
+     */
+    private function analysisCodes($code, $position){
+        $position == 'q3' ? $p_name = '前' : false;
+        $position == 'z3' ? $p_name = '中' : false;
+        $position == 'h3' ? $p_name = '后' : false;
+        $number = 0;
+        $status = false;
+        foreach ($code as $key=>$val){
+            $in_a = in_array($val, $this->package_a);
+            $in_b = in_array($val, $this->package_b);
+            if ($in_a){
+                $number = $number + 1;
+                $status = true;
+                continue;
+            }
+
+            if ($in_b){
+                $number = 0;
+                $status = true;
+                continue;
+            }
+            $status = false;
+        }
+
+        //报警期数达到了就报警
+        if ($number >= $this->number && $status ) {
+            $this->content .= $this->cp_name . ' - ' . ' 双包玩法 '. ' 别名: ' . $this->alias. ' 位置:' . $p_name . ' 期数: '. $number . ' 报警<br/>';
+        }
     }
 
     /**
