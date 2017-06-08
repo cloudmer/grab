@@ -207,7 +207,7 @@ class Packet
         $this->set_contents($q3_number, $z3_number, $h3_number);
         */
 
-        $codes = $this->model->find()->orderBy('time DESC')->limit('100')->all();
+        $codes = $this->model->find()->orderBy('time DESC')->limit('300')->all();
         //数组倒叙
         sort($codes);
 

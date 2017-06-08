@@ -158,7 +158,7 @@ class DoublePackage
             return;
         }
 
-        $codes = $this->model->find()->orderBy('time desc')->limit('100')->all();
+        $codes = $this->model->find()->orderBy('time desc')->limit('300')->all();
         sort($codes);
 //        $this->analysisCode($codes);
 //        $this->intervalAnalysisCode($codes);
