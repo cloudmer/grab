@@ -192,6 +192,13 @@ class DoublePackage
         foreach ($code as $key=>$val){
             $in_a = in_array($val, $this->package_a);
             $in_b = in_array($val, $this->package_b);
+            if ($in_a && $in_a){
+                $number = 0 ;
+                $number = $number + 1;
+                $status = true;
+                continue;
+            }
+
             if ($in_a){
                 $number = $number + 1;
                 $status = true;
