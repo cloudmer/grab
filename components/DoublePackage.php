@@ -177,6 +177,55 @@ class DoublePackage
         $this->analysisCodes($q3s, 'q3');
         $this->analysisCodes($z3s, 'z3');
         $this->analysisCodes($h3s, 'h3');
+
+        /*
+        $codes = [
+            '81364',
+            '15390',
+            '21955',
+            '46616',
+            '44075',
+            '42864',
+            '70844',
+            '03959',
+            '03002',
+            '77826',
+            '02157',
+            '86477',
+            '40469',
+            '85161',
+            '18402',
+            '23391',
+            '38276',
+            '85053',
+            '79293',
+            '59328',
+            '66130',
+            '42012',
+            '27037',
+            '95928',
+            '76726',
+            '77352',
+            '79500',
+            '31900',
+            '48116',
+            '85413',
+            '85413',
+        ];
+
+        $q3s = [];
+        $z3s = [];
+        $h3s = [];
+        foreach ($codes as $key=>$val){
+            $q3s[] = $val[0].$val[1].$val[2];
+            $z3s[] = $val[1].$val[2].$val[3];
+            $h3s[] = $val[2].$val[3].$val[4];
+        }
+
+        $this->analysisCodes($q3s, 'q3');
+        exit;
+        */
+
     }
 
     /**
@@ -184,38 +233,72 @@ class DoublePackage
      * @param $position
      */
     private function analysisCodes($code, $position){
+        //var_dump(array_intersect($this->package_a, $this->package_b));exit;
         $position == 'q3' ? $p_name = '前' : false;
         $position == 'z3' ? $p_name = '中' : false;
         $position == 'h3' ? $p_name = '后' : false;
         $number = 0;
         $status = false;
+
+        $log_html = '<br/>';
+
         foreach ($code as $key=>$val){
             $in_a = in_array($val, $this->package_a);
             $in_b = in_array($val, $this->package_b);
+            /*
+            echo '开奖号:'. $val;
+            echo $in_a ? " 在A包里" : false;
+            echo $in_b ? " 在B包里" : false;
+            */
+            $log_html .= '开奖号:'. $val;
+            $in_a ? $log_html .= ' 在A包里' : false;
+            $in_b ? $log_html .= ' 在B包里' : false;
+
             if ($in_a && $in_b){
                 $number = 0 ;
                 $number = $number + 1;
                 $status = true;
+                /*
+                echo " AB包都有 清零=0 再+1";
+                echo "<br/>";
+                */
+                $log_html .= ' AB包都有 清零=0 再+1 = 1 <br/>';
                 continue;
             }
 
             if ($in_a){
                 $number = $number + 1;
                 $status = true;
+                /*
+                echo " A包 +1 =".$number;
+                echo "<br/>";
+                */
+                $log_html .= ' A包 +1 ='. $number . '<br/>';
                 continue;
             }
 
             if ($in_b){
                 $number = 0;
                 $status = true;
+                /*
+                echo " B包 =0";
+                echo "<br/>";
+                */
+                $log_html .= ' B包 +1 =0' . '<br/>';
                 continue;
             }
             $status = false;
+            /*
+            echo " 不在AB里";
+            echo "<br/>";
+            */
+            $log_html .= ' 不在AB里' . '<br/>';
         }
 
         //报警期数达到了就报警
         if ($number >= $this->number && $status ) {
             $this->content .= $this->cp_name . ' - ' . ' 双包玩法 '. ' 别名: ' . $this->alias. ' 位置:' . $p_name . ' 期数: '. $number . ' 报警<br/>';
+            $this->content .= $log_html;
         }
     }
 
