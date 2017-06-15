@@ -322,7 +322,7 @@ class DoublePackage
         //报警期数达到了就报警
         if ($number >= $this->number && $status ) {
             $this->content .= $this->cp_name . ' - ' . ' 双包玩法 '. ' 别名: ' . $this->alias. ' 位置:' . $p_name . ' 期数: '. $number . ' 报警<br/>';
-            $this->content .= $log_html;
+            //$this->content .= $log_html;
         }
     }
 
