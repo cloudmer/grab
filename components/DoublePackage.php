@@ -291,15 +291,26 @@ class DoublePackage
             }
 
             if ($in_b){
-                $number = 0;
-                $status = true;
-                /*
-                echo " B包 =0";
-                echo "<br/>";
-                */
-                $log_html .= ' B包 =0' . '<br/>';
-                continue;
+                if ($key == 0){
+                    $log_html .= ' B包 300期的第一期 这期不管<br/>';
+                    $status = false;
+                    continue;
+                }
+
+                $pre_code = $code[$key-1];
+                $pre_in_a = in_array($pre_code, $this->package_a);
+                if ($pre_in_a){
+                    $number = 0 ;
+                    $status = true;
+                    $log_html .= ' B包 上一期包含A 清零 = 0<br/>';
+                    continue;
+                }else {
+                    $log_html .= ' B包 上一期没包含A 这期不管<br/>';
+                    $status = false;
+                    continue;
+                }
             }
+
             $status = false;
             /*
             echo " 不在AB里";
