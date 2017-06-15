@@ -255,15 +255,28 @@ class DoublePackage
             $in_b ? $log_html .= ' 在B包里' : false;
 
             if ($in_a && $in_b){
-                $number = 0 ;
-                $number = $number + 1;
-                $status = true;
-                /*
-                echo " AB包都有 清零=0 再+1";
-                echo "<br/>";
-                */
-                $log_html .= ' AB包都有 清零=0 再+1 = 1 <br/>';
-                continue;
+                if ($key == 0){
+                    $number = 0 ;
+                    $number = $number + 1;
+                    $status = true;
+                    $log_html .= ' AB同时出现 300期的第一期, 只+1 =1<br/>';
+                    continue;
+                }
+
+                $pre_code = $code[$key-1];
+                $pre_in_a = in_array($pre_code, $this->package_a);
+                if ($pre_in_a){
+                    $number = 0 ;
+                    $number = $number + 1;
+                    $status = true;
+                    $log_html .= ' AB同时出现 上一期包含A 清零 再 +1 = 1<br/>';
+                    continue;
+                }else {
+                    $number = $number + 1;
+                    $status = true;
+                    $log_html .= ' AB同时出现 上一期不包含A +1 = '.$number.'<br/>';
+                    continue;
+                }
             }
 
             if ($in_a){
@@ -284,7 +297,7 @@ class DoublePackage
                 echo " B包 =0";
                 echo "<br/>";
                 */
-                $log_html .= ' B包 +1 =0' . '<br/>';
+                $log_html .= ' B包 =0' . '<br/>';
                 continue;
             }
             $status = false;
