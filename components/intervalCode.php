@@ -246,7 +246,7 @@ class intervalCode
         $this->analysis($q3s, 'q3');
         */
 
-        $codes = $this->model->find()->orderBy('time desc')->limit('400')->all();
+        $codes = $this->model->find()->orderBy('time desc')->limit('1000')->all();
         sort($codes);
 
         $q3s = [];
