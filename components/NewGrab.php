@@ -151,7 +151,8 @@ class NewGrab
 
             $status = false;
             foreach ($code as $k=>$v){
-                if($v->getAnalysis($val->id)->one()->lucky == 1){
+                //if($v->getAnalysis($val->id)->one()->lucky == 1){
+                if($v->getAnalysis($val->id)->one()->attributes['lucky'] == 1){
                     $status = true;
                 }
             }
