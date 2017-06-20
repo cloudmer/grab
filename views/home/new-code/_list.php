@@ -1,5 +1,6 @@
 <?php foreach ($model as $m) : ?>
     <?php $analysis = $m->getAnalysis($package_id)->one(); ?>
+    <?php echo $analysis->attributes['lucky'];exit;?>
     <tr>
         <td class="text-center"><?= $m->qihao ?></td>
         <td class="text-center"><?php echo $code = str_replace(" ", '', $m->one.$m->two.$m->three.$m->four.$m->five); ?></td>
