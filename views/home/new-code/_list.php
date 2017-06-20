@@ -1,8 +1,7 @@
 <?php foreach ($model as $m) : ?>
     <?php $analysis = $m->getAnalysis($package_id)->one(); ?>
 
-    <?php echo $analysis->lucky == 1 ? 'style="background: red"' : false;  ?>
-
+    <?php echo $analysis->lucky?>
     <?php
 
         echo '<pre>';
