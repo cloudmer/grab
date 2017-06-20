@@ -1,7 +1,7 @@
 <?php foreach ($model as $m) : ?>
     <?php $analysis = $m->getAnalysis($package_id)->one(); ?>
 
-    <span class="badge bg-gray" <?php echo $analysis->lucky == 1 ? 'style="background: red"' : false;  ?> >  <?php echo $analysis->lucky == 1 ? '中' : '未';  ?> </span>
+    <?php echo $analysis->lucky == 1 ? 'style="background: red"' : false;  ?>
 
     <?php
 
