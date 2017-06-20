@@ -83,7 +83,6 @@ class NewGrab
 
                 $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
                 if($result){
-                    $urlName = array_keys($this->urlArr,$url);
                     echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了<br/>';
                     return;
                 }
