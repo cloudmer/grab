@@ -4,7 +4,7 @@
     <?php
 
         echo '<pre>';
-        var_dump($analysis->lucky);
+//        var_dump($analysis->lucky);
         var_dump($analysis);exit;
     ?>
     <tr>
