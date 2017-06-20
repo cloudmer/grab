@@ -8,6 +8,8 @@ use app\models\Code;
 use app\models\Codeold;
 use app\models\Cqdata;
 use app\models\Cqssc;
+use app\models\Newcode;
+use app\models\Newcodedata;
 use app\models\Tjdata;
 use app\models\Tjssc;
 use app\models\Xjdata;
@@ -487,5 +489,26 @@ class HomeController extends \yii\web\Controller
             $model = Bjdata::find()->select('id,alias')->asArray()->all();
         }
         echo json_encode($model);
+    }
+
+    public function actionNewCode(){
+        $type = \Yii::$app->request->get('type');
+        $package_id = \Yii::$app->request->get('package_id');
+        $data_packet = Newcodedata::find()->select('id,alias')->where(['type'=>$type])->all();
+        $default = Newcodedata::find()->select('id,alias')->where(['type'=>$type])->orderBy('time ASC')->one();
+        !$package_id ? $package_id = $default->id : false;
+
+        $data = Newcode::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/new-code/_list',['model'=>$model,'type'=>$type, 'package_id'=>$package_id]);
+        }
+
+        return $this->render('/home/new-code/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet, 'package_id' => $package_id]);
     }
 }
