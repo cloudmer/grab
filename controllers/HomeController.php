@@ -498,7 +498,7 @@ class HomeController extends \yii\web\Controller
         $default = Newcodedata::find()->select('id,alias')->where(['type'=>$type])->orderBy('time ASC')->one();
         !$package_id ? $package_id = $default->id : false;
 
-        $data = Newcode::find()->orderBy('time DESC');
+        $data = Newcode::find()->where(['type'=>$type])->orderBy('time DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
