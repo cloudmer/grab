@@ -1,7 +1,6 @@
 <?php foreach ($model as $m) : ?>
     <?php $analysis = $m->getAnalysis($package_id)->one(); ?>
 
-    <?= $analysis->lucky?>
     <?php
 
         echo '<pre>';
