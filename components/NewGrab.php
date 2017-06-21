@@ -117,6 +117,7 @@ class NewGrab
     }
 
     private function analysis($newcode_id, $kjhm){
+        sort($kjhm);
         //查询数据包
         $data = Newcodedata::find()->where(['type'=>$this->cp_type])->all();
         foreach ($data as $key=>$val) {
