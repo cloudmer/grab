@@ -101,7 +101,7 @@ class NewGrab
                     return;
                 }
 
-                $this->analysis($newcodeModel->id , sort($codeArr));
+                $this->analysis($newcodeModel->id , $codeArr);
 
                 $this->alert();
 
