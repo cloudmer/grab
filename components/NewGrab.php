@@ -100,7 +100,7 @@ class NewGrab
                     echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败<br/>';
                     return;
                 }
-
+                sort($codeArr);
                 $this->analysis($newcodeModel->id , $codeArr);
 
                 $this->alert();
@@ -117,7 +117,6 @@ class NewGrab
     }
 
     private function analysis($newcode_id, $kjhm){
-        sort($kjhm);
         //查询数据包
         $data = Newcodedata::find()->where(['type'=>$this->cp_type])->all();
         foreach ($data as $key=>$val) {
