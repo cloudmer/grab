@@ -145,7 +145,7 @@ class NewGrab
         $data = Newcodedata::find()->where(['type'=>$this->cp_type])->all();
         foreach ($data as $key=>$val){
             $number = $val->number;
-            $code = Newcode::find()->where(['type'=>$this->cp_type])->orderBy('time DESC')->limit($number)->all();
+            $code = Newcode::find()->where(['type'=>$this->cp_type])->orderBy('time DESC')->limit(100)->all();
             if (count($code) < $number){
                 //不满足报警条件
                 echo "不满足报警条件\r\n";
