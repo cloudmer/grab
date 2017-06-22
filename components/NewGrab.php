@@ -148,7 +148,7 @@ class NewGrab
             $code = Newcode::find()->where(['type'=>$this->cp_type])->orderBy('time DESC')->limit($number)->all();
             if (count($code) < $number){
                 //不满足报警条件
-                echo '不满足报警条件\r\n';
+                echo "不满足报警条件\r\n";
                 continue;
             }
 
