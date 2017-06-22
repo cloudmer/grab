@@ -66,7 +66,7 @@ $this->registerJs($script);
                         <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=1') ?>" data-type="1" href="#"><i class="fa fa-circle green"></i> 江西</a></li>
                         <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=2') ?>" data-type="2" href="#"><i class="fa fa-circle purple"></i> 广东</a></li>
                         <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=3') ?>" data-type="3" href="#"><i class="fa fa-circle yellow"></i> 山东</a></li>
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=3') ?>" data-type="4" href="#"><i class="fa fa-circle yellow"></i> 上海</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=4') ?>" data-type="4" href="#"><i class="fa fa-circle yellow"></i> 上海</a></li>
                     </ul>
                 </div>
 
