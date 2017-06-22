@@ -106,6 +106,7 @@ class NewGrab
                 $this->analysis($newcodeModel->id , $codeArr);
 
                 $this->alert();
+                exit;
 
                 new NewCodeInterval($this->cp_type);
 
@@ -146,6 +147,7 @@ class NewGrab
         foreach ($data as $key=>$val){
             $number = $val->number;
             $code = Newcode::find()->where(['type'=>$this->cp_type])->orderBy('time DESC')->limit(100)->all();
+            sort($code);
             if (count($code) < $number){
                 //不满足报警条件
                 echo "不满足报警条件\r\n";
