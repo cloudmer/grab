@@ -44,7 +44,7 @@ $this->registerJs($script);
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li class="active"><span>数据包与报警设置</span></li>
+                    <li class="active"><span>11选5 间隔包 与 报警设置</span></li>
                 </ol>
             </div>
         </div>
@@ -62,11 +62,11 @@ $this->registerJs($script);
                         <i class="fa fa-plus-circle fa-lg"></i> 添加数据包 &nbsp; <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=0') ?>" data-type="0" href="#"><i class="fa fa-circle green"></i> 所有彩种</a></li>
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=1') ?>" data-type="1" href="#"><i class="fa fa-circle green"></i> 江西</a></li>
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=2') ?>" data-type="2" href="#"><i class="fa fa-circle purple"></i> 广东</a></li>
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=3') ?>" data-type="3" href="#"><i class="fa fa-circle yellow"></i> 山东</a></li>
-                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code/form?type=3') ?>" data-type="4" href="#"><i class="fa fa-circle yellow"></i> 上海</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code-interval/form?type=0') ?>" data-type="0" href="#"><i class="fa fa-circle green"></i> 所有彩种</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code-interval/form?type=1') ?>" data-type="1" href="#"><i class="fa fa-circle green"></i> 江西</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code-interval/form?type=2') ?>" data-type="2" href="#"><i class="fa fa-circle purple"></i> 广东</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code-interval/form?type=3') ?>" data-type="3" href="#"><i class="fa fa-circle yellow"></i> 山东</a></li>
+                        <li><a class="menu-active" data-url="<?= Url::to('/admin/new-code-interval/form?type=4') ?>" data-type="4" href="#"><i class="fa fa-circle yellow"></i> 上海</a></li>
                     </ul>
                 </div>
 
@@ -86,7 +86,7 @@ $this->registerJs($script);
                         </tr>
                         </thead>
                         <tbody>
-                        <?= $this->render('/admin/new-code/_list',['model'=>$model]) ?>
+                        <?= $this->render('/admin/new-code-interval/_list',['model'=>$model]) ?>
                         </tbody>
                     </table>
                 </div>

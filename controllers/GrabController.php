@@ -19,6 +19,7 @@ class GrabController extends \yii\web\Controller
         new NewGrab(1);
         new NewGrab(2);
         new NewGrab(3);
+        new NewGrab(4);
 //        new Grab('http://cp.360.cn/dlcjx/?r_a=7zIRFz');
 //        new Grab('http://cp.360.cn/gd11/?r_a=yiiEJb');
 //        new Grab('http://cp.360.cn/yun11/?r_a=JfMbIz');

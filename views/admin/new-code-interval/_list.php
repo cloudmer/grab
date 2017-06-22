@@ -47,21 +47,21 @@ $this->registerJs($script);
         <td> <?= $m->status ? '开启' : '关闭'; ?>  </td>
         <td>
 
-            <a href="<?= \yii\helpers\Url::to('/admin/new-code/see') ?>?id=<?= $m->id?>" class="table-link menu-active" >
+            <a href="<?= \yii\helpers\Url::to('/admin/new-code-interval/see') ?>?id=<?= $m->id?>" class="table-link menu-active" >
                 <span class="fa-stack">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                 </span>
             </a>
 
-            <a href="<?= \yii\helpers\Url::to('/admin/new-code/edit') ?>?id=<?= $m->id?>" class="table-link menu-active" >
+            <a href="<?= \yii\helpers\Url::to('/admin/new-code-interval/edit') ?>?id=<?= $m->id?>" class="table-link menu-active" >
                 <span class="fa-stack">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                 </span>
             </a>
 
-            <a href="javascript: void(0)" class="table-link danger menu-delete" data-url="<?= \yii\helpers\Url::to('/admin/new-code/delete') ?>" data-id="<?= $m->id?>" >
+            <a href="javascript: void(0)" class="table-link danger menu-delete" data-url="<?= \yii\helpers\Url::to('/admin/new-code-interval/delete') ?>" data-id="<?= $m->id?>" >
                 <span class="fa-stack">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>

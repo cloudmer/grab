@@ -53,6 +53,7 @@ AppAsset::register($this);
             ['label' => '江西', 'url' => ['/home/new-code?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'new-code' ? 'active' : (!Yii::$app->request->get('type') && $action == 'index' ? 'active' : null ) ]],
             ['label' => '广东', 'url' => ['/home/new-code?type=2'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 2 && $action == 'new-code' ? 'active' : null]],
             ['label' => '山东', 'url' => ['/home/new-code?type=3'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 3 && $action == 'new-code' ? 'active' : null]],
+            ['label' => '上海', 'url' => ['/home/new-code?type=4'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 4 && $action == 'new-code' ? 'active' : null]],
 //            ['label' => '重庆时时彩', 'url' => ['/home/old/?type=1'],'linkOptions'=>['class'=>Yii::$app->request->get('type') == 1 && $action == 'old' ? 'active' : null]],
             ['label' => '重庆时时彩', 'url' => ['/home/cqssc'],'linkOptions'=>['class'=>$action == 'cqssc' ? 'active' : null]],
             ['label' => '天津时时彩', 'url' => ['/home/tjssc'],'linkOptions'=>['class'=>$action == 'tjssc' ? 'active' : null]],

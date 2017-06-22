@@ -24,12 +24,14 @@ class NewGrab
         '1' => '江西',
         '2' => '广东',
         '3' => '山东',
+        '4' => '上海',
     );
 
     private $cp_url_arr = array(
         '1' => 'http://cp.360.cn/dlcjx/?r_a=7zIRFz',
         '2' => 'http://cp.360.cn/gd11/?r_a=yiiEJb',
-        '3' => 'http://cp.360.cn/yun11/?r_a=JfMbIz'
+        '3' => 'http://cp.360.cn/yun11/?r_a=JfMbIz',
+        '4' => 'http://caipiao.360.cn/sh11/?menu&r_a=2yqeMz'
     );
 
     private $email_contents = false;
@@ -105,6 +107,7 @@ class NewGrab
 
                 $this->alert();
 
+                new NewCodeInterval($this->cp_type);
 
             }else{
                 echo $this->cp_type_arr[$this->cp_type].'等待开奖...'."\r\n";
@@ -150,14 +153,17 @@ class NewGrab
             }
 
             $status = false;
+            $num = 0;
             foreach ($code as $k=>$v){
                 if($v->getAnalysis($val->id)->one()->lucky == 1){
-                    $status = true;
+                    $num = 0;
+                }else{
+                    $num = $num + 1;
                 }
             }
 
-            if($status == false){
-                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $number . ' 未开 报警'."\r\n";
+            if($num >= $number){
+                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $num . ' 未开 报警'."\r\n";
             }
         }
 

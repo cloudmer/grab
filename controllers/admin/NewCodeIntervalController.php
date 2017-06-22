@@ -2,19 +2,21 @@
 /**
  * Created by PhpStorm.
  * User: yeyun
- * Date: 17-6-17
- * Time: 下午1:54
+ * Date: 17-6-22
+ * Time: 下午12:48
  */
 
 namespace app\controllers\admin;
-use app\models\Newcodedata;
+
+
+use app\models\Newcodeinterval;
 use Yii;
 
-class NewCodeController extends BaseController
+class NewCodeIntervalController extends BaseController
 {
 
     public function actionIndex(){
-        $model = Newcodedata::find()->all();
+        $model = Newcodeinterval::find()->all();
         return $this->render('index', [
             'model' => $model
         ]);
@@ -22,7 +24,7 @@ class NewCodeController extends BaseController
 
     public function actionForm(){
         $type = Yii::$app->request->get('type');
-        $model = new Newcodedata();
+        $model = new Newcodeinterval();
         return $this->render('_form',[
             'type' => $type,
             'model' => $model
@@ -32,15 +34,15 @@ class NewCodeController extends BaseController
     public function actionSubmit(){
         if(Yii::$app->request->post()){
             $type = Yii::$app->request->post('type');
-            $model = new Newcodedata();
+            $model = new Newcodeinterval();
 
-            $post = Yii::$app->request->post('Newcodedata');
+            $post = Yii::$app->request->post('Newcodeinterval');
             if($post['id']){
                 $model = $model->find()->where(['id'=>$post['id']])->one();
                 $model->load(Yii::$app->request->post());
                 if($model->validate() && $model->save()){
                     //编辑
-                   return $this->redirect('/admin/new-code/index');
+                    return $this->redirect('/admin/new-code-interval/index');
                 }
             }
 
@@ -48,18 +50,18 @@ class NewCodeController extends BaseController
             if($type == 0){
                 $model->load(Yii::$app->request->post());
                 for ($i=1; $i<=4; $i++){
-                    $m = new Newcodedata();
-                    $m->number        = Yii::$app->request->post('Newcodedata')['number'];
-                    $m->alias         = Yii::$app->request->post('Newcodedata')['alias'];
-                    $m->contents      = Yii::$app->request->post('Newcodedata')['contents'];
-                    $m->start         = Yii::$app->request->post('Newcodedata')['start'];
-                    $m->end           = Yii::$app->request->post('Newcodedata')['end'];
-                    $m->status        = Yii::$app->request->post('Newcodedata')['status'];
+                    $m = new Newcodeinterval();
+                    $m->number        = Yii::$app->request->post('Newcodeinterval')['number'];
+                    $m->alias         = Yii::$app->request->post('Newcodeinterval')['alias'];
+                    $m->contents      = Yii::$app->request->post('Newcodeinterval')['contents'];
+                    $m->start         = Yii::$app->request->post('Newcodeinterval')['start'];
+                    $m->end           = Yii::$app->request->post('Newcodeinterval')['end'];
+                    $m->status        = Yii::$app->request->post('Newcodeinterval')['status'];
                     $m->type          = $i;
                     $m->time          = time();
                     $m->save();
                 }
-                $this->redirect('/admin/new-code/index');
+                $this->redirect('/admin/new-code-interval/index');
                 return;
             }
 
@@ -69,7 +71,7 @@ class NewCodeController extends BaseController
             $model->time = time();
             if($model->validate() && $model->save()){
                 //添加
-                $this->redirect('/admin/new-code/index');
+                $this->redirect('/admin/new-code-interval/index');
             }
         }
     }
@@ -80,7 +82,7 @@ class NewCodeController extends BaseController
      */
     public function actionSee(){
         $id = Yii::$app->request->get('id');
-        $model = Newcodedata::find()->where(['id' => $id])->one();
+        $model = Newcodeinterval::find()->where(['id' => $id])->one();
         return $this->render('see',['model'=>$model]);
     }
 
@@ -89,13 +91,13 @@ class NewCodeController extends BaseController
      */
     public function actionDelete(){
         $id = Yii::$app->request->post('id');
-        Newcodedata::deleteAll(['id'=>$id]);
+        Newcodeinterval::deleteAll(['id'=>$id]);
         return json_encode(['state'=>true,'msg'=>'删除成功']);
     }
 
     public function actionEdit(){
         $id = Yii::$app->request->get('id');
-        $model = Newcodedata::find()->where(['id'=>$id])->one();
+        $model = Newcodeinterval::find()->where(['id'=>$id])->one();
 
         return $this->render('_form',[
             'model' => $model
