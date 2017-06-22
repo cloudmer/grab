@@ -170,10 +170,6 @@ class NewCodeInterval
             $this->danger_email_contents .= '11选5 通知类型:' .$this->cp_alias_name . ' 包含-数据包别名:' .$this->alias . ' 期数:'.$number . ' 报警';
             $this->danger_email_contents .= $log_html;
         }
-
-        if ($this->danger_email_contents){
-            $this->send_mail($this->danger_email_contents);
-        }
     }
 
 
