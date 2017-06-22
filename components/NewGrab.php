@@ -106,7 +106,6 @@ class NewGrab
                 $this->analysis($newcodeModel->id , $codeArr);
 
                 $this->alert();
-                exit;
 
                 new NewCodeInterval($this->cp_type);
 
