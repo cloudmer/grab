@@ -31,7 +31,7 @@ class NewGrab
         '1' => 'http://cp.360.cn/dlcjx/?r_a=7zIRFz',
         '2' => 'http://cp.360.cn/gd11/?r_a=yiiEJb',
         '3' => 'http://cp.360.cn/yun11/?r_a=JfMbIz',
-        '4' => 'http://caipiao.360.cn/sh11/?menu&r_a=2yqeMz'
+        '4' => 'http://cp.360.cn/sh11?r_a=7zaqqi'
     );
 
     private $email_contents = false;
