@@ -163,7 +163,7 @@ class NewGrab
             }
 
             if($num >= $number){
-                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $num . ' 未开 报警'."\r\n";
+                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $num . ' 未开 报警'."<br/>";
             }
         }
 
