@@ -63,7 +63,7 @@ class NewGrab
             $logModel->content = $this->cp_type_arr[$this->cp_type].'.开奖信息抓取失败';
             $logModel->time = time();
             $logModel->save();
-            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员<br/>';
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员'."\r\n";
             return;
         }
     }
@@ -83,7 +83,7 @@ class NewGrab
 
                 $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
                 if($result){
-                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了<br/>';
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了'."\r\n";
                     return;
                 }
 
@@ -97,7 +97,7 @@ class NewGrab
                 $newcodeModel->type = $this->cp_type;
                 $newcodeModel->time = time();
                 if(!$newcodeModel->validate() || !$newcodeModel->save()){
-                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败<br/>';
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败'."\r\n";
                     return;
                 }
                 sort($codeArr);
@@ -107,11 +107,11 @@ class NewGrab
 
 
             }else{
-                echo $this->cp_type_arr[$this->cp_type].'等待开奖...<br/>';
+                echo $this->cp_type_arr[$this->cp_type].'等待开奖...'."\r\n";
             }
 
         }else{
-            echo $this->cp_type_arr[$this->cp_type].' -[新时时彩] 等待开奖...<br/>';
+            echo $this->cp_type_arr[$this->cp_type].' -[新时时彩] 等待开奖...'."\r\n";
             return;
         }
     }
@@ -142,7 +142,7 @@ class NewGrab
         $data = Newcodedata::find()->where(['type'=>$this->cp_type])->all();
         foreach ($data as $key=>$val){
             $number = $val->number;
-            $code = Newcode::find()->limit($number)->all();
+            $code = Newcode::find()->where(['type'=>$this->cp_type])->limit($number)->all();
             if (count($code) < $number){
                 //不满足报警条件
                 echo '不满足报警条件\r\n';
@@ -151,14 +151,13 @@ class NewGrab
 
             $status = false;
             foreach ($code as $k=>$v){
-                //if($v->getAnalysis($val->id)->one()->lucky == 1){
-                if($v->getAnalysis($val->id)->one()->attributes['lucky'] == 1){
+                if($v->getAnalysis($val->id)->one()->lucky == 1){
                     $status = true;
                 }
             }
 
             if($status == false){
-                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $number . ' 未开 报警<br/>';
+                $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $number . ' 未开 报警'."\r\n";
             }
         }
 
