@@ -44,7 +44,7 @@ class GrabCqSsc
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
         $this->containCode();  //包含报警
-        $this->packet();      //包含数据包
+        //$this->packet();      //包含数据包
         $this->tailCode();     //尾号玩法
         $this->intervalCode(); //间隔玩法
         new DoublePackage('cq'); // 双包玩法
