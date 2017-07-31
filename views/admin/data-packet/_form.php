@@ -82,6 +82,8 @@ $this->registerJs($script);
                     <?= $form->field($model, 'forever')->label('是否开启每一期中奖提示(包含中奖与未中奖通知)')->dropDownList([1=>'开启',0=>'关闭'])?>
                     <?= $form->field($model, 'state')->label('是否开启报警')->dropDownList([1=>'开启',0=>'关闭'])?>
                     <?= $form->field($model, 'alias')->label('数据包别名')->textInput(['placeholder'=>'数据包别名'])?>
+                    <?= $form->field($model, 'cycle')->label('1周期设定')->textInput(['placeholder'=>'1周期设定'])?>
+                    <?= $form->field($model, 'cycle_number')->label('周期报警数')->textInput(['placeholder'=>'周期报警数'])?>
                     <?= $form->field($model, 'data_txt')->label(false)->hiddenInput(['class'=>'data_txt'])?>
                     <?= $form->field($model, 'type')->label(false)->hiddenInput(['class'=>'type','value'=>$_GET['type']])?>
                     <?= $form->field($model, 'id')->label(false)->hiddenInput()?>

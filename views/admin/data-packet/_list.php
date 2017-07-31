@@ -48,6 +48,8 @@ $this->registerJs($script);
         <td> <?= $m->end ?>  </td>
         <td> <?= $m->forever ? '开启' : '关闭'; ?>  </td>
         <td> <?= $m->state ? '开启' : '关闭'; ?>  </td>
+        <td> 连续<?= $m->cycle ?>期  </td>
+        <td> <?= $m->cycle_number ?>期  </td>
         <td>
 
             <a href="<?= \yii\helpers\Url::to('/admin/data-packet/see') ?>?id=<?= $m->id?>" class="table-link menu-active" >

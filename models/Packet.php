@@ -17,6 +17,8 @@ use Yii;
  * @property integer $state
  * @property integer $type
  * @property integer $time
+ * @property integer $cycle
+ * @property integer $cycle_number
  */
 class Packet extends \yii\db\ActiveRecord
 {
@@ -34,9 +36,9 @@ class Packet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['alias', 'data_txt', 'start', 'end', 'regret_number', 'type', 'time'], 'required'],
+            [['alias', 'data_txt', 'start', 'end', 'regret_number', 'type', 'time', 'cycle', 'cycle_number'], 'required'],
             [['data_txt'], 'string'],
-            [['regret_number', 'forever', 'state', 'type', 'time'], 'integer'],
+            [['regret_number', 'forever', 'state', 'type', 'time', 'cycle', 'cycle_number'], 'integer'],
             [['alias'], 'string', 'max' => 100],
             [['start', 'end'], 'string', 'max' => 3]
         ];
@@ -58,6 +60,8 @@ class Packet extends \yii\db\ActiveRecord
             'state' => '报警状态',
             'type' => 'Type',
             'time' => 'Time',
+            'cycle' => '1周期设定',
+            'cycle_number' => '周期报警数',
         ];
     }
 }

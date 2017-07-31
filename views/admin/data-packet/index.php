@@ -83,6 +83,8 @@ $this->registerJs($script);
                             <th>报警结束时间</th>
                             <th>每期开奖通知</th>
                             <th>报警状态</th>
+                            <th>1周期 期数设定</th>
+                            <th>周期 报警期数</th>
                             <th>管理操作</th>
                         </tr>
                         </thead>
