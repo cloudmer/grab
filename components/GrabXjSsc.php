@@ -36,6 +36,11 @@ class GrabXjSsc
      */
     const URL_GW = 'http://www.xjflcp.com/game/sscIndex';
 
+    /**
+     * 线路2
+     */
+    const URL_3 = 'http://kaijiang.500.com/static/info/kaijiang/xml/xjssc/20170929.xml?_A=UAHFMJTV1506652437885';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -48,7 +53,8 @@ class GrabXjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-        $this->get_data();     //抓取数据
+//        $this->get_data();     //抓取数据
+        $this->get_data3();     //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -189,6 +195,27 @@ class GrabXjSsc
         //开奖号码
         $code = $xjCodeArr['kaijiang']['jianghao'];
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * 线路3
+     */
+    private function get_data3(){
+        $contents = file_get_contents(self::URL_3);
+        $xml = simplexml_load_string($contents);
+        $newsCode = $xml->row[0];
+        $code = json_decode(json_encode($newsCode, true), true);
+        $code = $code['@attributes'];
+
+        // 期号
+        $qihao = $code['expect'];
+        // 开奖时间
+        $kjsj = $code['expect'];
+        // 开奖号码
+        $cd   = $code['opencode'];
+        $cd =  str_replace(",","", $cd);
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$cd];
     }
 
     /**
