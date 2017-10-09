@@ -52,7 +52,7 @@ class GrabBjSsc
         //$this->packet();      //包含数据包
         $this->tailCode();     //尾号玩法
         $this->intervalCode(); //间隔玩法
-        new DoublePackage('bj'); // 双包玩法
+        //new DoublePackage('bj'); // 双包玩法
     }
 
     /**
