@@ -41,6 +41,12 @@ class GrabXjSsc
      */
     const URL_3 = 'http://kaijiang.500.com/static/info/kaijiang/xml/xjssc/20170929.xml?_A=UAHFMJTV1506652437885';
 
+    /**
+     * 线路4
+     * https://www.838918.com/common/hall?gameld=7
+     */
+    const URL_4 = 'https://www.838918.com/common/hall/getCzlbdjs';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -54,8 +60,9 @@ class GrabXjSsc
     {
         ini_set('memory_limit','888M');
 //        $this->get_data();     //抓取数据
-        $this->get_data2();     //抓取数据
+//        $this->get_data2();     //抓取数据
 //        $this->get_data3();     //抓取数据
+        $this->get_data4();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -196,6 +203,7 @@ class GrabXjSsc
         //开奖号码
         $code = $xjCodeArr['kaijiang']['jianghao'];
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+        var_dump($this->data);exit;
     }
 
     /**
@@ -217,6 +225,39 @@ class GrabXjSsc
         $cd =  str_replace(",","", $cd);
 
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$cd];
+    }
+
+    /**
+     * 线路4
+     */
+    private function get_data4(){
+        $post_data = ['gameId'=>null]; //新疆时时彩
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::URL_4);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $xjCodeArr = json_decode($output,true);
+        $xjCodeArr = $xjCodeArr['data'][12];
+        if(!$xjCodeArr['lastIssueNum']){
+            exit("新疆时时彩等待开奖\r\n");
+        }
+
+        // 期号
+        $qihao = $xjCodeArr['issue'];
+        // 开奖时间
+        $kjsj = $xjCodeArr['opentime'];
+        // 开奖号码
+        $code = $xjCodeArr['lastIssueNum'];
+        $code = explode('|', $code);
+        $code = implode($code, '');
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
     /**
