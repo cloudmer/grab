@@ -34,6 +34,12 @@ class GrabTjSsc
 //    const URL_ACL = 'http://pub.icaile.com/tjssckjjg.php';
     const URL_GW = 'http://pub.icaile.com/tjssckjjg.php';
 
+    /**
+     * 线路3
+     * https://www.838918.com/common/hall?gameld=7
+     */
+    const URL_3 = 'https://www.838918.com/common/hall/getCzlbdjs';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -46,7 +52,8 @@ class GrabTjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-        $this->get_data2();     //抓取数据
+        //$this->get_data2();     //抓取数据
+        $this->get_data3();     //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -189,6 +196,39 @@ class GrabTjSsc
         $kjsj = $tjCodeArr['kaijiang']['riqi'];
         //开奖号码
         $code = $tjCodeArr['kaijiang']['jianghao'];
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * 线路3
+     */
+    private function get_data3(){
+        $post_data = ['gameId'=>null]; //新疆时时彩
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::URL_3);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $codeArr = json_decode($output,true);
+        $codeArr = $codeArr['data'][11];
+        if(!$codeArr['lastIssueNum']){
+            exit("天津时时彩等待开奖\r\n");
+        }
+
+        // 期号
+        $qihao = $codeArr['issue'];
+        // 开奖时间
+        $kjsj = $codeArr['opentime'];
+        // 开奖号码
+        $code = $codeArr['lastIssueNum'];
+        $code = explode('|', $code);
+        $code = implode($code, '');
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
