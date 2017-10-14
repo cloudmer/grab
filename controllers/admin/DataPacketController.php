@@ -60,6 +60,8 @@ class DataPacketController extends BaseController
                     $m->forever       = Yii::$app->request->post('Packet')['forever'];
                     $m->state         = Yii::$app->request->post('Packet')['state'];
                     $m->time          = time();
+                    $m->cycle         = Yii::$app->request->post('Packet')['cycle'];
+                    $m->cycle_number  = Yii::$app->request->post('Packet')['cycle_number'];
                     $m->save();
                 }
                 $this->redirect('/admin/data-packet/index');
