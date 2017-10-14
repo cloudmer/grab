@@ -26,28 +26,6 @@ $(document).ready(function(){
             }
         });
    })
-   
-   
-   $("#upload-file-b").change(function(){
-       var url  = $(this).attr('data-url');
-       var type = $(this).attr('data-type');
-       var csrf = $(this).attr('data-csrf');
-       $.ajaxFileUpload({
-            url: url,
-            secureuri: true,
-            fileElementId: 'upload-file-b',
-            dataType: 'json',
-            data:{_csrf:csrf},
-            success: function (data, status) {
-                if(data.state){
-                    toastr.success('数据包格式检测成功');
-                    $("."+type).val(data.msg)
-                }else{
-                    toastr.error(data.msg);
-                }
-            }
-        });
-   })
 })
 JS;
 $this->registerJs($script);
@@ -89,20 +67,11 @@ $this->registerJs($script);
                     <?= $form->field($model, 'end')->label('结束时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
                     <?= $form->field($model, 'status')->label('是否开启报警')->dropDownList([1=>'开启',0=>'关闭'])?>
                     <?= $form->field($model, 'continuity')->label('连续N期包含A')->textInput(['placeholder'=>'连续N期包含A包'])?>
-                    <?= $form->field($model, 'package_a')->label(false)->hiddenInput(['class'=>'package_a'])?>
-                    <?= $form->field($model, 'package_b')->label(false)->hiddenInput(['class'=>'package_b'])?>
-
+                    <?= $form->field($model, 'package')->label(false)->hiddenInput(['class'=>'package'])?>
 
                     <div class="form-group field-cqdata-data_txt required">
-                        <label class="control-label" for="cqdata-data_txt">数据包A</label>
-                        <input type="file" id="upload-file-a" data-type="package_a" name="file" accept=".txt" data-csrf="<?= Yii::$app->request->getCsrfToken() ?>" data-url="<?= Url::to('/admin/packet/upload')?>" >
-
-                        <p class="help-block help-block-error"></p>
-                    </div>
-
-                    <div class="form-group field-cqdata-data_txt required">
-                        <label class="control-label" for="cqdata-data_txt">数据包B</label>
-                        <input type="file" id="upload-file-b" data-type="package_b" name="file" accept=".txt" data-csrf="<?= Yii::$app->request->getCsrfToken() ?>" data-url="<?= Url::to('/admin/packet/upload')?>" >
+                        <label class="control-label" for="cqdata-data_txt">数据包</label>
+                        <input type="file" id="upload-file-a" data-type="package" name="file" accept=".txt" data-csrf="<?= Yii::$app->request->getCsrfToken() ?>" data-url="<?= Url::to('/admin/packet/upload')?>" >
 
                         <p class="help-block help-block-error"></p>
                     </div>

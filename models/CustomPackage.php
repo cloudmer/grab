@@ -9,8 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $alias
- * @property string $package_a
- * @property string $package_b
+ * @property string $package
  * @property integer $status
  * @property string $start
  * @property string $end
@@ -33,8 +32,8 @@ class CustomPackage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['alias', 'package_a', 'package_b', 'status', 'start', 'end', 'continuity', 'number'], 'required'],
-            [['package_a', 'package_b'], 'string'],
+            [['alias', 'package', 'status', 'start', 'end', 'continuity', 'number'], 'required'],
+            [['package'], 'string'],
             [['status', 'continuity', 'number'], 'integer'],
             [['alias'], 'string', 'max' => 250],
             [['start', 'end'], 'string', 'max' => 3]
@@ -49,8 +48,7 @@ class CustomPackage extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'alias' => '别名',
-            'package_a' => 'A包',
-            'package_b' => 'B包',
+            'package' => '数据包',
             'status' => '报警状态',
             'start' => '报警开始时间',
             'end' => '报警结束时间',
