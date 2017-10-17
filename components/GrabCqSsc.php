@@ -27,6 +27,11 @@ class GrabCqSsc
      */
     const URL = 'http://cp.360.cn/ssccq/?r_a=26ruYj';
 
+    /**
+     * XIANLU2
+     */
+    const URL_2 = 'https://www.838918.com/common/hall/getCzlbdjs';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -39,7 +44,8 @@ class GrabCqSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-        $this->get_data();     //抓取数据
+        //$this->get_data();     //抓取数据
+        $this->get_data2();
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -132,6 +138,39 @@ class GrabCqSsc
         //开奖时间
         $kjsj = date('Y-m-d H:i:s');
 
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * 线路2
+     */
+    private function get_data2(){
+        $post_data = ['gameId'=>null]; //重庆时时彩
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::URL_2);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $codeArr = json_decode($output,true);
+        $codeArr = $codeArr['data'][2];
+        if(!$codeArr['lastIssueNum']){
+            exit("重庆时时彩等待开奖\r\n");
+        }
+
+        // 期号
+        $qihao = $codeArr['issue'];
+        // 开奖时间
+        $kjsj = $codeArr['opentime'];
+        // 开奖号码
+        $code = $codeArr['lastIssueNum'];
+        $code = explode('|', $code);
+        $code = implode($code, '');
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
