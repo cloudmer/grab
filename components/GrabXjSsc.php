@@ -39,7 +39,8 @@ class GrabXjSsc
     /**
      * 线路2
      */
-    const URL_3 = 'http://kaijiang.500.com/static/info/kaijiang/xml/xjssc/20170929.xml?_A=UAHFMJTV1506652437885';
+//    const URL_3 = 'http://kaijiang.500.com/static/info/kaijiang/xml/xjssc/20170929.xml?_A=UAHFMJTV1506652437885';
+    const URL_3 = 'http://kaijiang.500.com/static/info/kaijiang/xml/xjssc/';
 
     /**
      * 线路4
@@ -67,9 +68,9 @@ class GrabXjSsc
         ini_set('memory_limit','888M');
 //        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
-//        $this->get_data3();     //抓取数据
+        $this->get_data3();     //抓取数据
 //        $this->get_data4();    //抓取数据
-        $this->get_data5();    //抓取数据
+//        $this->get_data5();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -217,7 +218,7 @@ class GrabXjSsc
      * 线路3
      */
     private function get_data3(){
-        $contents = file_get_contents(self::URL_3);
+        $contents = file_get_contents(self::URL_3.date('Ymd').'.xml');
         $xml = simplexml_load_string($contents);
         $newsCode = $xml->row[0];
         $code = json_decode(json_encode($newsCode, true), true);
