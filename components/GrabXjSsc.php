@@ -47,6 +47,12 @@ class GrabXjSsc
      */
     const URL_4 = 'https://www.838918.com/common/hall/getCzlbdjs';
 
+    /**
+     * 线路5
+     * https://www.838918.com/common/lottery/getOpenNumberOne?gid=7
+     */
+    const URL_5 = 'https://www.838918.com/common/lottery/getOpenNumberOne?gid=7';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -62,7 +68,8 @@ class GrabXjSsc
 //        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
 //        $this->get_data3();     //抓取数据
-        $this->get_data4();    //抓取数据
+//        $this->get_data4();    //抓取数据
+        $this->get_data5();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -257,6 +264,32 @@ class GrabXjSsc
         $code = $xjCodeArr['lastIssueNum'];
         $code = explode('|', $code);
         $code = implode($code, '');
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * 线路5
+     */
+    private function get_data5(){
+        $strJson = file_get_contents(self::URL_5);
+        $xjCodeArr = json_decode($strJson,true);
+        if(!is_array($xjCodeArr)){
+            exit("新疆时时彩抓取失败\r\n");
+        }
+
+        $numbers = $xjCodeArr['data']['openNumbers'];
+        if(!$numbers){
+            exit("新疆时时彩等待开奖\r\n");
+        }
+
+        // 期号
+        $qihao = $xjCodeArr['data']['issue'];
+        // 开奖号码
+        $code = array_column($numbers, 'number');
+        $code = implode($code, '');
+        // 开奖时间
+        $kjsj = date('Y-m-d H:i:s');
+
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
