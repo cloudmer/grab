@@ -54,6 +54,19 @@ class GrabXjSsc
      */
     const URL_5 = 'https://www.838918.com/common/lottery/getOpenNumberOne?gid=7';
 
+    /**
+     * 线路6
+     * http://fx.cp2y.com/draw/draw.jsp?lid=10200
+     */
+    const URL_6 = 'http://fx.cp2y.com/draw/draw.jsp?lid=10200';
+
+    /**
+     * 线路7
+     * http://meishuai8.com/
+     * http://meishuai8.com/kj/xjssc/xjssc_data.php
+     */
+    const URL_7 = 'http://meishuai8.com/kj/xjssc/xjssc_data.php';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -68,9 +81,11 @@ class GrabXjSsc
         ini_set('memory_limit','888M');
 //        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
-        $this->get_data3();     //抓取数据
+//        $this->get_data3();     //抓取数据
 //        $this->get_data4();    //抓取数据
 //        $this->get_data5();    //抓取数据
+//        $this->get_data6();    //抓取数据
+        $this->get_data7();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -290,6 +305,79 @@ class GrabXjSsc
         $code = implode($code, '');
         // 开奖时间
         $kjsj = date('Y-m-d H:i:s');
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * 线路6
+     */
+    private function get_data6(){
+        include_once('simplehtmldom_1_5/simple_html_dom.php');
+        $simple_html_dom = new \simple_html_dom();
+
+        //zlib 解压 并转码
+        $data = false;
+        $data = @file_get_contents("compress.zlib://".self::URL_6);
+        if(!$data){
+            $this->setLog(false,'新疆时时彩-开奖数据抓取失败');
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //转换成 UTF-8编码
+        $encode = mb_detect_encoding($data, array('ASCII','UTF-8','GB2312',"GBK",'BIG5'));
+        $content = iconv($encode,'UTF-8',$data);
+
+        $simple_html_dom->load($content);
+        //开奖期号
+        $qihao = $simple_html_dom->find('div[id=history-select]',0)->find('input',0)->value;
+        $qihao = $this->findNum($qihao);
+        //开奖号
+        $code_1 = $simple_html_dom->find('i[class=i-b20_1]',0)->plaintext;
+        $code_2 = $simple_html_dom->find('i[class=i-b20_1]',1)->plaintext;
+        $code_3 = $simple_html_dom->find('i[class=i-b20_1]',2)->plaintext;
+        $code_4 = $simple_html_dom->find('i[class=i-b20_1]',3)->plaintext;
+        $code_5 = $simple_html_dom->find('i[class=i-b20_1]',4)->plaintext;
+        $code = trim($code_1).trim($code_2).trim($code_3).trim($code_4).trim($code_5);
+
+        if(!$code){
+            exit('新疆时时彩-等待开奖...'."\r\n");
+        }
+
+        $simple_html_dom->clear();
+
+        //将开奖号中间的空格去掉
+        $code = str_replace(" ", '', $code);
+        //开奖时间
+        $kjsj = date('Y-m-d H:i:s');
+
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+        var_dump($this->data);exit;
+    }
+
+    function findNum($str=''){
+        $str=trim($str);
+        if(empty($str)){return '';}
+        $temp=array('1','2','3','4','5','6','7','8','9','0');
+        $result='';
+        for($i=0;$i<strlen($str);$i++){
+            if(in_array($str[$i],$temp)){
+                $result.=$str[$i];
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * 线路7
+     */
+    private function get_data7(){
+        $strJson = file_get_contents(self::URL_7);
+        $aryInfo = json_decode($strJson, true);
+        $code = $aryInfo['result']['data']['preDrawCode'];
+        $code =  str_replace(",","", $code);
+        $kjsj = $aryInfo['result']['data']['preDrawTime'];
+        $qihao = $aryInfo['result']['data']['preDrawIssue'];
 
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
