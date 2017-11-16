@@ -67,6 +67,11 @@ class GrabXjSsc
      */
     const URL_7 = 'http://meishuai8.com/kj/xjssc/xjssc_data.php';
 
+    /**
+     * 线路8
+     */
+    const URL_8 = 'http://kj.13322.com/trend/lottery.findLotteryIssue.do';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -85,7 +90,8 @@ class GrabXjSsc
 //        $this->get_data4();    //抓取数据
 //        $this->get_data5();    //抓取数据
 //        $this->get_data6();    //抓取数据
-        $this->get_data7();    //抓取数据
+//        $this->get_data7();    //抓取数据
+        $this->get_data8();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -379,6 +385,52 @@ class GrabXjSsc
         $kjsj = $aryInfo['result']['data']['preDrawTime'];
         $qihao = $aryInfo['result']['data']['preDrawIssue'];
 
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    /**
+     * file_get_contents 抓取开奖数据
+     */
+    private function get_data8(){
+        $post_data = ['lottery'=>'xjssc']; //新疆时时彩
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::URL_8);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $xjCodeArr = json_decode($output,true);
+        if(!is_array($xjCodeArr)){
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //期号
+        if(!isset($xjCodeArr['preissue'])){
+            exit('新疆时时彩-开奖期号抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //开奖时间
+        if(!isset($xjCodeArr['predrawtime'])){
+            exit('新疆时时彩-开奖时间抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //开奖号码
+        if(!isset($xjCodeArr['predrawcode'])){
+            exit('新疆时时彩-开奖号码抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        //期号
+        $qihao = $xjCodeArr['preissue'];
+        //开奖时间
+        $kjsj = $xjCodeArr['predrawtime'];
+        //开奖号码
+        $code = $xjCodeArr['predrawcode'];
+        $code = str_replace(",", '', $code);
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
