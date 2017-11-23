@@ -30,7 +30,7 @@ class GrabCqSsc
     /**
      * XIANLU2
      */
-    const URL_2 = 'https://www.838918.com/common/hall/getCzlbdjs';
+    const URL_2 = 'https://m.838918.com/common/hall/getNextPeriod';
 
     /* 抓取后的数据 array */
     private $data;
@@ -145,20 +145,15 @@ class GrabCqSsc
      * 线路2
      */
     private function get_data2(){
-        $post_data = ['gameId'=>null]; //重庆时时彩
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, self::URL_2);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
-        // post数据
-        curl_setopt($ch, CURLOPT_POST, 1);
-        // post的变量
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        $output = curl_exec($ch);
-        curl_close($ch);
-
-        $codeArr = json_decode($output,true);
-        $codeArr = $codeArr['data'][2];
+        curl_setopt($ch, CURLOPT_URL,self::URL_2);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $result = curl_exec($ch);
+        curl_close ($ch);
+        $codeArr = json_decode($result,true);
+        $codeArr = $codeArr['data']['items'][2];
         if(!$codeArr['lastIssueNum']){
             exit("重庆时时彩等待开奖\r\n");
         }
