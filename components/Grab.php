@@ -270,8 +270,7 @@ class Grab{
         if($arr['type'] == 1){
             $arr['luckyStr'] ? $luckyStr = '<br/>'.str_replace("\r\n", '<br/>', $arr['luckyStr']) : $luckyStr = '没有中奖 T.T';
             $regretStr = str_replace("\r\n", '<br/>', $arr['regretStr']);
-            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-                .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
+            $html = '<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
                 .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'
                 .'当前期号:'.$arr['qihao'] .'<br/>'
                 .'开奖号码:'.implode(",",$arr['codeArr']).'<br/>'
@@ -284,7 +283,6 @@ class Grab{
             /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 没有一组中奖号码！！！！！！<br/>'
-                .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
                 .'以下是彩种信息:<br/><br/>';
 
             foreach($arr['NewestCodes'] as $newstcode){

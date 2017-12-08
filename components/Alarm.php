@@ -256,8 +256,7 @@ class Alarm
             $mail_contents .= '后:'.$this->regret_number .' N <br/>';
         }
 
-        $title = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            .'通知类型:'.$this->cp_alias_name.' - 当前 '.$this->regret_number.' 期 警报<br/>'
+        $title = '通知类型:'.$this->cp_alias_name.' - 当前 '.$this->regret_number.' 期 警报<br/>'
             .'数据包别名:'.$this->alias .'<br/>';
 
         //如果 达到报警条件 则报警
@@ -309,8 +308,7 @@ class Alarm
         $z3_status ? $z3 = 'Y' : $z3 = 'N';
         $h3_status ? $h3 = 'Y' : $h3 = 'N';
 
-        $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            .'通知类型:'.$this->cp_alias_name.' - 当前 '.$regret_number.' 期 警报<br/>'
+        $mail_contents = '通知类型:'.$this->cp_alias_name.' - 当前 '.$regret_number.' 期 警报<br/>'
             .'数据包别名:'.$this->alias .'<br/>'
             .'前:'.$q3 .'<br/>'
             .'中:'.$z3 .'<br/>'
@@ -332,8 +330,7 @@ class Alarm
         $analysis_data->center_three_lucky_txt ? $z3 = 'Y' : $z3 = 'N' ;
         $analysis_data->after_three_lucky_txt  ? $h3 = 'Y' : $h3 = 'N' ;
 
-        $mail_contents = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            .'通知类型:'.$this->cp_name.' - [时时彩] 每一期开奖通知<br/>'
+        $mail_contents = '通知类型:'.$this->cp_name.' - [时时彩] 每一期开奖通知<br/>'
             .'当前期号:'.$newest->qishu .'<br/>'
             .'开奖号码:'.$newest->code.'<br/>'
             .'数据包别名:'.$this->alias.' - 前三中奖:'.$q3 .'<br/>'

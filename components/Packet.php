@@ -287,8 +287,7 @@ class Packet
             $mail_contents .= '后:'. $h3_number .' <br/>';
         }
 
-        $title = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-            .'通知类型:'. $this->cp_alias_name .'<br/>'
+        $title = '通知类型:'. $this->cp_alias_name .'<br/>'
             .'包含-数据包别名:'. $this->alias .'<br/>';
 
         //如果 达到报警条件 则报警

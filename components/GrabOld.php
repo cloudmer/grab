@@ -304,8 +304,7 @@ class GrabOld{
             $arr['qian3_lucky_txt'] ? $luckyQian3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['qian3_lucky_txt']) : $luckyQian3Str = '没有中奖 T.T';
             $arr['center3_lucky_txt'] ? $luckyCenter3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['center3_lucky_txt']) : $luckyCenter3Str = '没有中奖 T.T';
             $arr['hou3_lucky_txt'] ? $luckyHou3Str = '<br/>'.str_replace("\r\n", '<br/>', $arr['hou3_lucky_txt']) : $luckyHou3Str = '没有中奖 T.T';
-            $html = '<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
-                .'<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
+            $html = '<a href="'.$this->shishicaiUrl[$arr['urlName']].'">传送门--->'.$arr['urlName'].'</a><br/>'
                 .'当前彩种:'.$arr['urlName'].' - [新时时彩]<br/>'
                 .'当前期号:'.$arr['qihao'] .'<br/>'
                 .'开奖号码:'.$arr['code'].'<br/>'
@@ -319,7 +318,6 @@ class GrabOld{
             /*
             $html = '报警提醒:<br/>当前'.$arr['regret_number']
                 .'期内 前三没有一组中奖号码,或者,后三没有一组中奖号码！！！！！！<br/>'
-                .'<a href="http://'.$_SERVER['SERVER_NAME'].'">传送门--->小蛮牛数据平台</a><br/>'
                 .'以下是彩种信息:<br/><br/>';
 
             foreach($arr['NewestCodes'] as $newstcode){
