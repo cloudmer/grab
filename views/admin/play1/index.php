@@ -89,6 +89,7 @@ $this->registerJs($script);
                         <tr>
                             <th>彩票类型</th>
                             <th>别名</th>
+                            <th>连续几b</th>
                             <th>报警期数</th>
                             <th>报警状态</th>
                             <th>管理操作</th>

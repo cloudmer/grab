@@ -29,6 +29,7 @@ $this->registerJs($script);
     <tr id="menu-<?= $m->id?>">
         <td>所有彩种</td>
         <td> <?= $m->alias ?>  </td>
+        <td> <?= $m->continuity_number ?>  </td>
         <td> <?= $m->number ?>期  </td>
         <td> <?= $m->status ? '开启' : '关闭'; ?>  </td>
         <td>

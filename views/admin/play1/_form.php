@@ -84,6 +84,7 @@ $this->registerJs($script);
 
                     <?= $form->field($model, 'id')->label('')->hiddenInput(['value'=>$model->id])?>
                     <?= $form->field($model, 'alias')->label('别名')->textInput(['placeholder'=>'别名'])?>
+                    <?= $form->field($model, 'continuity_number')->label('连续几b')->textInput(['placeholder'=>'连续几b'])?>
                     <?= $form->field($model, 'number')->label('报警期数')->textInput(['placeholder'=>'报警期数'])?>
                     <?= $form->field($model, 'start')->label('开始时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
                     <?= $form->field($model, 'end')->label('结束时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>

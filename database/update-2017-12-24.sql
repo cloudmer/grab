@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `grab`.`play1` (
   `status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT  '报警 0 = > 关闭 1 = > 开启',
   `start` CHAR(3) NOT NULL COMMENT  '报价开始时间',
   `end` CHAR(3) NOT NULL COMMENT  '报价结束时间',
-  `number` TINYINT(3) NOT NULL COMMENT  '连续几期',
+  `continuity_number` TINYINT(3) NOT NULL COMMENT  '连续几b',
+  `number` TINYINT(3) NOT NULL COMMENT  '报警期数',
   PRIMARY KEY (`id`))
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
