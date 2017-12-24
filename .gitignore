@@ -26,3 +26,6 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 web/upload/
+
+controllers/admin/BaseController.php
+
