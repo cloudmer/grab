@@ -211,7 +211,7 @@ class GrabTjSsc
         $result = curl_exec($ch);
         curl_close ($ch);
         $codeArr = json_decode($result, true);
-        $codeArr = $codeArr['data']['items'][11];
+        $codeArr = $codeArr['data']['items'][14];
         if(!$codeArr['lastIssueNum']){
             exit("天津时时彩等待开奖\r\n");
         }
