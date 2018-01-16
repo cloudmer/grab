@@ -117,7 +117,6 @@ class GrabTjSsc
         //zlib 解压 并转码
         $data = false;
         $data = @file_get_contents("compress.zlib://".self::URL_GW);
-        var_dump("compress.zlib://".self::URL_GW);
         if(!$data){
             $this->setLog(false,'天津时时彩-开奖数据抓取失败');
             exit('天津时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
