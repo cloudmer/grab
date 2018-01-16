@@ -52,8 +52,9 @@ class GrabTjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
+        $this->get_data();     //抓取数据
         //$this->get_data2();     //抓取数据
-        $this->get_data3();     //抓取数据
+//        $this->get_data3();     //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -117,7 +118,6 @@ class GrabTjSsc
         $data = false;
         $data = @file_get_contents("compress.zlib://".self::URL_GW);
         var_dump("compress.zlib://".self::URL_GW);
-        var_dump($data);exit;
         if(!$data){
             $this->setLog(false,'天津时时彩-开奖数据抓取失败');
             exit('天津时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
@@ -212,6 +212,7 @@ class GrabTjSsc
         curl_close ($ch);
         $codeArr = json_decode($result, true);
         $codeArr = $codeArr['data']['items'][14];
+        var_dump($codeArr);exit;
         if(!$codeArr['lastIssueNum']){
             exit("天津时时彩等待开奖\r\n");
         }
