@@ -25,7 +25,8 @@ class GrabTjSsc
      * POST 数据 打开浏览器调试模式 查看 AJAX 加载地址：http://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php
      * 最新开奖信息查询网
      */
-    const URL = 'http://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php';
+//    const URL = 'http://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php';
+    const URL = 'https://tools.cjcp.com.cn/gl/ssc/filter/kjdata.php';
 
     /**
      * 爱彩乐网
@@ -52,8 +53,8 @@ class GrabTjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-        $this->get_data();     //抓取数据
-        //$this->get_data2();     //抓取数据
+//        $this->get_data();     //抓取数据
+        $this->get_data2();     //抓取数据
 //        $this->get_data3();     //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
