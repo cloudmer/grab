@@ -72,6 +72,11 @@ class GrabXjSsc
      */
     const URL_8 = 'http://kj.13322.com/trend/lottery.findLotteryIssue.do';
 
+    /**
+     * 线路9
+     */
+    const URL_9 = 'https://m.cp89003.com/common/hall/getNextPeriod';
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -91,7 +96,8 @@ class GrabXjSsc
 //        $this->get_data5();    //抓取数据
 //        $this->get_data6();    //抓取数据
 //        $this->get_data7();    //抓取数据
-        $this->get_data8();    //抓取数据
+//        $this->get_data8();    //抓取数据
+        $this->get_data9();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -405,6 +411,7 @@ class GrabXjSsc
         curl_close($ch);
 
         $xjCodeArr = json_decode($output,true);
+        var_dump($xjCodeArr);exit;
         if(!is_array($xjCodeArr)){
             exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
         }
@@ -431,6 +438,25 @@ class GrabXjSsc
         //开奖号码
         $code = $xjCodeArr['predrawcode'];
         $code = str_replace(",", '', $code);
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    private function get_data9(){
+        $strData = file_get_contents(self::URL_9);
+        if (!$strData){
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        $aryData = json_decode($strData, true);
+        $codeAryInfo = $aryData['data']['items'][15];
+        $code = $codeAryInfo['lastIssueNum'];
+        if (!$code){
+            exit('新疆时时彩 等待开奖'."\r\n");
+        }
+
+        $code =  str_replace("|","", $code);
+        $qihao = $codeAryInfo['lastIssue'];
+        $kjsj = $codeAryInfo['opentime'];
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
