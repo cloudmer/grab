@@ -52,6 +52,7 @@ class GrabTjSsc
 
     public function __construct()
     {
+        exit();
         ini_set('memory_limit','888M');
 //        $this->get_data();     //抓取数据
         $this->get_data2();     //抓取数据
