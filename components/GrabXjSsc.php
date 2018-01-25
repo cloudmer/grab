@@ -448,7 +448,7 @@ class GrabXjSsc
         }
 
         $aryData = json_decode($strData, true);
-        $codeAryInfo = $aryData['data']['items'][13];
+        $codeAryInfo = $aryData['data']['items'][16];
         $code = $codeAryInfo['lastIssueNum'];
         if (!$code){
             exit('新疆时时彩 等待开奖'."\r\n");
