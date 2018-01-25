@@ -77,6 +77,7 @@ class GrabXjSsc
      */
     const URL_9 = 'https://m.cp89003.com/common/hall/getNextPeriod';
 
+
     /* 抓取后的数据 array */
     private $data;
 
@@ -89,7 +90,7 @@ class GrabXjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-//        $this->get_data();     //抓取数据
+        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
 //        $this->get_data3();     //抓取数据
 //        $this->get_data4();    //抓取数据
@@ -97,7 +98,7 @@ class GrabXjSsc
 //        $this->get_data6();    //抓取数据
 //        $this->get_data7();    //抓取数据
 //        $this->get_data8();    //抓取数据
-        $this->get_data9();    //抓取数据
+//        $this->get_data9();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
