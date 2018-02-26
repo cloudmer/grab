@@ -34,6 +34,11 @@ class Play2Controller extends BaseController
         ]);
     }
 
+    public function actionDelete(){
+        Play2::deleteAll([ 'id' => \Yii::$app->request->post('id') ]);
+        return json_encode(['state'=>true,'msg'=>'删除成功']);
+    }
+
     public function actionSubmit(){
         if(Yii::$app->request->post()){
             $post = Yii::$app->request->post('Play2');

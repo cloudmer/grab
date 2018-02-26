@@ -43,6 +43,13 @@ $this->registerJs($script);
                 </span>
             </a>
 
+            <a href="javascript: void(0)" class="table-link danger menu-delete" data-url="/admin/play2/delete" data-id="<?= $m->id ?>">
+                <span class="fa-stack">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+
         </td>
     </tr>
 <?php endforeach; ?>
