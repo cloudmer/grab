@@ -16,9 +16,8 @@ class Play2Controller extends BaseController
 {
 
     public function actionIndex(){
-        $type = Yii::$app->request->get('type') === '0' ? 0 : Yii::$app->request->get('type');
         $cycle = Yii::$app->request->get('cycle');
-        $model = Play2::findAll([ 'type' => $type, 'cycle' => $cycle ]);
+        $model = Play2::findAll([ 'cycle' => $cycle ]);
         return $this->render('index', [ 'model' => $model ]);
     }
 
