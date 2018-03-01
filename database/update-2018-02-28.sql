@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS `play22` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `number` INT(11) NOT NULL COMMENT  '报警期数',
+  `start` CHAR(3) NOT NULL,
+  `end` CHAR(3) NOT NULL,
+  `status` TINYINT(1) NOT NULL COMMENT  '报警状态 0=>关闭1=>开启',
+  `time` INT(11) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COMMENT =  '2连1站报警';

@@ -37,7 +37,7 @@ $this->registerJs($script);
 
                 <?php $form = ActiveForm::begin([
                     'options'=>['class'=>'form-center data-form','enctype'=>'multipart/form-data'],
-                    'action'=>Url::to('/admin/play2/submit'),
+                    'action'=>Url::to('/admin/play22/submit'),
                     'method'=>'post'])?>
                 <div class="modal-body">
 
@@ -47,8 +47,6 @@ $this->registerJs($script);
                     <?= $form->field($model, 'start')->label('开始时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
                     <?= $form->field($model, 'end')->label('结束时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
                     <?= $form->field($model, 'status')->label('是否开启报警')->dropDownList([1=>'开启',0=>'关闭'])?>
-                    <?= $form->field($model, 'type')->label('连号类型')->dropDownList([1=>'连号',0=>'非连号'])?>
-                    <?= $form->field($model, 'cycle')->label('报警周期')->textInput(['placeholder'=>'报警周期'])?>
 
                 </div>
 

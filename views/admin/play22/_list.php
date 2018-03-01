@@ -32,18 +32,16 @@ $this->registerJs($script);
         <td> <?= $m->start ?>  </td>
         <td> <?= $m->end ?>  </td>
         <td> <?= $m->status ? '开启' : '关闭'; ?>  </td>
-        <td> <?= \app\models\Alarm::getType($m->type) ?>  </td>
-        <td> <?= $m->cycle ?>  </td>
         <td>
 
-            <a href="<?= \yii\helpers\Url::to('/admin/play2/edit') ?>?id=<?= $m->id?>" class="table-link menu-active" >
+            <a href="<?= \yii\helpers\Url::to('/admin/play22/edit') ?>?id=<?= $m->id?>" class="table-link menu-active" >
                 <span class="fa-stack">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                 </span>
             </a>
 
-            <a href="javascript: void(0)" class="table-link danger menu-delete" data-url="/admin/play2/delete" data-id="<?= $m->id ?>">
+            <a href="javascript: void(0)" class="table-link danger menu-delete" data-url="/admin/play22/delete" data-id="<?= $m->id ?>">
                 <span class="fa-stack">
                     <i class="fa fa-square fa-stack-2x"></i>
                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>

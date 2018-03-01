@@ -44,7 +44,7 @@ $this->registerJs($script);
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li class="active"><span>间隔几连号 - 报警设置</span></li>
+                    <li class="active"><span>2连1站报警 - 报警设置</span></li>
                 </ol>
             </div>
         </div>
@@ -55,10 +55,10 @@ $this->registerJs($script);
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <h2>间隔几连号 - 报警设置</h2>
+                <h2>2连1站报警 - 报警设置</h2>
 
                 <div class="btn-group pull-right">
-                    <button data-toggle="dropdown" data-url="/admin/play2/form" class="btn btn-primary dropdown-toggle has-tooltip add-reserve" type="button" title="" data-original-title="Labels">
+                    <button data-toggle="dropdown" data-url="/admin/play22/form" class="btn btn-primary dropdown-toggle has-tooltip add-reserve" type="button" title="" data-original-title="Labels">
                         <i class="fa fa-plus-circle fa-lg"></i> 添加 &nbsp;
                     </button>
                 </div>
@@ -74,13 +74,11 @@ $this->registerJs($script);
                             <th>报警开始时间</th>
                             <th>报警结束时间</th>
                             <th>报警状态</th>
-                            <th>类型</th>
-                            <th>报警周期</th>
                             <th>管理操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?= $this->render('/admin/play2/_list',['model'=>$model]) ?>
+                        <?= $this->render('/admin/play22/_list',['model'=>$model]) ?>
                         </tbody>
                     </table>
                 </div>
