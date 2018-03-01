@@ -58,7 +58,7 @@ $this->registerJs($script);
                 <h2>间隔几连号 - 报警设置</h2>
 
                 <div class="btn-group pull-right">
-                    <button data-toggle="dropdown" data-url="/admin/play2/form" class="btn btn-primary dropdown-toggle has-tooltip add-reserve" type="button" title="" data-original-title="Labels">
+                    <button data-toggle="dropdown" data-url="/admin/play2/form?cycle=<?= \Yii::$app->request->get('cycle')?>" class="btn btn-primary dropdown-toggle has-tooltip add-reserve" type="button" title="" data-original-title="Labels">
                         <i class="fa fa-plus-circle fa-lg"></i> 添加 &nbsp;
                     </button>
                 </div>
