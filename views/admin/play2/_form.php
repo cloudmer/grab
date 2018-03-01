@@ -37,7 +37,7 @@ $this->registerJs($script);
 
                 <?php $form = ActiveForm::begin([
                     'options'=>['class'=>'form-center data-form','enctype'=>'multipart/form-data'],
-                    'action'=>Url::to('/admin/play2/submit'),
+                    'action'=>Url::to('/admin/play2/submit?cycle='.\Yii::$app->request->get('cycle')),
                     'method'=>'post'])?>
                 <div class="modal-body">
 
