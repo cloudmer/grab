@@ -56,7 +56,7 @@ class Play2Controller extends BaseController
                 $model->time = time();
                 if ($model->save()){
                     // 新增
-                    return $this->redirect('/admin/play2/index');
+                    return $this->redirect('/admin/play2/index?cycle='.\Yii::$app->request->get('cycle'));
                 }
             }
         }
