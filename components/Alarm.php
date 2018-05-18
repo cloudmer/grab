@@ -16,6 +16,8 @@ use app\models\Cqdata;
 use app\models\Cqssc;
 use app\models\Tjdata;
 use app\models\Tjssc;
+use app\models\Txdata;
+use app\models\Txffc;
 use app\models\Xjdata;
 use app\models\Xjssc;
 use app\models\Mailbox;
@@ -157,6 +159,11 @@ class Alarm
             $db_ssc_table_name = 'bjssc';
             $db_analysis_table_name = 'analysisBjssc';
             $db_foreign_key_id = 'bjssc_id';
+        }
+        if ($this->type == 'tx'){
+            $db_ssc_table_name = 'txffc';
+            $db_analysis_table_name = 'analysisTxffc';
+            $db_foreign_key_id = 'txffc_id';
         }
 
 
@@ -360,6 +367,10 @@ class Alarm
             $this->cp_name       = '北京';
             $this->cp_alias_name = '京';
         }
+        if ($this->type == 'tx'){
+            $this->cp_name       = '腾讯';
+            $this->cp_alias_name = '腾';
+        }
     }
 
     /**
@@ -377,6 +388,9 @@ class Alarm
         }
         if($this->type == 'bj'){
             $this->model = new Bjssc();
+        }
+        if ($this->type == 'tx'){
+            $this->model = new Txffc();
         }
     }
 
@@ -396,6 +410,9 @@ class Alarm
         }
         if($this->type == 'bj'){
             $config = Bjdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
+        }
+        if ($this->type == 'tx'){
+            $config = Txdata::find()->where(['state'=>1])->select('id,alias,regret_number,start,end,forever')->asArray()->all();
         }
         $this->config = $config;
     }
