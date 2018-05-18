@@ -7,6 +7,7 @@ use app\components\GrabBjSsc;
 use app\components\GrabCqSsc;
 use app\components\GrabOld;
 use app\components\GrabTjSsc;
+use app\components\GrabTxFfc;
 use app\components\GrabXjSsc;
 use app\components\NewGrab;
 use app\components\Reserve;
@@ -57,6 +58,13 @@ class GrabController extends \yii\web\Controller
      */
     public function actionBjssc(){
         new GrabBjSsc();
+    }
+
+    /**
+     * 抓取腾讯分分彩数据
+     */
+    public function actionTxffc(){
+        new GrabTxFfc();
     }
 
 }

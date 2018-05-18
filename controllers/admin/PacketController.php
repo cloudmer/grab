@@ -11,6 +11,7 @@ namespace app\controllers\admin;
 use app\models\Bjdata;
 use app\models\Cqdata;
 use app\models\Tjdata;
+use app\models\Txdata;
 use app\models\Xjdata;
 use Yii;
 use yii\web\UploadedFile;
@@ -52,6 +53,14 @@ class PacketController extends BaseController
     }
 
     /**
+     * 腾讯分分彩
+     */
+    public function actionTx(){
+        $model = Txdata::find()->all();
+        return $this->render('index',['type'=>'tx','model'=>$model]);
+    }
+
+    /**
      * 表单视图
      */
     public function actionForm(){
@@ -67,6 +76,9 @@ class PacketController extends BaseController
         }
         if($type == 'bj'){
             $model = new Bjdata();
+        }
+        if ($type == 'tx'){
+            $model = new Txdata();
         }
         return $this->render('_form',[
             'model' => $model
@@ -91,6 +103,10 @@ class PacketController extends BaseController
             if($type == 'bj'){
                 $model = new Bjdata();
                 $post_name = 'Bjdata';
+            }
+            if ($type == 'tx'){
+                $model = new Txdata();
+                $post_name = 'Txdata';
             }
 
             $post = Yii::$app->request->post($post_name);

@@ -35,6 +35,8 @@ $this->registerJs($script);
                     echo '天津数据包';
                 }else if($type=='xj'){
                     echo '新疆数据包';
+                }else if($type=='tx'){
+                    echo '腾讯数据包';
                 }
             ?>
         </td>
