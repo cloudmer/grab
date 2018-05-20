@@ -75,4 +75,14 @@ class Txffc extends \yii\db\ActiveRecord
     {
         return $this->hasMany(AnalysisTxffc::className(), ['txffc_id' => 'id']);
     }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnalysis($data_txt_id)
+    {
+        return $this->hasOne(AnalysisTxffc::className(), ['txffc_id' => 'id'])->where(['type'=>$data_txt_id]);
+    }
+
 }

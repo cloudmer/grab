@@ -12,6 +12,8 @@ use app\models\Newcode;
 use app\models\Newcodedata;
 use app\models\Tjdata;
 use app\models\Tjssc;
+use app\models\Txdata;
+use app\models\Txffc;
 use app\models\Xjdata;
 use app\models\Xjssc;
 use yii\data\Pagination;
@@ -155,6 +157,30 @@ class HomeController extends \yii\web\Controller
         return $this->render('/home/bjssc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
     }
 
+
+    /**
+     * 腾讯分分彩
+     * @return bool|string
+     */
+    public function actionTxffc(){
+        $type = \Yii::$app->request->get('type');
+
+        list($data_packet,$default) = $this->get_data_packet('tx');
+        !$type ? $type = $default->id : false;
+
+        $data = Txffc::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/txffc/_list',['model'=>$model,'type'=>$type]);
+        }
+
+        return $this->render('/home/txffc/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet]);
+    }
 
     /**
      * 数据分组
@@ -467,6 +493,10 @@ class HomeController extends \yii\web\Controller
         if($type == 'bj'){
             $model = Bjdata::find()->select('id,alias')->all();
             $default = Bjdata::find()->select('id,alias')->orderBy('time ASC')->one();
+        }
+        if ($type == 'tx'){
+            $model = Txdata::find()->select('id,alias')->all();
+            $default = Txdata::find()->select('id,alias')->orderBy('time ASC')->one();
         }
         return [$model,$default];
     }
