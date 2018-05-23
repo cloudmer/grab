@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `grab`.`txffc` (
+CREATE TABLE IF NOT EXISTS `txffc` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `qishu` CHAR(20) NOT NULL COMMENT  '开奖期数',
   `one` TINYINT(3) NOT NULL COMMENT  '万位 第一位号码',
@@ -23,7 +23,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT =  '腾讯分分彩';
 
-CREATE TABLE IF NOT EXISTS `grab`.`analysisTxffc` (
+CREATE TABLE IF NOT EXISTS `analysisTxffc` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `txffc_id` INT(11) NOT NULL COMMENT  '腾讯分分彩 数据分析表',
   `front_three_lucky_txt` TEXT NULL DEFAULT NULL COMMENT  '前三 中奖号码',
@@ -46,7 +46,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT =  '腾讯分分彩';
 
-CREATE TABLE IF NOT EXISTS `grab`.`txdata` (
+CREATE TABLE IF NOT EXISTS `txdata` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `alias` CHAR(100) NOT NULL COMMENT  '数据包别名',
   `data_txt` TEXT NOT NULL COMMENT  '数据包内容',
