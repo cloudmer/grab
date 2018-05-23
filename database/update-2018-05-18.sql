@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `analysisTxffc` (
   INDEX `fk_analysisCqssc_cqssc10_idx` (`txffc_id` ASC),
   CONSTRAINT `fk_analysisCqssc_cqssc10`
     FOREIGN KEY (`txffc_id`)
-    REFERENCES `grab`.`txffc` (`id`)
+    REFERENCES `txffc` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -61,7 +61,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COMMENT =  '腾讯分分彩数据包';
 
-ALTER TABLE `grab`.`packet`
+ALTER TABLE `packet`
 CHANGE COLUMN `type` `type` TINYINT(1) NOT NULL COMMENT  '彩种类型
 1=>重庆时时彩
 2=>天津时时彩
