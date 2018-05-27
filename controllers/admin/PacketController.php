@@ -235,6 +235,9 @@ class PacketController extends BaseController
         if($type == 'bj'){
             $model = Bjdata::find()->where(['id'=>$id])->one();
         }
+        if($type == 'tx'){
+            $model = Txdata::find()->where(['id'=>$id])->one();
+        }
         return $this->render('see',['model'=>$model]);
     }
 
