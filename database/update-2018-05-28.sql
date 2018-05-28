@@ -14,3 +14,6 @@ COMMENT =  '时时彩 与 腾讯分分彩的 a 连续 周期';
 
 ALTER TABLE `ssc_cycle`
 ADD COLUMN `status` TINYINT(1) NOT NULL COMMENT  '报警状态' AFTER `continuity`;
+
+ALTER TABLE `ssc_cycle`
+ADD COLUMN `b_number` INT(11) NOT NULL COMMENT  'a连续完 几期内开b' AFTER `continuity`;
