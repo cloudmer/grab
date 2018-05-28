@@ -13,6 +13,7 @@ use Yii;
  * @property string $start
  * @property string $end
  * @property integer $continuity
+ * @property integer $b_number
  * @property integer $status
  * @property integer $cycle
  * @property string $created_at
@@ -33,7 +34,7 @@ class SscCycle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['alias', 'start', 'end', 'continuity', 'status', 'cycle', 'created_at', 'data_txt'], 'required'],
+            [['alias', 'start', 'end', 'continuity', 'status', 'cycle', 'created_at', 'data_txt', 'b_number'], 'required'],
             [['data_txt'], 'string'],
             [['continuity', 'status', 'cycle'], 'integer'],
             [['created_at'], 'safe'],
@@ -54,6 +55,7 @@ class SscCycle extends \yii\db\ActiveRecord
             'start' => '报警开始时间',
             'end' => '报警结束时间',
             'continuity' => 'a包连续期数',
+            'b_number' => 'a包连续后几期开b',
             'status' => '报警状态',
             'cycle' => '报警周期数',
             'created_at' => '创建时间',

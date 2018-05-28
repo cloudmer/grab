@@ -61,6 +61,7 @@ $this->registerJs($script);
                     <?= $form->field($model, 'start')->label('开始时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警开始时间'])?>
                     <?= $form->field($model, 'end')->label('结束时间 - 开始与结束都为0则全天报警')->textInput(['placeholder'=>'报警结束时间'])?>
                     <?= $form->field($model, 'continuity')->label('a包连续期数')->textInput()?>
+                    <?= $form->field($model, 'b_number')->label('a包连续完后几期开b')->textInput()?>
                     <?= $form->field($model, 'cycle')->label('报警周期数')->textInput()?>
                     <?= $form->field($model, 'status')->label('是否开启报警')->dropDownList([1=>'开启',0=>'关闭'])?>
                     <?= $form->field($model, 'alias')->label('数据包别名')->textInput(['placeholder'=>'数据包别名'])?>

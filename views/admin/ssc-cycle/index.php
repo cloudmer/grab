@@ -72,6 +72,7 @@ $this->registerJs($script);
                             <th>别名</th>
                             <th>周期报警期数</th>
                             <th>a包连续期数</th>
+                            <th>a包连续后几期开b</th>
                             <th>报警开始时间</th>
                             <th>报警结束时间</th>
                             <th>报警状态</th>

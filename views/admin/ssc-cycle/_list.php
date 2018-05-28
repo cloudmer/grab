@@ -30,6 +30,7 @@ $this->registerJs($script);
         <td> <?= $m->alias ?>  </td>
         <td> <?= $m->cycle ?>  </td>
         <td> <?= $m->continuity ?>  </td>
+        <td> <?= $m->b_number ?>  </td>
         <td> <?= $m->start ?>  </td>
         <td> <?= $m->end ?>  </td>
         <td> <?= $m->status ? '开启' : '关闭'; ?>  </td>
