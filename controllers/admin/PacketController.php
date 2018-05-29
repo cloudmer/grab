@@ -256,6 +256,9 @@ class PacketController extends BaseController
         if($type == 'xj'){
             Xjdata::deleteAll(['id'=>$id]);
         }
+        if($type == 'tx'){
+            Txdata::deleteAll(['id'=>$id]);
+        }
         return json_encode(['state'=>true,'msg'=>'删除成功']);
     }
 }
