@@ -69,7 +69,12 @@ class AlarmRecord extends \yii\db\ActiveRecord
      */
     public function cqGrupCqCycle(){
         $ary = self::find()->select('cycle')->where([ 'cp_type' => self::cqType ])->groupBy('cycle')->asArray()->all();
-        return array_column($ary, 'cycle');
+
+        $ids = [];
+        foreach ($ary as $key=>$val) {
+            $ids[] = $val['cycle'];
+        }
+        return $ids;
     }
 
     /**
@@ -77,6 +82,11 @@ class AlarmRecord extends \yii\db\ActiveRecord
      */
     public function xjGrupCqCycle(){
         $ary = self::find()->select('cycle')->where([ 'cp_type' => self::xjType ])->groupBy('cycle')->asArray()->all();
-        return array_column($ary, 'cycle');
+
+        $ids = [];
+        foreach ($ary as $key=>$val) {
+            $ids[] = $val['cycle'];
+        }
+        return $ids;
     }
 }
