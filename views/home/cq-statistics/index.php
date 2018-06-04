@@ -114,10 +114,10 @@ $this->registerJs($script);
     <a id="scrollUp" href="javascript:;" title="飞回顶部" style="display: block;"></a>
 </div>
 
-<div class="text-center more" style="margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/cqssc')?>">
+<div class="text-center more" style="margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/cq-statistics')?>">
     <span style="padding: 9px 31px;" class="label label-success">加载更多</span>
 </div>
 
-<div class="text-center null" style="display: none;margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/cqssc')?>">
+<div class="text-center null" style="display: none;margin-bottom: 30px" data-page="2" data-url="<?= \yii\helpers\Url::to('/home/cq-statistics')?>">
     <span style="padding: 9px 31px;color: black" class="label">没有更多数据了..</span>
 </div>
