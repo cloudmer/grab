@@ -86,4 +86,11 @@ class Cqssc extends \yii\db\ActiveRecord
         return $this->hasOne(AnalysisCqssc::className(), ['cqssc_id' => 'id'])->where(['type'=>$data_txt_id]);
     }
 
+    /**
+     * 2连 报警统计记录
+     */
+    public function getRecord($cycle){
+        return $this->hasOne(AlarmRecord::className(), ['alarm_id' => 'id'])->where([ 'cp_type' => AlarmRecord::cqType , 'cycle' =>$cycle]);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\AlarmRecord;
 use app\models\Bjdata;
 use app\models\Bjssc;
 use app\models\Code;
@@ -540,5 +541,85 @@ class HomeController extends \yii\web\Controller
         }
 
         return $this->render('/home/new-code/index',['model'=>$model,'type'=>$type,'data_packet'=>$data_packet, 'package_id' => $package_id]);
+    }
+
+    /**
+     * 重庆 2连 统计
+     */
+    public function actionCqStatistics(){
+        /*
+        // 分组报警期数
+        $arModel = new AlarmRecord();
+        $aryCycle = $arModel->cqGrupCqCycle();
+        if (!$aryCycle) {
+            exit('重庆暂无统计');
+        }
+
+        $cycle = \Yii::$app->request->get('cycle');
+        !$cycle ? $cycle = $aryCycle[0] : false;
+
+        $data = Cqssc::find()->orderBy('time DESC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '10']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/cq-statistics/_list',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle ]);
+        }
+
+        return $this->render('/home/cq-statistics/index',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle]);
+        */
+
+        $arModel = new AlarmRecord();
+        $aryCycle = $arModel->cqGrupCqCycle();
+        if (!$aryCycle) {
+            exit('重庆暂无统计');
+        }
+
+        $cycle = \Yii::$app->request->get('cycle');
+        !$cycle ? $cycle = $aryCycle[0] : false;
+
+        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::cqType, 'cycle' => $cycle ])->orderBy('created_at ASC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '5']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/cq-statistics/_list',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle ]);
+        }
+
+        return $this->render('/home/cq-statistics/index',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle]);
+    }
+
+    /**
+     * 新疆 2连 统计
+     */
+    public function actionXjStatistics(){
+        // 分组报警期数
+        $arModel = new AlarmRecord();
+        $aryCycle = $arModel->xjGrupCqCycle();
+        if (!$aryCycle) {
+            exit('新疆暂无统计');
+        }
+
+        $cycle = \Yii::$app->request->get('cycle');
+        !$cycle ? $cycle = $aryCycle[0] : false;
+
+        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::xjType, 'cycle' => $cycle ])->orderBy('created_at ASC');
+        $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '5']);
+        $model = $data->offset($pages->offset)->limit($pages->limit)->all();
+
+        if($page = \Yii::$app->request->get('page')){
+            if(intval(ceil($data->count()/10)) < $page){
+                return false;
+            }
+            return $this->renderAjax('/home/xj-statistics/_list',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle ]);
+        }
+
+        return $this->render('/home/xj-statistics/index',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle]);
     }
 }
