@@ -586,7 +586,7 @@ class HomeController extends \yii\web\Controller
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
         if($page = \Yii::$app->request->get('page')){
-            if(intval(ceil($data->count()/10)) < $page){
+            if(intval(ceil($data->count()/5)) < $page){
                 return false;
             }
             return $this->renderAjax('/home/cq-statistics/_list',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle ]);
@@ -614,7 +614,7 @@ class HomeController extends \yii\web\Controller
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
         if($page = \Yii::$app->request->get('page')){
-            if(intval(ceil($data->count()/10)) < $page){
+            if(intval(ceil($data->count()/5)) < $page){
                 return false;
             }
             return $this->renderAjax('/home/xj-statistics/_list',['model'=>$model,'cycle'=>$cycle, 'aryCycle' => $aryCycle ]);
