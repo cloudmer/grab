@@ -14,3 +14,9 @@ COMMENT =  '2连号 报警记录';
 
 ALTER TABLE `alarm_record`
 ADD COLUMN `position` INT(11) NOT NULL COMMENT  '1=>前三，2=>中三, 3=>后三' AFTER `cp_type`;
+
+
+ALTER TABLE `alarm_record`
+ADD COLUMN `q_num` INT(11) NOT NULL COMMENT  '前三累计到几期了' AFTER `position`,
+ADD COLUMN `z_num` INT(11) NOT NULL COMMENT  '中三累计到几期了' AFTER `q_num`,
+ADD COLUMN `h_num` INT(11) NOT NULL COMMENT  '后三累计到几期了' AFTER `z_num`;
