@@ -47,19 +47,19 @@ function isConsecutiveNumber($code){
         $after = $code[1] + $code[2];
 
         if ($front < $after ) {
-            return $code[0] + $code[1];
+            return $code[0] . $code[1];
         }
-        return $code[1] + $code[2];
+        return $code[1] . $code[2];
     }
 
     //下标0 与下标1 是连号
     if ($center_bool == true) {
-        return $code[0] + $code[1];
+        return $code[0] . $code[1];
     }
 
     //下标1 与下标2 是连号
     if ($tail_bool == true) {
-        return $code[1] + $code[2];
+        return $code[1] . $code[2];
     }
     return false;
 }
