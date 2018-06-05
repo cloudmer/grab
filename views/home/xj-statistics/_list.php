@@ -138,17 +138,17 @@ function consecutiveContainNumber($code, $val) {
             <td class="text-center"><?= $nextCode->qishu ?></td>
             <td class="text-center"><?php echo $code = str_replace(" ", '', $nextCode->code); ?></td>
             <td class="text-center">
-                <span class="badge bg-gray" >
+                <span class="badge bg-gray" <?= $q3_luck ? 'style="background: blue"' : false ?> >
                     <?= $q3_luck ? '中' : '未'; ?>
                 </span>
             </td>
             <td class="text-center">
-                <span class="badge bg-gray" >
+                <span class="badge bg-gray" <?= $z3_luck ? 'style="background: blue"' : false ?> >
                     <?= $z3_luck ? '中' : '未'; ?>
                 </span>
             </td>
             <td class="text-center">
-                <span class="badge bg-gray" >
+                <span class="badge bg-gray" <?= $h3_luck ? 'style="background: blue"' : false ?> >
                     <?= $h3_luck ? '中' : '未'; ?>
                 </span>
             </td>
