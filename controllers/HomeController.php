@@ -581,7 +581,7 @@ class HomeController extends \yii\web\Controller
         $cycle = \Yii::$app->request->get('cycle');
         !$cycle ? $cycle = $aryCycle[0] : false;
 
-        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::cqType, 'cycle' => $cycle ])->orderBy('created_at ASC');
+        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::cqType, 'cycle' => $cycle ])->orderBy('created_at DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '5']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
@@ -609,7 +609,7 @@ class HomeController extends \yii\web\Controller
         $cycle = \Yii::$app->request->get('cycle');
         !$cycle ? $cycle = $aryCycle[0] : false;
 
-        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::xjType, 'cycle' => $cycle ])->orderBy('created_at ASC');
+        $data = AlarmRecord::find()->where([ 'cp_type' => AlarmRecord::xjType, 'cycle' => $cycle ])->orderBy('created_at DESC');
         $pages = new Pagination(['totalCount' =>$data->count(), 'pageSize' => '5']);
         $model = $data->offset($pages->offset)->limit($pages->limit)->all();
 
