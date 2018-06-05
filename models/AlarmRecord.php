@@ -14,6 +14,9 @@ use Yii;
  * @property string $title
  * @property integer $cp_type
  * @property integer $position
+ * @property integer $q_num
+ * @property integer $z_num
+ * @property integer $h_num
  * @property string $created_at
  */
 class AlarmRecord extends \yii\db\ActiveRecord

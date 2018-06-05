@@ -106,17 +106,17 @@ function consecutiveContainNumber($code, $val) {
         <td class="text-center"><?php echo $code = str_replace(" ", '', $code->code); ?></td>
         <td class="text-center">
             <span class="badge bg-gray" <?= $m->position == \app\models\AlarmRecord::q3 ? 'style="background: red"' : false ?> >
-                <?= $m->position == \app\models\AlarmRecord::q3 ? '报警' : '等待' ?>
+                <?= $m->position == \app\models\AlarmRecord::q3 ? '报警' : $m->q_num.'期' ?>
             </span>
         </td>
         <td class="text-center">
             <span class="badge bg-gray" <?= $m->position == \app\models\AlarmRecord::z3 ? 'style="background: red"' : false ?> >
-                <?= $m->position == \app\models\AlarmRecord::z3 ? '报警' : '等待' ?>
+                <?= $m->position == \app\models\AlarmRecord::z3 ? '报警' : $m->z_num.'期' ?>
             </span>
         </td>
         <td class="text-center">
             <span class="badge bg-gray" <?= $m->position == \app\models\AlarmRecord::h3 ? 'style="background: red"' : false ?> >
-                <?= $m->position == \app\models\AlarmRecord::h3 ? '报警' : '等待' ?>
+                <?= $m->position == \app\models\AlarmRecord::h3 ? '报警' : $m->h_num.'期' ?>
             </span>
         </td>
     </tr>
