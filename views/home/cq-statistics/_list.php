@@ -72,7 +72,7 @@ function consecutiveContainNumber($code, $val) {
     $num = 0;
     for ($i=0; $i<strlen($val); $i++) {
         $str = $val[$i];
-        if (strpos($code,$str)) {
+        if (strpos($code,$str) !== false) {
             $num += 1;
         }
     }
