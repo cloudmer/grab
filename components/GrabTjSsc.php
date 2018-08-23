@@ -112,6 +112,7 @@ class GrabTjSsc
      * file_get_contents 抓取开奖数据
      */
     private function get_data(){
+        exit();
         include_once('simplehtmldom_1_5/simple_html_dom.php');
         $simple_html_dom = new \simple_html_dom();
 
