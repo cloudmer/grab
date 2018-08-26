@@ -77,6 +77,11 @@ class GrabXjSsc
      */
     const URL_9 = 'https://m.cp89003.com/common/hall/getNextPeriod';
 
+    /**
+     * 线路10
+     */
+    const URL_10 = 'https://tools.cjcp.com.cn/ssc/requestNewQici.action';
+
 
     /* 抓取后的数据 array */
     private $data;
@@ -92,13 +97,14 @@ class GrabXjSsc
         ini_set('memory_limit','888M');
 //        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
-        $this->get_data3();     //抓取数据
+//        $this->get_data3();     //抓取数据
 //        $this->get_data4();    //抓取数据
 //        $this->get_data5();    //抓取数据
 //        $this->get_data6();    //抓取数据
 //        $this->get_data7();    //抓取数据
 //        $this->get_data8();    //抓取数据
 //        $this->get_data9();    //抓取数据
+        $this->get_data10();    //抓取数据
         $this->insert_mysql(); //记录数据
         $this->reserve_warning(); //预定号码报警
         $this->warning();      //邮件报警
@@ -459,6 +465,33 @@ class GrabXjSsc
         $code =  str_replace("|","", $code);
         $qihao = $codeAryInfo['lastIssue'];
         $kjsj = $codeAryInfo['opentime'];
+        $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+    }
+
+    private function get_data10(){
+        $post_data = ['qhdata'=>10, 'area' => 'xj']; //新疆时时彩
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::URL_10);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,60);   //只需要设置一个秒的数量就可以  60超时
+        // post数据
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $xjCodeArr = json_decode($output,true);
+        if(!is_array($xjCodeArr)){
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        if (!isset($xjCodeArr['newQiciString']) || !$xjCodeArr['newQiciString']) {
+            exit('新疆时时彩-数据抓取失败,请尽快联系网站管理员'."\r\n");
+        }
+
+        $code = str_replace('^', '', substr($xjCodeArr['newQiciString'], 0, 10));
+        $qihao = substr($xjCodeArr['newQiciString'], 10);
+        $kjsj = date('Y-m-d H:i:s');
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
     }
 
