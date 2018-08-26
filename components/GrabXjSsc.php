@@ -90,9 +90,9 @@ class GrabXjSsc
     public function __construct()
     {
         ini_set('memory_limit','888M');
-        $this->get_data();     //抓取数据
+//        $this->get_data();     //抓取数据
 //        $this->get_data2();     //抓取数据
-//        $this->get_data3();     //抓取数据
+        $this->get_data3();     //抓取数据
 //        $this->get_data4();    //抓取数据
 //        $this->get_data5();    //抓取数据
 //        $this->get_data6();    //抓取数据
@@ -194,6 +194,7 @@ class GrabXjSsc
         $kjsj = date('Y-m-d H:i:s');
 
         $this->data = ['qihao'=>$qihao, 'kjsj'=>$kjsj, 'code'=>$code];
+        var_dump($this->data);exit;
     }
 
     /**
