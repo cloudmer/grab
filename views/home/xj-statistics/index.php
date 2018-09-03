@@ -83,7 +83,7 @@ $this->registerJs($script);
     <div class="row">
         <form action="" method="get">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <select class="form-control" name="type">
+                <select class="form-control" name="cycle">
                     <?php foreach ($aryCycle as $key=>$val): ?>
                         <option value="<?= $val ?>" <?php if($cycle == $val){ echo 'selected="selected"'; }?> ><?= $val . '期'; ?></option>
                     <?php endforeach;?>
