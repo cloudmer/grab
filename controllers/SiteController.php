@@ -49,7 +49,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect('/home/new-code?type=1');
         $this->layout = 'main2';
         return $this->render('index');
     }
