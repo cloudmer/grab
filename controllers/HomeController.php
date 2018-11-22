@@ -23,6 +23,8 @@ class HomeController extends \yii\web\Controller
 {
     public function actionIndex()
     {
+        $this->redirect('/home/new-code?type=1');
+
         $this->redirect('home/cqssc');
         $type = \Yii::$app->request->get('type') ? \Yii::$app->request->get('type') : 1;
         $data = Code::find()->where(['type'=>$type])->orderBy('time DESC');
