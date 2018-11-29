@@ -29,9 +29,9 @@ class NewGrab
 
     private $cp_type_prefix = [
         '1' => 'jx_',
-        '1' => 'gd_',
-        '1' => 'sd_',
-        '1' => 'sh_',
+        '2' => 'gd_',
+        '3' => 'sd_',
+        '4' => 'sh_',
     ];
 
     /*
