@@ -27,11 +27,27 @@ class NewGrab
         '4' => '上海',
     );
 
+    private $cp_type_prefix = [
+        '1' => 'jx_',
+        '1' => 'gd_',
+        '1' => 'sd_',
+        '1' => 'sh_',
+    ];
+
+    /*
     private $cp_url_arr = array(
         '1' => 'http://cp.360.cn/dlcjx/?r_a=7zIRFz',
         '2' => 'http://cp.360.cn/gd11/?r_a=yiiEJb',
         '3' => 'http://cp.360.cn/yun11/?r_a=JfMbIz',
         '4' => 'http://cp.360.cn/sh11?r_a=7zaqqi'
+    );
+    */
+
+    private $cp_url_arr = array(
+        '1' => 'https://chart.cp.360.cn/zst/qkj/?lotId=168009',
+        '2' => 'https://chart.cp.360.cn/zst/qkj/?lotId=165707',
+        '3' => 'https://chart.cp.360.cn/zst/qkj/?lotId=166406',
+        '4' => 'https://chart.cp.360.cn/zst/qkj/?lotId=165207'
     );
 
     private $email_contents = false;
@@ -40,6 +56,9 @@ class NewGrab
     {
         $this->cp_type = $cp_type;
         $url = $this->cp_url_arr[$cp_type];
+        $strPrefix = $this->cp_type_prefix[$cp_type];
+        $this->curlData($url, $strPrefix);
+        /*
         ini_set('memory_limit','888M');
         include_once('simplehtmldom_1_5/simple_html_dom.php');
         $this->grab = new \simple_html_dom();
@@ -47,6 +66,48 @@ class NewGrab
         $this->grab->load($content);
         $this->html_str($url);
         $this->grab->clear();
+        */
+    }
+
+    private function curlData($_strUrl, $_strPrefix) {
+        $strJson =  file_get_contents($_strUrl);
+        $ary = json_decode($strJson, true);
+        if (!$ary || !is_array($ary)) {
+            return $this->cp_type_arr[$this->cp_type].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员'."\r\n";
+        }
+        if (!isset($ary[0]['WinNumber']) || !isset($ary[0]['Issue'])) {
+            return $this->cp_type_arr[$this->cp_type].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员'."\r\n";
+        }
+        $number = $ary[0]['WinNumber'];
+        $qihao = $_strPrefix.$ary[0]['Issue'];
+        $codeArr = explode(" ", $number);
+        list($one,$two,$three,$four,$five) = $codeArr;
+
+        $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
+        if($result){
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了'."\r\n";
+            return;
+        }
+
+        $newcodeModel = new Newcode();
+        $newcodeModel->qihao = $qihao;
+        $newcodeModel->one = $one;
+        $newcodeModel->two = $two;
+        $newcodeModel->three = $three;
+        $newcodeModel->four = $four;
+        $newcodeModel->five = $five;
+        $newcodeModel->type = $this->cp_type;
+        $newcodeModel->time = time();
+        if(!$newcodeModel->validate() || !$newcodeModel->save()){
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败'."\r\n";
+            return;
+        }
+        sort($codeArr);
+        $this->analysis($newcodeModel->id , $codeArr);
+
+        $this->alert();
+
+        new NewCodeInterval($this->cp_type);
     }
 
     function getHtml($url,$encoded="UTF-8"){
