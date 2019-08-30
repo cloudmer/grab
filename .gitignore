@@ -27,5 +27,3 @@ phpunit.phar
 /phpunit.xml
 web/upload/
 
-controllers/admin/BaseController.php
-

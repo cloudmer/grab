@@ -8,14 +8,15 @@ class BaseController extends \yii\web\Controller
     public $layout = 'admin';
 
     public function systemInfo(){
-        mysql_connect('127.0.0.1',\Yii::$app->db->username,\Yii::$app->db->password);
+        $link = mysqli_connect('127.0.0.1',\Yii::$app->db->username,\Yii::$app->db->password);
         $sysinfo = array(
             'version' => 'V1.0' . ' RELEASE '. '2015-11-11' .' [<a href="http://www.aiyeyun.com/"  target="_blank">查看最新版本</a>]',
             'server_domain' => $_SERVER['SERVER_NAME'] . ' [ ' . gethostbyname($_SERVER['SERVER_NAME']) . ' ]',
             'server_os' => PHP_OS,
             'web_server' => $_SERVER["SERVER_SOFTWARE"],
             'php_version' => PHP_VERSION,
-            'mysql_version' => mysql_get_server_info(),
+//            'mysql_version' => mysql_get_server_info(),
+            'mysql_version' => mysqli_get_server_info($link),
             'upload_max_filesize' => ini_get('upload_max_filesize'),
             'max_execution_time' => ini_get('max_execution_time') . '秒',
             'memory_limit' => ini_get('memory_limit'),
@@ -24,7 +25,7 @@ class BaseController extends \yii\web\Controller
             'curl' => function_exists("curl_getinfo") ? 'YES' : 'NO',
             'timezone' => function_exists("date_default_timezone_get") ? date_default_timezone_get() : 'NO'
         );
-        mysql_close();
+        mysqli_close($link);
 
         if(function_exists('gd_info')){
             $gd_info = @gd_info();
