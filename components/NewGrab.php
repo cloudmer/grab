@@ -43,30 +43,45 @@ class NewGrab
     );
     */
 
+    /*
     private $cp_url_arr = array(
         '1' => 'https://chart.cp.360.cn/zst/qkj/?lotId=168009',
         '2' => 'https://chart.cp.360.cn/zst/qkj/?lotId=165707',
         '3' => 'https://chart.cp.360.cn/zst/qkj/?lotId=166406',
         '4' => 'https://chart.cp.360.cn/zst/qkj/?lotId=165207'
     );
+    */
+
+    private $cp_url_arr = array(
+        // 江西
+        '1' => 'https://www.ydniu.com/open/70.html',
+        // 广东
+        '2' => 'https://www.ydniu.com/open/78.html',
+        // 山东
+        '3' => 'https://www.ydniu.com/open/62.html',
+    );
 
     private $email_contents = false;
 
     public function __construct($cp_type)
     {
+        /*
         $this->cp_type = $cp_type;
         $url = $this->cp_url_arr[$cp_type];
         $strPrefix = $this->cp_type_prefix[$cp_type];
         $this->curlData($url, $strPrefix);
-        /*
+        */
+
+        $this->cp_type = $cp_type;
+        $url = $this->cp_url_arr[$cp_type];
         ini_set('memory_limit','888M');
         include_once('simplehtmldom_1_5/simple_html_dom.php');
         $this->grab = new \simple_html_dom();
         $content = $this->getHtml($url);
         $this->grab->load($content);
-        $this->html_str($url);
+//        $this->html_str($url);
+        $this->html_code($url);
         $this->grab->clear();
-        */
     }
 
     private function curlData($_strUrl, $_strPrefix) {
@@ -127,6 +142,50 @@ class NewGrab
             $logModel->time = time();
             $logModel->save();
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 开奖信息抓取失败,请尽快通知网站管理员'."\r\n";
+            return;
+        }
+    }
+
+    function html_code($url) {
+        try{
+            $qihao = $this->grab->find('table[class=gg_ls]', 0)->find('td', 0)->plaintext;
+            $qihao = str_replace("期","",$qihao);
+            $one = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 0)->plaintext;
+            $two = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 1)->plaintext;
+            $three = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 2)->plaintext;
+            $four = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 3)->plaintext;
+            $five = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 4)->plaintext;
+
+            $codeArr = [$one, $two, $three, $four, $five];
+
+            $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
+            if($result){
+                echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了'."\r\n";
+                return;
+            }
+
+            $newcodeModel = new Newcode();
+            $newcodeModel->qihao = $qihao;
+            $newcodeModel->one = $one;
+            $newcodeModel->two = $two;
+            $newcodeModel->three = $three;
+            $newcodeModel->four = $four;
+            $newcodeModel->five = $five;
+            $newcodeModel->type = $this->cp_type;
+            $newcodeModel->time = time();
+            if(!$newcodeModel->validate() || !$newcodeModel->save()){
+                echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败'."\r\n";
+                return;
+            }
+            sort($codeArr);
+            $this->analysis($newcodeModel->id , $codeArr);
+
+            $this->alert();
+
+            new NewCodeInterval($this->cp_type);
+
+        }catch (\Exception $exception) {
+            echo $this->cp_type_arr[$this->cp_type].' -[新时时彩] 等待开奖...'."\r\n";
             return;
         }
     }
