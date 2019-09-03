@@ -147,6 +147,43 @@ class NewGrab
     }
 
     function html_code($url) {
+        $qihao = $this->grab->find('table[class=gg_ls]', 0)->find('td', 0)->plaintext;
+        $qihao = str_replace("期","",$qihao);
+        $one = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 0)->plaintext;
+        $two = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 1)->plaintext;
+        $three = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 2)->plaintext;
+        $four = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 3)->plaintext;
+        $five = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 4)->plaintext;
+
+        $codeArr = [$one, $two, $three, $four, $five];
+
+        $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
+        if($result){
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了'."\r\n";
+            return;
+        }
+
+        $newcodeModel = new Newcode();
+        $newcodeModel->qihao = $qihao;
+        $newcodeModel->one = $one;
+        $newcodeModel->two = $two;
+        $newcodeModel->three = $three;
+        $newcodeModel->four = $four;
+        $newcodeModel->five = $five;
+        $newcodeModel->type = $this->cp_type;
+        $newcodeModel->time = time();
+        if(!$newcodeModel->validate() || !$newcodeModel->save()){
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据存储失败'."\r\n";
+            return;
+        }
+        sort($codeArr);
+        $this->analysis($newcodeModel->id , $codeArr);
+
+        $this->alert();
+
+        new NewCodeInterval($this->cp_type);
+
+        /*
         try{
             $qihao = $this->grab->find('table[class=gg_ls]', 0)->find('td', 0)->plaintext;
             $qihao = str_replace("期","",$qihao);
@@ -188,6 +225,7 @@ class NewGrab
             echo $this->cp_type_arr[$this->cp_type].' -[新时时彩] 等待开奖...'."\r\n";
             return;
         }
+        */
     }
 
     function html_str($url){
