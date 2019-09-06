@@ -74,13 +74,14 @@ class NewGrab
 
         $this->cp_type = $cp_type;
         $url = $this->cp_url_arr[$cp_type];
+        $strPrefix = $this->cp_type_prefix[$cp_type];
         ini_set('memory_limit','888M');
         include_once('simplehtmldom_1_5/simple_html_dom.php');
         $this->grab = new \simple_html_dom();
         $content = $this->getHtml($url);
         $this->grab->load($content);
 //        $this->html_str($url);
-        $this->html_code($url);
+        $this->html_code($url, $strPrefix);
         $this->grab->clear();
     }
 
@@ -146,9 +147,10 @@ class NewGrab
         }
     }
 
-    function html_code($url) {
+    function html_code($url, $_strPrefix) {
         $qihao = $this->grab->find('table[class=gg_ls]', 0)->find('td', 0)->plaintext;
         $qihao = str_replace("期","",$qihao);
+        $qihao = $_strPrefix.$qihao;
         $one = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 0)->plaintext;
         $two = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 1)->plaintext;
         $three = $this->grab->find('table[class=gg_ls]', 0)->find('td', 2)->find('li', 2)->plaintext;
