@@ -165,6 +165,9 @@ class NewGrab
             return;
         }
 
+        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 正在分析。。。 '."\r\n";
+
+
         $newcodeModel = new Newcode();
         $newcodeModel->qihao = $qihao;
         $newcodeModel->one = $one;
