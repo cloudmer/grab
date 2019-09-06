@@ -161,7 +161,7 @@ class NewGrab
 
         $result = Newcode::findOne(['qihao'=>$qihao,'type'=>$this->cp_type]);
         if($result){
-            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了'."\r\n";
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 最新数据已经采集过了 '. $qihao ."\r\n";
             return;
         }
 
