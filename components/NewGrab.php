@@ -305,6 +305,8 @@ class NewGrab
 
     //警报
     private function alert(){
+        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 分析数据。。。 '."\r\n";
+
         $data = Newcodedata::find()->where(['type'=>$this->cp_type])->all();
         foreach ($data as $key=>$val){
             $number = $val->number;
@@ -326,10 +328,13 @@ class NewGrab
                 }
             }
 
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据包别名: '.$val->alias. ' 报警期数: '. $number . ' 累加数: '. $num . "\r\n";
+
             if($num >= $number){
                 $this->email_contents .= $this->cp_type_arr[$this->cp_type]. ' 数据包别名:' . $val->alias . ' 期数: 已经连续 ' . $num . ' 未开 报警'."<br/>";
             }
         }
+
 
         if ($this->email_contents){
             $this->send_mail($this->email_contents);
