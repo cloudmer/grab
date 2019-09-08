@@ -9,6 +9,7 @@
 namespace app\commands;
 
 
+use app\components\AdditionSubtraction;
 use app\components\NewGrab;
 use yii\console\Controller;
 
@@ -41,6 +42,27 @@ class NewCodeController extends Controller
      */
     public function actionSh() {
         new NewGrab(4);
+    }
+
+    /**
+     * 江西玩法 加减报警
+     */
+    public function actionPlayJx() {
+        new AdditionSubtraction(1);
+    }
+
+    /**
+     * 广东玩法 加减报警
+     */
+    public function actionPlayGd() {
+        new AdditionSubtraction(2);
+    }
+
+    /**
+     * 山东玩法 加减报警
+     */
+    public function actionPlaySd() {
+        new AdditionSubtraction(3);
     }
 
 }
