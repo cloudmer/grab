@@ -331,14 +331,19 @@ class Test
             $status = false;
             $num = 0;
             foreach ($code as $k=>$v){
-                var_dump($v->getAnalysis($val->id));
-                var_dump($v->getAnalysis($val->id)->one());
-                var_dump($v->getAnalysis($val->id)->one()->lucky);
+                $intLucky = Newcodeanalysis::find()->select('lucky')->where([ 'newcode_id' => $v->id, 'newcodedata_id' => $val->id ])->scalar();
+                if ($intLucky == 1) {
+                    $num = 0;
+                } else {
+                    $num = $num + 1;
+                }
+                /*
                 if($v->getAnalysis($val->id)->one()->lucky == 1){
                     $num = 0;
                 }else{
                     $num = $num + 1;
                 }
+                */
             }
 
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 数据包别名: '.$val->alias. ' 报警期数: '. $number . ' 累加数: '. $num . "\r\n";
