@@ -355,7 +355,7 @@ class Test
 
 
         if ($this->email_contents){
-            $this->send_mail($this->email_contents);
+//            $this->send_mail($this->email_contents);
         }
     }
 
