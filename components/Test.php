@@ -331,6 +331,9 @@ class Test
             $status = false;
             $num = 0;
             foreach ($code as $k=>$v){
+                var_dump($v->getAnalysis($val->id));
+                var_dump($v->getAnalysis($val->id)->one());
+                var_dump($v->getAnalysis($val->id)->one()->lucky);
                 if($v->getAnalysis($val->id)->one()->lucky == 1){
                     $num = 0;
                 }else{
