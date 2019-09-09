@@ -38,10 +38,10 @@ class AdditionSubtraction
 
     public function __construct($cp_type)
     {
+        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 加减玩法 '."\r\n";
         $this->cp_type = $cp_type;
         $strPrefix = $this->cp_type_prefix[$cp_type];
         ini_set('memory_limit','888M');
-        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 加减玩法 '."\r\n";
         $this->play($strPrefix);
     }
 
