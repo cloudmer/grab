@@ -124,6 +124,8 @@ class NewGrab
         $this->alert();
 
         new NewCodeInterval($this->cp_type);
+
+        new AdditionSubtraction($this->cp_type);
     }
 
     function getHtml($url,$encoded="UTF-8"){
