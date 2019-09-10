@@ -119,6 +119,7 @@ class AdditionSubtraction
                 echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二期开奖号码为:'. "{$ary->one} {$ary->two} {$ary->three} {$ary->four} {$ary->five}" ."\r\n";
                 $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二期开奖号码为:'. "{$ary->one} {$ary->two} {$ary->three} {$ary->four} {$ary->five}" ."\r\n";
 
+                /*
                 if (
                     ($ary->one == $intTheSum || $ary->two == $intTheSum || $ary->three == $intTheSum || $ary->four == $intTheSum || $ary->five == $intTheSum)
                     ||
@@ -132,6 +133,32 @@ class AdditionSubtraction
                     $strMail .= $this->strLog;
                     $this->send_mail($strMail);
                 }
+                */
+
+                $intInNumber = 0;
+                $aryInNumber = [];
+
+                if ( ($ary->one == $intTheSum || $ary->two == $intTheSum || $ary->three == $intTheSum || $ary->four == $intTheSum || $ary->five == $intTheSum) ) {
+                    $intInNumber += 1;
+                    $aryInNumber[] = $intTheSum;
+                }
+
+                if ( ($ary->one == $intDifference || $ary->two == $intDifference || $ary->three == $intDifference || $ary->four == $intDifference || $ary->five == $intDifference) ) {
+                    $intInNumber += 1;
+                    $aryInNumber[] = $intTheSum;
+                }
+
+                if ($intInNumber > 0) {
+                    // 邮件报警了
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含{$intInNumber}位  ". json_encode($aryInNumber) ."\r\n";
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含{$intInNumber}位  ". json_encode($aryInNumber) ."\r\n";
+
+                    $strMail = '加减玩法 报警提示'."<br/>";
+                    $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二期开奖号码为:'. "{$ary->one} {$ary->two} {$ary->three} {$ary->four} {$ary->five}" ."<br/>";
+                    $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含{$intInNumber}位  ". json_encode($aryInNumber) ."<br/>";
+                    $this->send_mail($strMail);
+                }
+
             }
         }
     }
