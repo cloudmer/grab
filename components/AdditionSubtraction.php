@@ -65,6 +65,22 @@ class AdditionSubtraction
                 $two = $ary->two;
                 $three = $ary->three;
 
+                // 11  1 这种特殊情况就这样处理算了用1+1=2然后用11-1=10，只有这个数字会这样
+                if (($two == 11 && $three == 1) ||($three == 11 && $two == 1)) {
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 本次开奖号为 11 1 '."\r\n";
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 计算前第二位的值是:'. " $two " ."\r\n";
+
+                    $intTheSum = 1 + 1;
+                    $intDifference = 11 -1;
+
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 1 + 1 = 2 " ."\r\n";
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 11 - 1 = 10 " ."\r\n";
+
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 1 + 1 = 2 " ."\r\n";
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 11 - 1 = 10 " ."\r\n";
+                    continue;
+                }
+
                 if ($two == 11) {
                     echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二位号码为:'. " {$ary->two} 更改值为1 " ."\r\n";
                     $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二位号码为:'. " {$ary->two} 更改值为1 " ."\r\n";
@@ -105,12 +121,12 @@ class AdditionSubtraction
 
                 if (
                     ($ary->one == $intTheSum || $ary->two == $intTheSum || $ary->three == $intTheSum || $ary->four == $intTheSum || $ary->five == $intTheSum)
-                    &&
+                    ||
                     ($ary->one == $intDifference || $ary->two == $intDifference || $ary->three == $intDifference || $ary->four == $intDifference || $ary->five == $intDifference)
                 ) {
                     // 邮件报警了
-                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含 {$intTheSum} {$intDifference} " ."\r\n";
-                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含 {$intTheSum} {$intDifference} " ."\r\n";
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 其中一位包含 {$intTheSum} {$intDifference} " ."\r\n";
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 其中一位包含 {$intTheSum} {$intDifference} " ."\r\n";
 
                     $strMail = '加减玩法 报警提示'."\r\n";;
                     $strMail .= $this->strLog;
