@@ -148,6 +148,7 @@ class AdditionSubtraction
                     $aryInNumber[] = $intTheSum;
                 }
 
+                /*
                 if ($intInNumber > 0) {
                     // 邮件报警了
                     echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含{$intInNumber}位  ". json_encode($aryInNumber) ."\r\n";
@@ -156,6 +157,18 @@ class AdditionSubtraction
                     $strMail = '加减玩法 报警提示'."<br/>";
                     $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二期开奖号码为:'. "{$ary->one} {$ary->two} {$ary->three} {$ary->four} {$ary->five}" ."<br/>";
                     $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含{$intInNumber}位  ". json_encode($aryInNumber) ."<br/>";
+                    $this->send_mail($strMail);
+                }
+                */
+
+                if ($intInNumber == 0) {
+                    // 邮件报警了
+                    echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含0位  " ."\r\n";
+                    $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含0位  ". "\r\n";
+
+                    $strMail = '加减玩法 报警提示'."<br/>";
+                    $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] 第二期开奖号码包含0位:' ."<br/>";
+                    $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 包含0位  " ."<br/>";
                     $this->send_mail($strMail);
                 }
 
