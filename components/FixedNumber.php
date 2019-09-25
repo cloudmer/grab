@@ -89,7 +89,12 @@ class FixedNumber
 
                 $this->strHtmlLog .= "清空本轮 重新统计 <br/>";
                 echo "清空本轮 重新统计 \r\n";
+                echo var_dump($this->number). "\r\n";
+                echo var_dump($this->num). "\r\n";
                 echo var_dump($aryCode). "\r\n";
+                echo var_dump($key). "\r\n";
+                echo var_dump($intPrevious). "\r\n";
+                echo var_dump(count($code)). "\r\n";
                 echo var_dump(count($aryCode) >= $this->num). "\r\n";
                 echo var_dump($key != count($code) - 1). "\r\n";
                 echo var_dump($intPrevious == false). "\r\n";
