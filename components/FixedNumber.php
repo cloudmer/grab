@@ -77,7 +77,9 @@ class FixedNumber
                 $this->strHtmlLog .= "包含 {$this->number} 号码 {$intContinuity} 次 <br/>";
                 echo "包含 {$this->number} 号码 {$intContinuity} 次 \r\n";
             } else {
-                $aryCode[] = $intContinuity;
+                if ($intContinuity > 0) {
+                    $aryCode[] = $intContinuity;
+                }
                 $intContinuity = 0;
                 $intPrevious = false;
 
@@ -85,7 +87,6 @@ class FixedNumber
             }
 
             if ( ( count($aryCode) >= $this->num ) && ( $key != count($code) - 1 ) &&  ($intPrevious == false) ) {
-                $aryCode = [];
 
                 $this->strHtmlLog .= "清空本轮 重新统计 <br/>";
                 echo "清空本轮 重新统计 \r\n";
@@ -98,6 +99,8 @@ class FixedNumber
                 echo var_dump(count($aryCode) >= $this->num). "\r\n";
                 echo var_dump($key != count($code) - 1). "\r\n";
                 echo var_dump($intPrevious == false). "\r\n";
+
+                $aryCode = [];
             }
         }
 
