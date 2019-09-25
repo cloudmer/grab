@@ -68,12 +68,14 @@ class FixedNumber
         $aryCode = [];
 
         foreach ($code as $key => $objCode) {
+            echo "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} /r/n";
             $this->strHtmlLog .= "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} <br/>";
             if ( $objCode->one == $this->number || $objCode->two == $this->number || $objCode->three == $this->number || $objCode->four == $this->number || $objCode->five == $this->number ) {
                 $intContinuity += 1;
                 $intPrevious = true;
 
                 $this->strHtmlLog .= "包含 {$this->number} 号码 {$intContinuity} 次 <br/>";
+                echo "包含 {$this->number} 号码 {$intContinuity} 次 \r\n";
             } else {
                 $aryCode[] = $intContinuity;
                 $intContinuity = 0;
@@ -86,13 +88,14 @@ class FixedNumber
                 $aryCode = [];
 
                 $this->strHtmlLog .= "清空本轮 重新统计 <br/>";
+                echo "清空本轮 重新统计 \r\n";
             }
         }
 
         // 报警
         if (count($aryCode) == $this->num && $intPrevious == true) {
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  " ."\r\n";
-            $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  ". "\r\n";
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  ". "\r\n";
 
             $strMail = "11选5 和差 {$this->number} 报警提示"."<br/>";
             $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差{$this->number}统计报警:" ."<br/>";
