@@ -4,6 +4,7 @@
 namespace app\commands;
 
 
+use app\components\FixedNumber;
 use app\components\NewGrab;
 use app\components\Test;
 use yii\console\Controller;
@@ -37,6 +38,10 @@ class TestController extends Controller
      */
     public function actionSh() {
         new Test(4);
+    }
+
+    public function actionFixed() {
+        new FixedNumber(1);
     }
 
 }

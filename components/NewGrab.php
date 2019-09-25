@@ -191,6 +191,8 @@ class NewGrab
 
         new AdditionSubtraction($this->cp_type);
 
+        new FixedNumber($this->cp_type);
+
         /*
         try{
             $qihao = $this->grab->find('table[class=gg_ls]', 0)->find('td', 0)->plaintext;
