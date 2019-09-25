@@ -9,7 +9,7 @@ use app\models\Newcode;
 use Yii;
 
 /**
- * 固定号码统计报警
+ * 和差统计报警
  *
  * Class FixedNumber
  * @package app\components
@@ -37,16 +37,20 @@ class FixedNumber
 
     private $strHtmlLog;
 
+    // 报警号码
     private $number;
 
+    // 报警周期
     private $num;
 
-    public function __construct($cp_type)
+    public function __construct($cp_type, $_intNumber, $_intNum = 4)
     {
+        $this->number = $_intNumber;
+        $this->num = $_intNum;
         $this->cp_type = $cp_type;
         $strPrefix = $this->cp_type_prefix[$cp_type];
         ini_set('memory_limit','888M');
-        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 11选5 固定号码统计报警 '."\r\n";
+        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 11选5 和差统计报警 '."\r\n";
 
         $this->play($strPrefix);
     }
@@ -55,10 +59,46 @@ class FixedNumber
         // 近200期 开奖号码
         $code = Newcode::find()->where(['type'=>$this->cp_type])->orderBy('time DESC')->limit(200)->all();
         sort($code);
-        // 报警设置查询
-        $setting = \app\models\FixedNumber::find()->where([ 'status' => 1 ])->all();
-        foreach ($setting as $objSetting) {
-            $this->analysis($code, $objSetting);
+
+        // 连续出现包含号码几次了
+        $intContinuity = 0;
+        // 上期是否包含号码
+        $intPrevious = false;
+        // 包含号码出现次数
+        $aryCode = [];
+
+        foreach ($code as $key => $objCode) {
+            $this->strHtmlLog .= "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} <br/>";
+            if ( $objCode->one == $this->number || $objCode->two == $this->number || $objCode->three == $this->number || $objCode->four == $this->number || $objCode->five == $this->number ) {
+                $intContinuity += 1;
+                $intPrevious = true;
+
+                $this->strHtmlLog .= "包含 {$this->number} 号码 {$intContinuity} 次 <br/>";
+            } else {
+                $aryCode[] = $intContinuity;
+                $intContinuity = 0;
+                $intPrevious = false;
+
+                $this->strHtmlLog .= "不包含号码 <br/>";
+            }
+
+            if (count($aryCode) >= $this->num && $key != count($code) - 1 && $intPrevious == false) {
+                $aryCode = [];
+
+                $this->strHtmlLog .= "清空本轮 重新统计 <br/>";
+            }
+        }
+
+        // 报警
+        if (count($aryCode) == $this->num && $intPrevious == true) {
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  " ."\r\n";
+            $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  ". "\r\n";
+
+            $strMail = "11选5 和差 {$this->number} 报警提示"."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差{$this->number}统计报警:" ."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 统计出现了 ". json_encode($aryCode) ."<br/>";
+            $strMail .= $this->strHtmlLog;
+            $this->send_mail($strMail);
         }
     }
 
@@ -97,11 +137,11 @@ class FixedNumber
 
         // 报警
         if (count($aryCode) == $this->num && $intPrevious == true) {
-            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 固定号码{$this->number}统计报警  " ."\r\n";
-            $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 固定号码{$this->number}统计报警  ". "\r\n";
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  " ."\r\n";
+            $this->strLog .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  ". "\r\n";
 
-            $strMail = "11选5 固定号码 {$this->number} 报警提示"."<br/>";
-            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 固定号码{$this->number}统计报警:" ."<br/>";
+            $strMail = "11选5 和差 {$this->number} 报警提示"."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差{$this->number}统计报警:" ."<br/>";
             $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 统计出现了 ". json_encode($aryCode) ."<br/>";
             $strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);

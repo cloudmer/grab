@@ -191,7 +191,6 @@ class NewGrab
 
         new AdditionSubtraction($this->cp_type);
 
-        new FixedNumber($this->cp_type);
 
         /*
         try{

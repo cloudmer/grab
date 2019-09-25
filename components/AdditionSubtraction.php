@@ -141,11 +141,15 @@ class AdditionSubtraction
                 if ( ($ary->one == $intTheSum || $ary->two == $intTheSum || $ary->three == $intTheSum || $ary->four == $intTheSum || $ary->five == $intTheSum) ) {
                     $intInNumber += 1;
                     $aryInNumber[] = $intTheSum;
+
+                    new FixedNumber($this->cp_type, $intTheSum);
                 }
 
                 if ( ($ary->one == $intDifference || $ary->two == $intDifference || $ary->three == $intDifference || $ary->four == $intDifference || $ary->five == $intDifference) ) {
                     $intInNumber += 1;
                     $aryInNumber[] = $intTheSum;
+
+                    new FixedNumber($this->cp_type, $intDifference);
                 }
 
                 /*

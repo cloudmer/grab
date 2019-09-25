@@ -41,7 +41,7 @@ class TestController extends Controller
     }
 
     public function actionFixed() {
-        new FixedNumber(1);
+        new FixedNumber(1, 1);
     }
 
 }
