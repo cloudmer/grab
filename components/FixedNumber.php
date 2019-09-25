@@ -66,6 +66,10 @@ class FixedNumber
         $intPrevious = false;
         // 包含号码出现次数
         $aryCode = [];
+        // 上轮统计次数
+        $aryPreCode = [];
+
+        $boolEmpty = false;
 
         foreach ($code as $key => $objCode) {
             echo "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} \r\n";
@@ -87,23 +91,28 @@ class FixedNumber
             }
 
             if ( ( count($aryCode) >= $this->num ) && ( $key != count($code) - 1 ) &&  ($intPrevious == false) ) {
+                $aryPreCode = $aryCode;
 
                 $this->strHtmlLog .= "清空本轮 重新统计 <br/>";
                 echo "清空本轮 重新统计 \r\n";
+                /*
                 echo var_dump($this->number). "\r\n";
                 echo var_dump($this->num). "\r\n";
                 echo var_dump($aryCode). "\r\n";
                 echo var_dump($key). "\r\n";
                 echo var_dump($intPrevious). "\r\n";
                 echo var_dump(count($code)). "\r\n";
+                */
                 echo var_dump(count($aryCode) >= $this->num). "\r\n";
                 echo var_dump($key != count($code) - 1). "\r\n";
                 echo var_dump($intPrevious == false). "\r\n";
 
                 $aryCode = [];
+                $boolEmpty = true;
             }
         }
 
+        /*
         // 报警
         if (count($aryCode) == $this->num && $intPrevious == true) {
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  " ."\r\n";
@@ -112,6 +121,18 @@ class FixedNumber
             $strMail = "11选5 和差 {$this->number} 报警提示"."<br/>";
             $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差{$this->number}统计报警:" ."<br/>";
             $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 统计出现了 ". json_encode($aryCode) ."<br/>";
+            $strMail .= $this->strHtmlLog;
+            $this->send_mail($strMail);
+        }
+        */
+
+        // 报警
+        if ($boolEmpty == true && count($aryCode) == 1) {
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差{$this->number}统计报警  " ."\r\n";
+
+            $strMail = "11选5 和差 {$this->number} 报警提示"."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差{$this->number}统计报警:" ."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 统计出现了 " . json_encode($aryPreCode) ."<br/>";
             $strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
         }
