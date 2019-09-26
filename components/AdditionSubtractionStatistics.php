@@ -133,9 +133,11 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "本期 包含 和 {$intTheSum} 差 {$intDifference} 其中一位 <br/>";
                 $this->strHtmlLog .= "连续{$intContinuity} <br/>";
             }else {
+                if ($intContinuity) {
+                    $intNumber += 1;
+                }
                 $boolContinuity = false;
                 $intContinuity = 0;
-                $intNumber += 1;
 
                 echo "本期 不包含 \r\n";
                 echo "周期{$intNumber} \r\n";
