@@ -80,6 +80,13 @@ class AdditionSubtractionStatistics
             echo "上期 和 {$intPreTheSum} 差 {$intPreDifference} \r\n";
             $this->strHtmlLog .= "上期 和 {$intPreTheSum} 差 {$intPreDifference} <br/>";
 
+            // 改变前的开奖号码
+            $intOriginalOne = $objCode->one;
+            $intOriginalTwo = $objCode->two;
+            $intOriginalThree = $objCode->three;
+            $intOriginalFour = $objCode->four;
+            $intOriginalFive = $objCode->five;
+
             $one = $objCode->one;
             $two = $objCode->two;
             $three = $objCode->three;
@@ -122,13 +129,12 @@ class AdditionSubtractionStatistics
 
             // 包含 几位
             $intShow = 0;
-            if ( ($intPreTheSum && $intPreDifference) && ($one == $intPreTheSum || $two == $intPreTheSum || $three == $intPreTheSum || $four == $intPreTheSum || $five == $intPreTheSum) ) {
+            if ( ($intPreTheSum && $intPreDifference) && ($intOriginalOne == $intPreTheSum || $intOriginalTwo == $intPreTheSum || $intOriginalThree == $intPreTheSum || $intOriginalFour == $intPreTheSum || $intOriginalFive == $intPreTheSum) ) {
                 $intShow += 1;
             }
-            if ( ($intPreTheSum && $intPreDifference) && ($one == $intPreDifference || $two == $intPreDifference || $three == $intPreDifference || $four == $intPreDifference || $five == $intPreDifference) ) {
+            if ( ($intPreTheSum && $intPreDifference) && ($intOriginalOne == $intPreDifference || $intOriginalTwo == $intPreDifference || $intOriginalThree == $intPreDifference || $intOriginalFour == $intPreDifference || $intOriginalFive == $intPreDifference) ) {
                 $intShow += 1;
             }
-
             if ($intShow == 1) {
                 $boolContinuity = true;
                 $intContinuity += 1;
