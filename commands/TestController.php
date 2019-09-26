@@ -4,6 +4,7 @@
 namespace app\commands;
 
 
+use app\components\AdditionSubtractionStatistics;
 use app\components\FixedNumber;
 use app\components\NewGrab;
 use app\components\Test;
@@ -41,7 +42,8 @@ class TestController extends Controller
     }
 
     public function actionFixed() {
-        new FixedNumber(1, 1);
+        new AdditionSubtractionStatistics(2);
+//        new FixedNumber(1, 1);
     }
 
 }
