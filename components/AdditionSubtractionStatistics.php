@@ -128,9 +128,9 @@ class AdditionSubtractionStatistics
                 $boolContinuity = true;
                 $intContinuity += 1;
 
-                echo "本期 包含 和 {$intTheSum} 差 {$intDifference} 其中一位 \r\n";
+                echo "本期 包含 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 \r\n";
                 echo "连续{$intContinuity} \r\n";
-                $this->strHtmlLog .= "本期 包含 和 {$intTheSum} 差 {$intDifference} 其中一位 <br/>";
+                $this->strHtmlLog .= "本期 包含 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 <br/>";
                 $this->strHtmlLog .= "连续{$intContinuity} <br/>";
             }else {
                 if ($intContinuity) {
