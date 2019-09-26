@@ -42,7 +42,7 @@ class TestController extends Controller
     }
 
     public function actionFixed() {
-        new AdditionSubtractionStatistics(2);
+        new AdditionSubtractionStatistics(3);
 //        new FixedNumber(1, 1);
     }
 
