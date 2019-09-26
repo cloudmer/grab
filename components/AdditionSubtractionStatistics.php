@@ -120,6 +120,37 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "本期 和 {$intTheSum} 差 {$intDifference} <br/>";
             }
 
+            // 包含 几位
+            $intShow = 0;
+            if ( ($intPreTheSum && $intPreDifference) && ($one == $intPreTheSum || $two == $intPreTheSum || $three == $intPreTheSum || $four == $intPreTheSum || $five == $intPreTheSum) ) {
+                $intShow += 1;
+            }
+            if ( ($intPreTheSum && $intPreDifference) && ($one == $intPreDifference || $two == $intPreDifference || $three == $intPreDifference || $four == $intPreDifference || $five == $intPreDifference) ) {
+                $intShow += 1;
+            }
+
+            if ($intShow == 1) {
+                $boolContinuity = true;
+                $intContinuity += 1;
+
+                echo "本期 包含上期 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 \r\n";
+                echo "连续{$intContinuity} \r\n";
+                $this->strHtmlLog .= "本期 包含 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 <br/>";
+                $this->strHtmlLog .= "连续{$intContinuity} <br/>";
+            }else {
+                if ($intContinuity) {
+                    $intNumber += 1;
+                }
+                $boolContinuity = false;
+                $intContinuity = 0;
+
+                echo "本期 不包含 \r\n";
+                echo "周期{$intNumber} \r\n";
+                $this->strHtmlLog .= "本期 不包含 <br/>";
+                $this->strHtmlLog .= "周期{$intNumber} <br/>";
+            }
+
+            /*
             if (
              ( ($intPreTheSum && $intPreDifference) && ($one == $intPreTheSum || $two == $intPreTheSum || $three == $intPreTheSum || $four == $intPreTheSum || $five == $intPreTheSum) )
                 ||
@@ -144,6 +175,7 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "本期 不包含 <br/>";
                 $this->strHtmlLog .= "周期{$intNumber} <br/>";
             }
+            */
 
             if ($intNumber == $this->num && $boolContinuity == false && ($key != count($code) - 1) ) {
                 $intNumber = 0;
