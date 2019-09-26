@@ -204,6 +204,17 @@ class AdditionSubtractionStatistics
         }
 
         // 报警
+        if (count($aryContinuity) >= 4 && $intContinuity >0) {
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差统计报警 " ."\r\n";
+
+            $strMail = "11选5 和差 报警提示 连续".  json_encode(array_slice($aryContinuity,-4)) ."<br/>";
+            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差 统计报警:" ."<br/>";
+            $strMail .= $this->strHtmlLog;
+            $this->send_mail($strMail);
+        }
+
+        /*
+        // 报警
         if ($intContinuity > 0 && $boolEmpty == true && $intNumber == 0) {
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差统计报警 " ."\r\n";
 
@@ -212,6 +223,7 @@ class AdditionSubtractionStatistics
             $strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
         }
+        */
     }
 
     /**
