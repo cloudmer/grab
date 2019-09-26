@@ -103,9 +103,12 @@ class FixedNumber
                 echo var_dump($intPrevious). "\r\n";
                 echo var_dump(count($code)). "\r\n";
                 */
+
+                /*
                 echo var_dump(count($aryCode) >= $this->num). "\r\n";
                 echo var_dump($key != count($code) - 1). "\r\n";
                 echo var_dump($intPrevious == false). "\r\n";
+                */
 
                 $aryCode = [];
                 $boolEmpty = true;
