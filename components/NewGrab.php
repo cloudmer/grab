@@ -191,6 +191,7 @@ class NewGrab
 
         new AdditionSubtraction($this->cp_type);
 
+        new AdditionSubtractionStatistics($this->cp_type);
 
         /*
         try{
