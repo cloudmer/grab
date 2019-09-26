@@ -73,6 +73,9 @@ class AdditionSubtractionStatistics
         // 是否清空过
         $boolEmpty = false;
 
+        // 连续数
+        $aryContinuity = [];
+
         foreach ($code as $key => $objCode) {
             echo "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} \r\n";
             $this->strHtmlLog .= "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} <br/>";
@@ -144,6 +147,7 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "本期 包含 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 <br/>";
                 $this->strHtmlLog .= "连续{$intContinuity} <br/>";
             }else {
+                $aryContinuity[] = $intContinuity;
                 if ($intContinuity) {
                     $intNumber += 1;
                 }
@@ -203,7 +207,7 @@ class AdditionSubtractionStatistics
         if ($intContinuity > 0 && $boolEmpty == true && $intNumber == 0) {
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差统计报警 " ."\r\n";
 
-            $strMail = "11选5 和差 报警提示"."<br/>";
+            $strMail = "11选5 和差 报警提示 连续".  json_encode($aryContinuity) ."<br/>";
             $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差 统计报警:" ."<br/>";
             $strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
