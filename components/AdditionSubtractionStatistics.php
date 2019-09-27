@@ -189,6 +189,7 @@ class AdditionSubtractionStatistics
             }
             */
 
+            /*
             if ($intNumber == $this->num && $boolContinuity == false && ($key != count($code) - 1) ) {
                 $intNumber = 0;
                 $boolEmpty = true;
@@ -198,6 +199,7 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "清空本轮统计 <br/>";
                 $this->strHtmlLog .= "周期{$intNumber} <br/>";
             }
+            */
 
             // 上期 和
             $intPreTheSum = $intTheSum;
@@ -205,14 +207,14 @@ class AdditionSubtractionStatistics
             $intPreDifference = $intDifference;
         }
 
+        $intQishu = count($aryContinuity);
         // 报警
-        if (count($aryContinuity) >= 6 && $intContinuity == 1) {
+        if ($intQishu >= 6 && $intContinuity == 1) {
             echo json_encode($aryContinuity). " \r\n";
-            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差统计报警 ". json_encode(array_slice($aryContinuity,-4)) ."\r\n";
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intQishu} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."\r\n";
 
-            $strMail = "11选5 和差 报警提示 连续".  json_encode(array_slice($aryContinuity,-4)) ."<br/>";
-            $strMail .= $this->cp_type_arr[$this->cp_type]." - [新时时彩] 和差 统计报警:" ."<br/>";
-            $strMail .= $this->strHtmlLog;
+            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intQishu} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."<br/>";
+            //$strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
         }
 
