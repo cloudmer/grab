@@ -206,7 +206,7 @@ class AdditionSubtractionStatistics
         }
 
         // 报警
-        if (count($aryContinuity) >= 4 && $intContinuity >0) {
+        if (count($aryContinuity) >= 6 && $intContinuity == 1) {
             echo json_encode($aryContinuity). " \r\n";
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 和差统计报警 ". json_encode(array_slice($aryContinuity,-4)) ."\r\n";
 
