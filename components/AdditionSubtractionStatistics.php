@@ -147,11 +147,9 @@ class AdditionSubtractionStatistics
                 $this->strHtmlLog .= "本期 包含 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 <br/>";
                 $this->strHtmlLog .= "连续{$intContinuity} <br/>";
             }else {
-                /*
                 if ($intContinuity > 0) {
                     $aryContinuity[] = $intContinuity;
                 }
-                */
                 if ($intContinuity) {
                     $intNumber += 1;
                 }
@@ -162,10 +160,6 @@ class AdditionSubtractionStatistics
                 echo "周期{$intNumber} \r\n";
                 $this->strHtmlLog .= "本期 不包含 <br/>";
                 $this->strHtmlLog .= "周期{$intNumber} <br/>";
-            }
-
-            if ($intContinuity > 0) {
-                $aryContinuity[] = $intContinuity;
             }
 
             /*
