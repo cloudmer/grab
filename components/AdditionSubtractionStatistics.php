@@ -212,9 +212,9 @@ class AdditionSubtractionStatistics
         if ($intQishu >= 6 && $intContinuity >= 1) {
             echo json_encode($aryContinuity). " \r\n";
             $intEndNumber = end($aryContinuity);
-            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intEndNumber} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."\r\n";
+            echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intContinuity} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."\r\n";
 
-            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intEndNumber} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."<br/>";
+            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intContinuity} 和差统计报警 ". json_encode(array_slice($aryContinuity,-6)) ."<br/>";
             //$strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
         }
