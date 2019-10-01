@@ -42,7 +42,7 @@ class AdditionSubtractionNotIn
         $this->cp_type = $cp_type;
         $strPrefix = $this->cp_type_prefix[$cp_type];
         ini_set('memory_limit','888M');
-        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 加减玩法 '."\r\n";
+        echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] 加减连续不包含玩法 '."\r\n";
 
         $this->play($strPrefix);
     }
