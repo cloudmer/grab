@@ -139,13 +139,6 @@ class AdditionSubtractionNotIn
                     echo "连续{$intNotInNumber} \r\n";
                     $this->strHtmlLog .= "本期 不包含上期 和 {$intPreTheSum} 差 {$intPreDifference} 其中一位 <br/>";
                     $this->strHtmlLog .= "连续{$intNotInNumber} <br/>";
-                }else if($intShow == 2) {
-                    $intNotInNumber += 1;
-
-                    echo "本期 包含上期 和 {$intPreTheSum} 差 {$intPreDifference} 2位 \r\n";
-                    echo "连续{$intNotInNumber} \r\n";
-                    $this->strHtmlLog .= "本期 包含上期 和 {$intPreTheSum} 差 {$intPreDifference} 2位 <br/>";
-                    $this->strHtmlLog .= "连续{$intNotInNumber} <br/>";
                 }else {
                     if ($intNotInNumber >0) {
                         $aryNotInNumber[] = $intNotInNumber;
