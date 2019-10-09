@@ -145,8 +145,8 @@ class AdditionSubtractionNotIn
                     }
                     $intNotInNumber = 0;
 
-                    echo "本期 不包含上期 和差 其中一位 \r\n";
-                    $this->strHtmlLog .= "本期 不包含上期 和差 其中一位 <br/>";
+                    echo "本期 包含上期 和差 \r\n";
+                    $this->strHtmlLog .= "本期 包含上期 和差 <br/>";
                 }
             }
 
