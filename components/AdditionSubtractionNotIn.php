@@ -68,6 +68,13 @@ class AdditionSubtractionNotIn
         $intNotInNumber = 0;
 
         foreach ($code as $key => $objCode) {
+            echo "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} \r\n";
+            $this->strHtmlLog .= "本期开奖号码: {$objCode->one} {$objCode->two} {$objCode->three} {$objCode->four} {$objCode->five} <br/>";
+
+            echo "上期 和 {$intPreTheSum} 差 {$intPreDifference} \r\n";
+            $this->strHtmlLog .= "上期 和 {$intPreTheSum} 差 {$intPreDifference} <br/>";
+
+
             // 改变前的开奖号码
             $intOriginalOne = $objCode->one;
             $intOriginalTwo = $objCode->two;
@@ -151,7 +158,7 @@ class AdditionSubtractionNotIn
             }
 
             $intPreTheSum = $intTheSum;
-            $intPreDifference = $intPreDifference;
+            $intPreDifference = $intDifference;
         }
 
         $intQishu = count($aryNotInNumber);
