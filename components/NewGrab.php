@@ -187,7 +187,7 @@ class NewGrab
 
         $this->alert();
 
-        new NewCodeInterval($this->cp_type);
+//        new NewCodeInterval($this->cp_type);
 
         new AdditionSubtraction($this->cp_type);
 

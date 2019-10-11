@@ -160,8 +160,11 @@ class AdditionSubtractionNotIn
             echo json_encode($aryNotInNumber). " \r\n";
             echo $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intNotInNumber} 和差连续不包含统计报警 ". json_encode(array_slice($aryNotInNumber,-6)) ."\r\n";
 
-            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intNotInNumber} 和差连续不包含统计报警 ". json_encode(array_slice($aryNotInNumber,-6)) ."<br/>";
-            $strMail .= $this->strHtmlLog;
+//            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intNotInNumber} 和差连续不包含统计报警 ". json_encode(array_slice($aryNotInNumber,-6)) ."<br/>";
+//            $strMail .= $this->strHtmlLog;
+
+            $strMail = $this->cp_type_arr[$this->cp_type].' - [新时时彩] '. " 期数 {$intNotInNumber} 没出统计 ". json_encode(array_slice($aryNotInNumber,-6)) ."<br/>";
+//            $strMail .= $this->strHtmlLog;
             $this->send_mail($strMail);
         }
 
